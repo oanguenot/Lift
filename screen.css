@@ -1,0 +1,240 @@
+html {
+	overflow: hidden;
+}
+
+body {
+	font-family: "Roboto",sans-serif;
+	font-size:90%;
+	width: 350px;
+	overflow: hidden;
+}
+
+h2 {
+	font-family: "Roboto",sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+}
+
+p {
+	font-family: "Roboto",sans-serif;
+	font-weight: 100;
+	font-size: 12px;
+	margin-bottom: 30px;
+}
+
+legend {
+	color: #696969;
+	font-weight: 100; 
+}
+
+label {
+	margin-top:20px;
+	padding-top: 20px;
+	display:block;
+}
+
+input {
+	font-weight: 300;
+	font-family: "Roboto",sans-serif;
+	font-size: 14px;
+	height: 22px;
+	line-height: 22px;
+	border:1px solid #ccc;
+	font-size:14px;
+	/*display: block;*/
+	min-height:22px;
+	margin-bottom:15px;
+	margin-top:5px;
+	outline: none;
+}
+
+select {
+	border:1px solid #ccc;
+	font-weight: 300;
+	font-size: 14px;
+	font-family: "Roboto",sans-serif;
+	line-height: 22px;
+	min-height:22px;
+	display:block;
+	margin-bottom:15px;
+	margin-top:5px;
+	outline: none;
+}
+
+select option {
+    background: rgba(0,0,0,0.3);
+}
+
+.meetingPassword {
+	font-weight: 100;
+	position: relative;
+	top: -3px;
+	color: #696969;
+}
+
+.passwordCheck {
+	margin-bottom: 0;
+}
+
+.firstTitle {
+	margin-top: 16px;
+}
+
+.titleInput, .urlInput{
+	width: 345px;
+}
+
+.recurrenceType {
+	width: 250px;
+}
+
+.conferenceType {
+	width: 160px;
+	height: 25px;
+	background-color: #ffffff;
+}
+
+.dateInput {
+	width: 160px;
+}
+
+.passwordInput {
+	width: 200px;
+}
+
+.passwordInput:disabled {
+	background-color: #efefef;
+}
+
+.startTimeInput {
+	width: 75px;
+}
+
+.durationInput {
+	width: 75px;
+}
+
+.result {
+	font-style: italic;
+}
+
+.title {
+	line-height: 40px;
+	background-color: #2980B9;
+	width: 99%;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 300; 
+	text-align: left;
+	padding-left: 16px;
+}
+
+.loginButton {
+ 	border: 1px solid #135F91;
+	background-color: #135F91;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	margin: 35px auto 5px auto;
+	min-height: 30px;
+	line-height: 30px;
+	display: block;
+	outline: none; }
+
+.loginButton:hover {
+	background-color: #084B77;
+	border: 1px solid #084B77;
+}
+
+.loginButton:disabled {
+	background-color: #96AEBD;
+	border: 1px solid #96AEBD;
+	cursor:default;
+}
+
+.createButton {
+ 	border: 1px solid #2980B9;
+	background-color: #2980B9;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	margin: 35px auto 5px auto;
+	min-height: 30px;
+	line-height: 30px;
+	display: block;
+	outline: none; }
+
+.createButton:hover {
+	background-color: #135F91;
+}
+
+:invalid { 
+  border-color: #2980B9;
+  background-color: #2980B9;
+  -webkit-box-shadow: 0 0 5px #2980B9;
+  box-shadow:0 0 5px #2980B9;
+  color: #ffffff;
+}
+
+:required {
+  border-color: #2980B9;
+  -webkit-box-shadow: 0 0 5px #2980B9;
+}
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.4);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+
+.visible {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.blur {
+	-webkit-filter: grayscale(0.5) blur(2px);
+}
+
+.registerInput {
+	width: 90%;
+  	height: 25px;
+  	margin-bottom: 10px;
+  	padding-left: 15px;
+  	background: #fff;
+  	border: none;
+  	color: #2980B9;
+  	outline: none;
+}
+
+.popup {
+	width: 260px;
+	position: relative;
+	margin: 40px auto;
+	padding: 5px 20px 13px 20px;
+	background-color: #2980B9;
+	color: #ffffff;
+}
+
+.popupLegend {
+	color: #ffffff;
+	font-weight: 300;
+	margin-top: 6px;
+	font-family: "Roboto",sans-serif;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "OpenTouch Lift",
+  "version": "0.7",
+  "manifest_version": 2,
+  "description": "OpenTouch Lift is a Google Chrome Extension that allows to schedule meeting for OpenTouch server",
+  "icons": { "128": "otc_128.png", "48": "otc_48.png" },
+  "permissions": ["http://*.google.com/", "https://*.google.com/", "http://*/*", "<all_urls>", "notifications"],
+  "browser_action": {
+    "default_title": "",
+    "default_icon": "otc_128.png",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": ["otc_48.png"]
+}
