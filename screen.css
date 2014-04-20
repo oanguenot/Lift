@@ -129,7 +129,7 @@ select option {
 	padding-left: 16px;
 }
 
-.loginButton {
+.loginButton, .checkButton {
  	border: 1px solid #135F91;
 	background-color: #135F91;
 	color: #ffffff;
@@ -141,17 +141,34 @@ select option {
 	margin: 35px auto 5px auto;
 	min-height: 30px;
 	line-height: 30px;
-	display: block;
-	outline: none; }
+	display: inline-block;
+	outline: none; 
+}
 
-.loginButton:hover {
+.checkButton {
+ 	border: 1px solid #135F91;
+	background-color: #135F91;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	margin: 35px 6px 5px 89px;
+	min-height: 30px;
+	line-height: 30px;
+	display: inline-block;
+	outline: none; 
+}
+
+.loginButton:hover, .checkButton:hover {
 	background-color: #084B77;
 	border: 1px solid #084B77;
 }
 
 .loginButton:disabled {
-	background-color: #96AEBD;
-	border: 1px solid #96AEBD;
+	background-color: #D1D5D8;
+	border: 1px solid #D1D5D8;
 	cursor:default;
 }
 
@@ -164,7 +181,7 @@ select option {
 	text-align: center;
 	cursor: pointer;
 	padding: 0 20px 0 20px;
-	margin: 35px auto 5px auto;
+	margin: 30px auto 5px auto;
 	min-height: 30px;
 	line-height: 30px;
 	display: block;
@@ -196,7 +213,7 @@ select option {
 	left: 0;
 	background: rgba(0,0,0,0.4);
 	z-index: 99999;
-	opacity:0;
+	display: none;
 	-webkit-transition: opacity 400ms ease-in;
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
@@ -204,7 +221,7 @@ select option {
 }
 
 .visible {
-	opacity:1;
+	display:block;
 	pointer-events: auto;
 }
 
@@ -213,7 +230,7 @@ select option {
 }
 
 .registerInput {
-	width: 90%;
+	width: 94%;
   	height: 25px;
   	margin-bottom: 10px;
   	padding-left: 15px;
@@ -234,7 +251,15 @@ select option {
 
 .popupLegend {
 	color: #ffffff;
-	font-weight: 300;
+	font-size: 12px;
+	font-weight: 100;
+	margin-top: 6px;
+	font-family: "Roboto",sans-serif;
+}
+
+.checkResult {
+	color: #ffffff;
+	font-weight: 400;
 	margin-top: 6px;
 	font-family: "Roboto",sans-serif;
 }

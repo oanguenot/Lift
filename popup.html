@@ -11,46 +11,51 @@
 </head>
 <body>
 	<form class='editor'>
-		 	<legend class='title'> OpenTouch LIFT</legend>
-		 	<legend class='firstTitle'>Meeting name</legend>
-		 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
-		 	<legend>Meeting Type</legend>
-			<select class="conferenceType" required>
-   				<option value="scheduled">Scheduled</option>
-   				<option value="reservationless">Reservationless</option>
-			</select>
-			 <legend>Start Date</legend>
-			<input type="date" name="date" class="dateInput" required >
-			<legend>Hour (locale)</legend>
-			<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
-			<legend>Duration (hours)</legend>
-			<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-			<legend>Meeting Recurrence</legend>
-			<select class="recurrenceType" required>
-				<option value="day">One time event</option>
-   				<option value="day">Every day - Same hour each day</option>
-   				<option value="week">Every week - Same day each week</option>
-			</select>
-		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a password</span>
-		 	<input type="password" name="password" class="passwordInput" placeholder="Enter a digit password" value="" disabled>	
-			
-			<button type="submit" class="createButton">Schedule this Meeting</button>
+	 	<legend class='title'> OpenTouch LIFT</legend>
+	 	<legend class='firstTitle'>Meeting name</legend>
+	 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
+	 	<legend>Meeting Type</legend>
+		<select class="conferenceType" required>
+				<option value="scheduled">Scheduled</option>
+				<option value="reservationless">Reservationless</option>
+		</select>
+		 <legend>Start Date</legend>
+		<input type="date" name="date" class="dateInput" required >
+		<legend>Hour (locale)</legend>
+		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
+		<legend>Duration (hours)</legend>
+		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
+		<legend>Meeting Recurrence</legend>
+		<select class="recurrenceType" required>
+			<option value="day">One time event</option>
+				<option value="day">Every day - Same hour each day</option>
+				<option value="week">Every week - Same day each week</option>
+		</select>
+	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a password</span>
+	 	<input type="password" name="password" class="passwordInput" placeholder="Enter a digit password" value="" disabled>	
+		
+		<button type="submit" class="createButton">Schedule this Meeting</button>
 
-			<!-- <legend class='result'>Meeting URL for Leaders</legend>
-			<input id="urlLeaders" type="text" class="urlInput" name="urlLeaders" disabled>
-			<legend class='result'>Meeting URL for Participants</legend>
-			<input id="urlParticipants" type="text" class="urlInput" name="urlParticipants" disabled> -->
+		<!-- <legend class='result'>Meeting URL for Leaders</legend>
+		<input id="urlLeaders" type="text" class="urlInput" name="urlLeaders" disabled>
+		<legend class='result'>Meeting URL for Participants</legend>
+		<input id="urlParticipants" type="text" class="urlInput" name="urlParticipants" disabled> -->
 	</form>
 
 	<div id="openModal" class="modalDialog target">
 		<div class='popup'>
 			<h2>LIFT SIGN-IN</h2>
 			<p>Please sign in with your OpenTouch credentials to schedule your meetings using LIFT</p>
-			<legend class='popupLegend'>OpenTouch account</legend>
-		 	<input type="text" name="titleRegister" class="registerInput" required placeholder="Enter your login" autofocus>
+			<legend class='popupLegend'>Login</legend>
+		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="e.g. jsmith" autofocus>
 		 	<legend class='popupLegend'>Password</legend>
-		 	<input type="password" name="passwordRegister" class="registerInput" required placeholder="Enter your password" >
-		 	<button type="submit" class="loginButton" disabled>Login</button>
+		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
+		 	<legend class='popupLegend'>OpenTouch server</legend>
+		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="e.g. vm-155.alcatel-lucent.com" >
+		 	<!-- <legend class='checkResult' id='checkResult'>Not tested...</legend>
+		 	<button type="action" class="checkButton">Check</button>
+		 	 -->
+		 	 <button type="submit" class="loginButton" disabled>Login</button>
 		</div>
 	</div>
 

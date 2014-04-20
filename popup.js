@@ -41,6 +41,7 @@ function init() {
 
 	if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
 		isNotificationAllowed = true;
+		console.log("Notification allowed");
 	}
 	else {
 		console.log("request");
@@ -96,8 +97,52 @@ function init() {
 
 	var loginButton = document.querySelector('.loginButton');
 	loginButton.onclick = function(event) {
-		console.log("cocouc");
+		localStorage["otc_scheduler_login"] = login.value;
+    	localStorage["otc_scheduler_password"] = password.value;
+    	localStorage["otc_scheduler_host"] = ot.value;
+
+    	var modal= document.querySelector('.modalDialog');
+		modal.classList.remove('visible');
+
+		var editor= document.querySelector('.editor');
+		editor.classList.remove('blur');
+
 	};
+
+	var login = document.querySelector('#login');
+	var password = document.querySelector('#password');
+	var ot = document.querySelector('#ot');
+	login.onkeyup = function() {
+		if(login.value.length && password.value.length && ot.value.length) {
+			loginButton.disabled = false;
+		}
+		else {
+			loginButton.disabled = true;
+		}
+	};
+
+	password.onkeyup = function() {
+		if(login.value.length && password.value.length && ot.value.length) {
+			loginButton.disabled = false;
+		}
+		else {
+			loginButton.disabled = true;
+		}
+	};
+
+	ot.onkeyup = function() {
+		if(login.value.length && password.value.length && ot.value.length) {
+			loginButton.disabled = false;
+		}
+		else {
+			loginButton.disabled = true;
+		}
+	};
+
+	var checkButton = document.querySelector('.checkButton');
+	checkButton.onclick = function() {
+		checkLogin('dvm-155.pqa-illlab.fr.alcatel-lucent.com', 'oan', '201313');
+	}
 
 	document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
 	/* __FIX__ Use toLocaleTimeString() instead of toJSONString() to avoid issue with GMT+xxx */
@@ -199,17 +244,27 @@ function sendRequest(req, callback, context) {
 	http.onreadystatechange = function (arg) {
 		if (http.readyState == 4) {
 			var res = null;
+
+			var headers = http.getAllResponseHeaders();
+
 			if(http.responseXML) {
 				res = http.responseXML;
-				console.log(res);
+				console.log(http);
 			}
 			else if(http.responseText) {
 				res = http.responseText;
-				console.log(res);
+				console.log(http);
 			}
 			
 			if(callback) {
-				callback.apply(context, [res]);
+
+				var msg = {
+					headers: headers,
+					data: res
+				};
+
+				//callback.apply(context, [res]);
+				callback.apply(context, [msg])
 			}
 		}
 	};
@@ -277,6 +332,32 @@ function login() {
 	var url = host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
 
 	sendRequest(url, getGlobalSettings, that);
+};
+
+/**
+ * Check the login with the ACS
+ */
+function checkLogin(host, login, password) {
+	
+	var url = "http://" + host +"/ics?action=signin&userid=" + encodeURIComponent(login) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
+
+	var result = document.querySelector('#checkResult');
+
+	sendRequest(url, function(msg) {
+
+		if(!msg.headers && msg.headers.length > 0) {
+			if(msg.data && msg.data.length > 0) {
+				result.innerHTML = 'Sign-in error. Lift will not work!';
+			}
+			else {
+				result.innerHTML = 'Sign-in successfull. You can use Lift!';
+			}
+		}
+		else {
+			result.innerHTML = 'Sign-in error. Lift will not work!';
+		}
+
+	}, this);
 };
 
 /**
@@ -397,11 +478,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	else {
 		setTimeout(function() {
 			var login= document.querySelector('.modalDialog');
-			login.className += ' visible';
+			login.classList.add('visible');
 
 			var editor= document.querySelector('.editor');
-			editor.className += ' blur';
-		}, 500);
+			editor.classList.add('blur');
+		}, 1000);
 
 	}
 
