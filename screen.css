@@ -65,6 +65,29 @@ select option {
     background: rgba(0,0,0,0.3);
 }
 
+.endDateLabel {
+	position: absolute;
+	left: 195px;
+	top: 194px;
+}
+
+.recurrenceLabel {
+	position: absolute;
+	left: 195px;
+	top: 130px;
+}
+
+.durationLabel {
+	position: absolute;
+	left: 195px;
+	top: 256px;
+}
+
+.endDateInput {
+	position: absolute;
+	left: 195px;
+}
+
 .meetingPassword {
 	font-weight: 100;
 	position: relative;
@@ -81,21 +104,34 @@ select option {
 }
 
 .titleInput, .urlInput{
-	width: 345px;
+	width: 335px;
+	padding-left: 10px;
 }
 
 .recurrenceType {
-	width: 250px;
+	width: 160px;
+	height: 25px;
+	background-color: #ffffff;
+	position: absolute;
+	left: 195px;
+	top: 148px;
+	padding-left: 10px;
+}
+
+.recurrenceType:disabled {
+	background-color: #efefef;
 }
 
 .conferenceType {
 	width: 160px;
 	height: 25px;
 	background-color: #ffffff;
+	padding-left: 10px;
 }
 
 .dateInput {
-	width: 160px;
+	width: 150px;
+	padding-left: 10px;
 }
 
 .passwordInput {
@@ -108,10 +144,16 @@ select option {
 
 .startTimeInput {
 	width: 75px;
+	padding-left: 10px;
+	display: block;
 }
 
 .durationInput {
 	width: 75px;
+	position: absolute;
+	left: 195px;
+	top: 274px;
+	padding-left: 10px;
 }
 
 .result {
@@ -141,7 +183,7 @@ select option {
 	margin: 35px auto 5px auto;
 	min-height: 30px;
 	line-height: 30px;
-	display: inline-block;
+	display: block;
 	outline: none; 
 }
 
@@ -157,7 +199,7 @@ select option {
 	margin: 35px 6px 5px 89px;
 	min-height: 30px;
 	line-height: 30px;
-	display: inline-block;
+	display: block;
 	outline: none; 
 }
 
@@ -185,7 +227,8 @@ select option {
 	min-height: 30px;
 	line-height: 30px;
 	display: block;
-	outline: none; }
+	outline: none; 
+}
 
 .createButton:hover {
 	background-color: #135F91;

@@ -7,6 +7,7 @@
   	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
 	<link href="screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
+	<script src="moment.js"></script>
 	<script src="popup.js"></script>
 </head>
 <body>
@@ -19,18 +20,20 @@
 				<option value="scheduled">Scheduled</option>
 				<option value="reservationless">Reservationless</option>
 		</select>
-		 <legend>Start Date</legend>
+		<legend class='recurrenceLabel'>Meeting Recurrence</legend>
+		<select class="recurrenceType" required>
+			<option value="none">One time event</option>
+			<option value="day">Every week day</option>
+			<option value="week">Every week</option>
+		</select>
+		<legend>Start Date</legend>
 		<input type="date" name="date" class="dateInput" required >
+		<legend class='endDateLabel'>End Date</legend>
+		<input type="date" name="enddate" class="endDateInput dateInput" required disabled>
 		<legend>Hour (locale)</legend>
 		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
-		<legend>Duration (hours)</legend>
+		<legend class='durationLabel'>Duration (hours)</legend>
 		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-		<legend>Meeting Recurrence</legend>
-		<select class="recurrenceType" required>
-			<option value="day">One time event</option>
-				<option value="day">Every day - Same hour each day</option>
-				<option value="week">Every week - Same day each week</option>
-		</select>
 	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a password</span>
 	 	<input type="password" name="password" class="passwordInput" placeholder="Enter a digit password" value="" disabled>	
 		
@@ -45,7 +48,7 @@
 	<div id="openModal" class="modalDialog target">
 		<div class='popup'>
 			<h2>LIFT SIGN-IN</h2>
-			<p>Please sign in with your OpenTouch credentials to schedule your meetings using LIFT</p>
+			<p>Please sign in with your OpenTouch credentials to use LIFT</p>
 			<legend class='popupLegend'>Login</legend>
 		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="e.g. jsmith" autofocus>
 		 	<legend class='popupLegend'>Password</legend>

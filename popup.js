@@ -22,23 +22,26 @@
  */
 
 
-var login_param = localStorage["otc_scheduler_login"];
-var password_param = localStorage["otc_scheduler_password"];
-var host_param = localStorage["otc_scheduler_host"];
+var login_param = localStorage["lift_login"];
+var password_param = localStorage["lift_password"];
+var host_param = localStorage["lift_host"];
 
 var timezone = "Europe/Paris";
 var confType = "scheduled";
+var recurrenceValue = 'none';
 
 var that = this;
 var isNotificationAllowed = false;
+
+var STATE = 'disconnected';
+
+var startMeeting = new Date();
 
 /**
  * Initialize
  */
 function init() {
 	
-	var startMeeting = new Date();
-
 	if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
 		isNotificationAllowed = true;
 		console.log("Notification allowed");
@@ -72,19 +75,42 @@ function init() {
 		}
 	});
 
+	var startDate = document.querySelector('.dateInput');
+	var endDate = document.querySelector('.endDateInput');
+
+	startDate.onchange = function() {
+		var date = startDate.value;
+		var end = endDate.value;
+		if (moment(date).isBefore(moment(startMeeting))) {
+			startDate.value = startMeeting.toJSON().substring(0,10);
+		}
+		if(moment(end).isBefore(moment(date))) {
+			console.log("Date", date);
+			endDate.value = new Date(date).toJSON().substring(0,10);
+		}
+	};
+
+	
+	endDate.onchange = function() {
+		var date = endDate.value;
+		var start = startDate.value;
+		console.log("date", date, start);
+		if (moment(date).isBefore(moment(start))) {
+			endDate.value = new Date(start).toJSON().substring(0,10);
+		}
+	};
+
+	var recurrence = document.querySelector('.recurrenceType');
+	
+	recurrence.onchange = function() {
+		recurrenceValue = recurrence.value;
+		updateGUI();
+	}
+
 	var confTypeElt = document.querySelector(".conferenceType");
 	confTypeElt.onchange = function(event) {
 		confType = confTypeElt.value;
-		if(confType == "scheduled") {
-			document.querySelector('.durationInput').disabled = false;
-			document.querySelector('.startTimeInput').disabled = false;
-			document.querySelector(".startTimeInput").value = startMeeting.toLocaleTimeString().substr(0, 5);
-		}
-		else {
-			document.querySelector('.durationInput').disabled = true;
-			document.querySelector('.startTimeInput').disabled = true;
-			document.querySelector(".startTimeInput").value = "00:00";
-		}
+		updateGUI();
 	};
 
 	var confPassword = document.querySelector('.passwordCheck');
@@ -97,9 +123,9 @@ function init() {
 
 	var loginButton = document.querySelector('.loginButton');
 	loginButton.onclick = function(event) {
-		localStorage["otc_scheduler_login"] = login.value;
-    	localStorage["otc_scheduler_password"] = password.value;
-    	localStorage["otc_scheduler_host"] = ot.value;
+		localStorage["lift_login"] = login.value;
+    	localStorage["lift_password"] = password.value;
+    	localStorage["lift_host"] = ot.value;
 
     	var modal= document.querySelector('.modalDialog');
 		modal.classList.remove('visible');
@@ -107,6 +133,12 @@ function init() {
 		var editor= document.querySelector('.editor');
 		editor.classList.remove('blur');
 
+    	/*checkLogin(ot.value, login.value, password.value, function(isConnected) {
+    		if(!isConnected) {
+    		} else {
+    			STATE = 'connected';
+    		}
+    	}, this);*/
 	};
 
 	var login = document.querySelector('#login');
@@ -139,15 +171,44 @@ function init() {
 		}
 	};
 
-	var checkButton = document.querySelector('.checkButton');
+	/*var checkButton = document.querySelector('.checkButton');
 	checkButton.onclick = function() {
 		checkLogin('dvm-155.pqa-illlab.fr.alcatel-lucent.com', 'oan', '201313');
-	}
+	}*/
 
 	document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
 	/* __FIX__ Use toLocaleTimeString() instead of toJSONString() to avoid issue with GMT+xxx */
 	document.querySelector(".startTimeInput").value = startMeeting.toLocaleTimeString().substr(0, 5);
+
+	document.querySelector(".endDateInput").value = startMeeting.toJSON().substring(0,10);
+
 };
+
+
+function updateGUI() {
+	console.log("confType, recurrence", confType, recurrenceValue);
+	if(confType == "scheduled") {
+		document.querySelector('.durationInput').disabled = false;
+		document.querySelector('.startTimeInput').disabled = false;
+		document.querySelector(".startTimeInput").value = startMeeting.toLocaleTimeString().substr(0, 5);
+
+		if(recurrenceValue === 'none') {
+			document.querySelector('.endDateInput').disabled = true;
+		}
+		else {
+			document.querySelector('.endDateInput').disabled = false;
+		}
+		document.querySelector('.recurrenceType').disabled = false;
+	}
+	else {
+		document.querySelector('.durationInput').disabled = true;
+		document.querySelector('.startTimeInput').disabled = true;
+		document.querySelector(".startTimeInput").value = "00:00";
+
+		document.querySelector('.endDateInput').disabled = false;
+		document.querySelector('.recurrenceType').disabled = true;
+	}
+}
 
 /* ------------------------------------------ Cookie management ------------------------------------- */
 
@@ -337,24 +398,22 @@ function login() {
 /**
  * Check the login with the ACS
  */
-function checkLogin(host, login, password) {
+function checkLogin(host, login, password, callback, context) {
 	
 	var url = "http://" + host +"/ics?action=signin&userid=" + encodeURIComponent(login) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
-
-	var result = document.querySelector('#checkResult');
 
 	sendRequest(url, function(msg) {
 
 		if(!msg.headers && msg.headers.length > 0) {
 			if(msg.data && msg.data.length > 0) {
-				result.innerHTML = 'Sign-in error. Lift will not work!';
+				callback.call(this, true);
 			}
 			else {
-				result.innerHTML = 'Sign-in successfull. You can use Lift!';
+				callback.call(this, false);
 			}
 		}
 		else {
-			result.innerHTML = 'Sign-in error. Lift will not work!';
+			callback.call(this, false);
 		}
 
 	}, this);
@@ -476,14 +535,17 @@ document.addEventListener('DOMContentLoaded', function () {
 			//login();
 	}
 	else {
-		setTimeout(function() {
-			var login= document.querySelector('.modalDialog');
-			login.classList.add('visible');
-
-			var editor= document.querySelector('.editor');
-			editor.classList.add('blur');
-		}, 1000);
-
+		editConfig();
 	}
 
 });
+
+function editConfig() {
+	setTimeout(function() {
+		var login= document.querySelector('.modalDialog');
+		login.classList.add('visible');
+
+		var editor= document.querySelector('.editor');
+		editor.classList.add('blur');
+	}, 1000);
+};
