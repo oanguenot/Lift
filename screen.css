@@ -22,6 +22,14 @@ p {
 	margin-bottom: 30px;
 }
 
+a {
+	color: #ffffff;
+}
+
+a:visited {
+	color: #ffffff;
+}
+
 legend {
 	color: #696969;
 	font-weight: 100; 
@@ -43,7 +51,7 @@ input {
 	font-size:14px;
 	/*display: block;*/
 	min-height:22px;
-	margin-bottom:15px;
+	margin-bottom:25px;
 	margin-top:5px;
 	outline: none;
 }
@@ -56,7 +64,7 @@ select {
 	line-height: 22px;
 	min-height:22px;
 	display:block;
-	margin-bottom:15px;
+	margin-bottom:25px;
 	margin-top:5px;
 	outline: none;
 }
@@ -68,19 +76,19 @@ select option {
 .endDateLabel {
 	position: absolute;
 	left: 195px;
-	top: 194px;
+	top: 214px;
 }
 
 .recurrenceLabel {
 	position: absolute;
 	left: 195px;
-	top: 130px;
+	top: 140px;
 }
 
 .durationLabel {
 	position: absolute;
 	left: 195px;
-	top: 256px;
+	top: 286px;
 }
 
 .endDateInput {
@@ -91,7 +99,7 @@ select option {
 .meetingPassword {
 	font-weight: 100;
 	position: relative;
-	top: -3px;
+	top: -6px;
 	color: #696969;
 }
 
@@ -106,6 +114,7 @@ select option {
 .titleInput, .urlInput{
 	width: 335px;
 	padding-left: 10px;
+	margin-bottom: 25px;
 }
 
 .recurrenceType {
@@ -114,7 +123,7 @@ select option {
 	background-color: #ffffff;
 	position: absolute;
 	left: 195px;
-	top: 148px;
+	top: 158px;
 	padding-left: 10px;
 }
 
@@ -135,11 +144,29 @@ select option {
 }
 
 .passwordInput {
-	width: 200px;
+	width: 150px;
+	padding-left: 10px;
 }
 
 .passwordInput:disabled {
 	background-color: #efefef;
+}
+
+.digit {
+	font-family: "Roboto",sans-serif;
+	font-weight: 300;
+	color: #2980B9;
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+.firstLine {
+	margin-top: 30px;
+}
+
+.leader, .participant {
+	font-weight: 400;
+	margin-top: 30px;
 }
 
 .startTimeInput {
@@ -152,7 +179,7 @@ select option {
 	width: 75px;
 	position: absolute;
 	left: 195px;
-	top: 274px;
+	top: 304px;
 	padding-left: 10px;
 }
 
@@ -247,6 +274,10 @@ select option {
   -webkit-box-shadow: 0 0 5px #2980B9;
 }
 
+.okP {
+	margin-bottom: 0;
+}
+
 .modalDialog {
 	position: fixed;
 	font-family: Arial, Helvetica, sans-serif;
@@ -261,6 +292,10 @@ select option {
 	-moz-transition: opacity 400ms ease-in;
 	transition: opacity 400ms ease-in;
 	pointer-events: none;
+}
+
+.error {
+	font-weight: 400;
 }
 
 .visible {

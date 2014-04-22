@@ -41,6 +41,21 @@ var startMeeting = new Date();
  * Initialize
  */
 function init() {
+
+	console.log("--init");
+
+	var loginField = document.querySelector('#login');
+	var passwordField = document.querySelector('#password');
+	var otField = document.querySelector('#ot');
+	var btn = document.querySelector(".createButton");
+	var startDate = document.querySelector('.dateInput');
+	var endDate = document.querySelector('.endDateInput');
+	var recurrence = document.querySelector('.recurrenceType');
+	var confTypeElt = document.querySelector(".conferenceType");
+	var confPassword = document.querySelector('.passwordCheck');
+	var loginButton = document.querySelector('.loginButton');
+	var closeButton = document.querySelector('#closeButton');
+	var clearButton = document.querySelector('#clearButton');
 	
 	if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
 		isNotificationAllowed = true;
@@ -50,8 +65,7 @@ function init() {
 		console.log("request");
 		window.webkitNotifications.requestPermission();
 	}
-
-	var btn = document.querySelector(".createButton");		
+	
 	btn.addEventListener("click", function(event){
 		event.preventDefault();
 		event.stopPropagation();
@@ -75,9 +89,6 @@ function init() {
 		}
 	});
 
-	var startDate = document.querySelector('.dateInput');
-	var endDate = document.querySelector('.endDateInput');
-
 	startDate.onchange = function() {
 		var date = startDate.value;
 		var end = endDate.value;
@@ -89,7 +100,6 @@ function init() {
 			endDate.value = new Date(date).toJSON().substring(0,10);
 		}
 	};
-
 	
 	endDate.onchange = function() {
 		var date = endDate.value;
@@ -99,21 +109,17 @@ function init() {
 			endDate.value = new Date(start).toJSON().substring(0,10);
 		}
 	};
-
-	var recurrence = document.querySelector('.recurrenceType');
 	
 	recurrence.onchange = function() {
 		recurrenceValue = recurrence.value;
 		updateGUI();
 	}
-
-	var confTypeElt = document.querySelector(".conferenceType");
+	
 	confTypeElt.onchange = function(event) {
 		confType = confTypeElt.value;
 		updateGUI();
 	};
-
-	var confPassword = document.querySelector('.passwordCheck');
+	
 	confPassword.onchange = function(event) {
 		document.querySelector('.passwordInput').disabled = !event.target.checked;
 		if(!event.target.checked) {
@@ -121,60 +127,55 @@ function init() {
 		}
 	};
 
-	var loginButton = document.querySelector('.loginButton');
+	
 	loginButton.onclick = function(event) {
-		localStorage["lift_login"] = login.value;
-    	localStorage["lift_password"] = password.value;
-    	localStorage["lift_host"] = ot.value;
+		localStorage["lift_login"] = loginField.value;
+    	localStorage["lift_password"] = passwordField.value;
+    	localStorage["lift_host"] = otField.value;
 
-    	var modal= document.querySelector('.modalDialog');
+    	var modal= document.querySelector('#openModal');
 		modal.classList.remove('visible');
 
 		var editor= document.querySelector('.editor');
 		editor.classList.remove('blur');
-
-    	/*checkLogin(ot.value, login.value, password.value, function(isConnected) {
-    		if(!isConnected) {
-    		} else {
-    			STATE = 'connected';
-    		}
-    	}, this);*/
 	};
 
-	var login = document.querySelector('#login');
-	var password = document.querySelector('#password');
-	var ot = document.querySelector('#ot');
-	login.onkeyup = function() {
-		if(login.value.length && password.value.length && ot.value.length) {
+	checkLoginButton = function() {
+		if(loginField.value.length && passwordField.value.length && otField.value.length) {
 			loginButton.disabled = false;
 		}
 		else {
 			loginButton.disabled = true;
 		}
+	};
+	
+	login.onkeyup = function() {
+		checkLoginButton();
 	};
 
 	password.onkeyup = function() {
-		if(login.value.length && password.value.length && ot.value.length) {
-			loginButton.disabled = false;
-		}
-		else {
-			loginButton.disabled = true;
-		}
+		checkLoginButton();
 	};
 
 	ot.onkeyup = function() {
-		if(login.value.length && password.value.length && ot.value.length) {
-			loginButton.disabled = false;
-		}
-		else {
-			loginButton.disabled = true;
-		}
+		checkLoginButton();
 	};
 
-	/*var checkButton = document.querySelector('.checkButton');
-	checkButton.onclick = function() {
-		checkLogin('dvm-155.pqa-illlab.fr.alcatel-lucent.com', 'oan', '201313');
-	}*/
+	closeButton.onclick = function() {
+		var error= document.querySelector('#errorModal');
+		error.classList.remove('visible');
+
+		var editor= document.querySelector('.editor');
+		editor.classList.remove('blur');
+	};
+
+	clearButton.onclick = function() {
+		var ok= document.querySelector('#okModal');
+		ok.classList.remove('visible');
+
+		var editor= document.querySelector('.editor');
+		editor.classList.remove('blur');
+	};
 
 	document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
 	/* __FIX__ Use toLocaleTimeString() instead of toJSONString() to avoid issue with GMT+xxx */
@@ -274,6 +275,9 @@ function eraseCookie(name) {
  * delete all created cookies
  */
 function deletePreviouslyUsedCookies() {
+
+	console.log("--deletePreviouslyUsedCookies");
+
 	eraseCookie("AlcUserId");
 	eraseCookie("OTUCSSO");
 	eraseCookie("ed_client_tag.");
@@ -281,7 +285,9 @@ function deletePreviouslyUsedCookies() {
 	eraseCookie("ics.login.1.");
 	eraseCookie("ics.login.2.");
 	eraseCookie("edial_vcs2.login");
+	eraseCookie("edial_vcs2.login_persistent");
 	eraseCookie("ed_client_guid.");
+	eraseCookie("edial_vcs2.remember_pw");
 	eraseCookie("ed_usernum");
 };
 
@@ -340,10 +346,14 @@ function sendRequest(req, callback, context) {
  */
 function schedule_conference() {
 
+	console.log("--schedule_conference");
+
 	var conf_title = document.querySelector(".titleInput").value;
 	var conf_date = document.querySelector(".dateInput").value;
 	var conf_time = document.querySelector(".startTimeInput").value;
 	var conf_duration = document.querySelector(".durationInput").value;
+
+	var hasPassword = document.querySelector(".passwordCheck").checked;
 
 	var timestamp = Date.parse(conf_date + " " + conf_time);
 	var date_start = new Date(timestamp);
@@ -351,7 +361,7 @@ function schedule_conference() {
 	var date_end = new Date(timestamp);
 	date_end.setHours(date_end.getHours() + parseInt(conf_duration));
 
-	var url = host_param + 
+	var url = "http://" + host_param + 
 		"/cgi-bin/vcs_conf_schedule?" + 
 		"conf_type=" + confType + 
 		"&num_occurrences=1" + 
@@ -375,12 +385,28 @@ function schedule_conference() {
 			"&end_sec=" + date_end.getSeconds();
 		}
 		else {
+			var end = document.querySelector(".endDateInput").value;
+			var timestamp = Date.parse(end + " " + "23:59");
+			date_end = new Date(timestamp);
+			
 			url += "&start_hour=0" +
 			"&start_min=0" +
-			"&start_sec=0"; 
+			"&start_sec=0" +
+			"&end_year=" + date_end.getFullYear() +  
+			"&end_month=" + (date_end.getMonth()+1) +
+			"&end_day=" + date_end.getDate() +
+			"&end_hour=" + date_end.getHours() +
+			"&end_min=" + date_end.getMinutes() +
+			"&end_sec=" + date_end.getSeconds(); 
 		}
 
 		url += "&subject=" + conf_title;
+
+		if(hasPassword) {
+			var password = document.querySelector('.passwordInput').value;
+			url += "&web_password=" + password;
+			url += "&audio_password=" + password;
+		}
 
 	sendRequest(url, displayResult, that);
 };
@@ -389,8 +415,10 @@ function schedule_conference() {
  * Log in to ACS
  */
 function login() {
+
+	console.log("--login");
 	
-	var url = host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
+	var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
 
 	sendRequest(url, getGlobalSettings, that);
 };
@@ -399,6 +427,8 @@ function login() {
  * Check the login with the ACS
  */
 function checkLogin(host, login, password, callback, context) {
+
+	console.log("--checkLogin");
 	
 	var url = "http://" + host +"/ics?action=signin&userid=" + encodeURIComponent(login) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
 
@@ -423,18 +453,26 @@ function checkLogin(host, login, password, callback, context) {
  * Log off from ACS
  */
 function logoff() {
-	var url = host_param + "/ics?action=signout";
 
-	sendRequest(url, null, that);
+	console.log("--logoff");
+
+	var url = "http://" + host_param + "/ics?action=signout";
+
+	sendRequest(url, deletePreviouslyUsedCookies, that);
 };
 
 function getGlobalSettings() {
+
+	console.log("--getGlobalSettings");
 	/* __FIX__ Get the timezone */
-	var url = host_param + "/cgi-bin/vcs?settings=global";
+	var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
 	sendRequest(url, onGlobalSettingsReceived, that);
 };
 
-function onGlobalSettingsReceived(xml) {
+function onGlobalSettingsReceived(response) {
+
+	var xml = response.data;
+
 	timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
 
 	schedule_conference();
@@ -443,26 +481,28 @@ function onGlobalSettingsReceived(xml) {
 /**
  * Display result of scheduled conference
  */
-function displayResult(xml) {
+function displayResult(response) {
+
+	console.log("--displayResult");
+
+	var xml = response.data;
+
+	logoff();
 
 	if(xml) {
 
-		// Check if there is an error or not
-
 		var code = xml.getElementsByTagName("message")[0].getAttribute("type");
 		if(code == "error") {
-			if(isNotificationAllowed) {
-				var notification = webkitNotifications.createNotification(
-			        'otc_48.png',  
-			        'OTC Conference Scheduler',  
-			        'Conference can\'t be scheduled. Check your parameters and try again!'
-			    );
+			var reason = xml.getElementsByTagName("message")[0].children[0].innerHTML;
 
-			    notification.show();
-			}
-			else {
-				console.log("Conference can\'t be scheduled. Check your parameters and try again!");
-			}
+		    var err = document.querySelector('.error');
+		    err.innerHTML = reason;
+
+			var error= document.querySelector('#errorModal');
+			error.classList.add('visible');
+
+			var editor= document.querySelector('.editor');
+			editor.classList.add('blur');
 		}
 		else {
 			// Search for "url", first one leader, second participant, behind the /call/
@@ -470,34 +510,44 @@ function displayResult(xml) {
 			var callVanityParticipant = xml.getElementsByTagName("url")[1].childNodes[0].textContent.slice(6);
 			//var vanity = xml.getElementsByTagName("data")[0].childNodes[0].nodeValue;
 
-			var url = "http://" + xml.getElementsByTagName("domain")[0].childNodes[0].nodeValue + 
+			var urlLeader = "http://" + xml.getElementsByTagName("domain")[0].childNodes[0].nodeValue + 
 						xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
 						callVanityLeader;
 
-			document.querySelector(".vanityInput").value = callVanityLeader;
-			document.querySelector(".vanityInputParticipant").value = callVanityParticipant;
-			document.querySelector(".urlInput").value = url;
+			var urlParticipant = "http://" + xml.getElementsByTagName("domain")[0].childNodes[0].nodeValue + 
+						xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
+						callVanityParticipant;
 
-			if(isNotificationAllowed) {
-				var notification = webkitNotifications.createNotification(
-			        'otc_48.png',  
-			        'OTC Conference Scheduler',  
-			        'Your conference has been successfully scheduled! Click here to open the conference'
-			    );
-				
-				notification.onclick = function(x) { 
-					window.focus(); 
-					this.cancel(); 
-					window.open(url,"_blank"); 
-				};
 
-			    notification.show();
+			document.querySelector('.leader').innerHTML = 'Leader code = ' + callVanityLeader;
+			
+			var a=document.createElement("a");
+
+			a.href = urlLeader;
+			a.innerHTML = urlLeader;
+			a.onclick = function() {
+				window.open(urlLeader,"_blank"); 
 			}
-			else {
-				console.log("Your conference has been successfully scheduled! Click here to open the conference");
-				chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
-				chrome.browserAction.setBadgeText("1");
+
+			document.querySelector('.leaderURL').appendChild( a );
+
+			document.querySelector('.participant').innerHTML = 'Participant code = ' + callVanityParticipant;
+			
+			var b=document.createElement("a");
+
+			b.href = urlParticipant;
+			b.innerHTML = urlParticipant;
+			b.onclick = function() {
+				window.open(urlParticipant,"_blank"); 
 			}
+
+			document.querySelector('.participantURL').appendChild( b );
+
+			var ok= document.querySelector('#okModal');
+			ok.classList.add('visible');
+
+			var editor= document.querySelector('.editor');
+			editor.classList.add('blur');
 		}
 	}
 	else {
@@ -515,7 +565,7 @@ function displayResult(xml) {
 		}
 	}
 
-	logoff();
+	
 }
 
 /* ----------------------------------------- ON LOAD ---------------------------------------------- */
@@ -542,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function editConfig() {
 	setTimeout(function() {
-		var login= document.querySelector('.modalDialog');
+		var login= document.querySelector('#openModal');
 		login.classList.add('visible');
 
 		var editor= document.querySelector('.editor');

@@ -15,6 +15,7 @@
 	 	<legend class='title'> OpenTouch LIFT</legend>
 	 	<legend class='firstTitle'>Meeting name</legend>
 	 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
+	 	<br>
 	 	<legend>Meeting Type</legend>
 		<select class="conferenceType" required>
 				<option value="scheduled">Scheduled</option>
@@ -34,15 +35,11 @@
 		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
 		<legend class='durationLabel'>Duration (hours)</legend>
 		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a password</span>
-	 	<input type="password" name="password" class="passwordInput" placeholder="Enter a digit password" value="" disabled>	
+	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a digit password</span>
+	 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
+	 	<span class='digit'> Digit only</span> 	
 		
 		<button type="submit" class="createButton">Schedule this Meeting</button>
-
-		<!-- <legend class='result'>Meeting URL for Leaders</legend>
-		<input id="urlLeaders" type="text" class="urlInput" name="urlLeaders" disabled>
-		<legend class='result'>Meeting URL for Participants</legend>
-		<input id="urlParticipants" type="text" class="urlInput" name="urlParticipants" disabled> -->
 	</form>
 
 	<div id="openModal" class="modalDialog target">
@@ -55,10 +52,30 @@
 		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
 		 	<legend class='popupLegend'>OpenTouch server</legend>
 		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="e.g. vm-155.alcatel-lucent.com" >
-		 	<!-- <legend class='checkResult' id='checkResult'>Not tested...</legend>
-		 	<button type="action" class="checkButton">Check</button>
-		 	 -->
 		 	 <button type="submit" class="loginButton" disabled>Login</button>
+		</div>
+	</div>
+
+	<div id='errorModal' class="modalDialog">
+		<div class='popup'>
+			<h2>ERROR</h2>
+			<p>This meeting can't be scheduled due to the following error:</p>
+			<p class='error'></p>
+			<p>Please check your parameters and try again !</p>
+			<button type="submit" id='closeButton' class="loginButton">Close</button>
+		</div>
+	</div>
+
+	<div id='okModal' class="modalDialog">
+		<div class='popup'>
+			<h2>NEW MEETING CREATED</h2>
+			<p class='okP firstLine'>The meeting has been successfully created</p>
+			<p class='okP'>Please use the following information to join it:</p>
+			<p class='okP leader'></p>
+			<p class='okP leaderURL'></p>
+			<p class='okP participant'></p>
+			<p class='okP participantURL'></p>
+			<button type="action" id='clearButton' class="loginButton">Close</button>
 		</div>
 	</div>
 
