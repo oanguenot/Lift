@@ -353,18 +353,20 @@ function schedule_conference() {
 	var conf_time = document.querySelector(".startTimeInput").value;
 	var conf_duration = document.querySelector(".durationInput").value;
 
-	var hasPassword = document.querySelector(".passwordCheck").checked;
-
 	var timestamp = Date.parse(conf_date + " " + conf_time);
 	var date_start = new Date(timestamp);
 
-	var date_end = new Date(timestamp);
-	date_end.setHours(date_end.getHours() + parseInt(conf_duration));
+	var end = document.querySelector(".endDateInput").value;
+	timestamp = Date.parse(end + " " + "23:59");
+	date_end = new Date(timestamp);
+
+	var day = getDay(moment(date_start).day() + 1);
+
+	var hasPassword = document.querySelector(".passwordCheck").checked;
 
 	var url = "http://" + host_param + 
 		"/cgi-bin/vcs_conf_schedule?" + 
 		"conf_type=" + confType + 
-		"&num_occurrences=1" + 
 		"&no_audio=false" + 
 		"&calling_disabled=false" + 
 		"&create_callback=true" + 
@@ -376,18 +378,53 @@ function schedule_conference() {
 		if(confType == "scheduled") {
 			url += "&start_hour=" + date_start.getHours() +
 			"&start_min=" + date_start.getMinutes() +
-			"&start_sec=" + date_start.getSeconds() + 
-			"&end_year=" + date_end.getFullYear() +  
-			"&end_month=" + (date_end.getMonth()+1) +
-			"&end_day=" + date_end.getDate() +
-			"&end_hour=" + date_end.getHours() +
-			"&end_min=" + date_end.getMinutes() +
-			"&end_sec=" + date_end.getSeconds();
+			"&start_sec=" + date_start.getSeconds() +
+			"&duration_hours=" + conf_duration;
+
+			switch (recurrenceValue) {
+				case 'none':
+					url += "&num_occurrences=1";
+				break;
+				case 'day':
+					url += "&recurrence=D-WE"+
+					"&end_year=" + date_end.getFullYear() +  
+					"&end_month=" + (date_end.getMonth()+1) +
+					"&end_day=" + date_end.getDate() +
+					"&end_hour=" + date_end.getHours() +
+					"&end_min=" + date_end.getMinutes() +
+					"&end_sec=" + date_end.getSeconds(); 
+				break;
+				case 'week':
+					url += "&recurrence=W-1-" + day + 
+					"&end_year=" + date_end.getFullYear() +  
+					"&end_month=" + (date_end.getMonth()+1) +
+					"&end_day=" + date_end.getDate() +
+					"&end_hour=" + date_end.getHours() +
+					"&end_min=" + date_end.getMinutes() +
+					"&end_sec=" + date_end.getSeconds(); 
+				break;
+			}
+
+			if(recurrenceValue === 'none') {
+				 
+			}
+			else {
+
+			}
+
+			//"&end_year=" + date_end.getFullYear() +  
+			//"&end_month=" + (date_end.getMonth()+1) +
+			//"&end_day=" + date_end.getDate() +
+			//"&end_hour=" + date_end.getHours() +
+			//"&end_min=" + date_end.getMinutes() +
+			//"&end_sec=" + date_end.getSeconds();
+
+
+
+
 		}
 		else {
-			var end = document.querySelector(".endDateInput").value;
-			var timestamp = Date.parse(end + " " + "23:59");
-			date_end = new Date(timestamp);
+			
 			
 			url += "&start_hour=0" +
 			"&start_min=0" +
@@ -518,30 +555,38 @@ function displayResult(response) {
 						xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
 						callVanityParticipant;
 
-
+			// Update leader information
 			document.querySelector('.leader').innerHTML = 'Leader code = ' + callVanityLeader;
 			
 			var a=document.createElement("a");
-
 			a.href = urlLeader;
 			a.innerHTML = urlLeader;
 			a.onclick = function() {
 				window.open(urlLeader,"_blank"); 
 			}
 
-			document.querySelector('.leaderURL').appendChild( a );
+			var leaderNode = document.querySelector('.leaderURL');
+			while (leaderNode.firstChild) {
+    			leaderNode.removeChild(leaderNode.firstChild);
+    		}
 
+			leaderNode.appendChild( a );
+			
+			// Update Participant information
 			document.querySelector('.participant').innerHTML = 'Participant code = ' + callVanityParticipant;
 			
 			var b=document.createElement("a");
-
 			b.href = urlParticipant;
 			b.innerHTML = urlParticipant;
 			b.onclick = function() {
 				window.open(urlParticipant,"_blank"); 
 			}
 
-			document.querySelector('.participantURL').appendChild( b );
+			var participantNode = document.querySelector('.participantURL');
+			while (participantNode.firstChild) {
+    			participantNode.removeChild(participantNode.firstChild);
+    		}
+			participantNode.appendChild( b );
 
 			var ok= document.querySelector('#okModal');
 			ok.classList.add('visible');
@@ -599,3 +644,22 @@ function editConfig() {
 		editor.classList.add('blur');
 	}, 1000);
 };
+
+function getDay(day) {
+	switch (day) {
+		case 1:
+			return 'SUN';
+		case 2:
+			return 'MON';
+		case 3:
+			return 'TUE';
+		case 4:
+			return 'WED';
+		case 5:
+			return 'THU';
+		case 6:
+			return 'FRI';
+		case 7:
+			return 'SAT';
+	}
+}
