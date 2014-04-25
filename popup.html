@@ -7,39 +7,45 @@
   	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
 	<link href="screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
+	<script src='spin.js'></script>
 	<script src="moment.js"></script>
 	<script src="popup.js"></script>
 </head>
 <body>
-	<form class='editor'>
+	<form id='editor' class='masked'>
 	 	<legend class='title'> OpenTouch LIFT</legend>
-	 	<legend class='firstTitle'>Meeting name</legend>
-	 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
-	 	<br>
-	 	<legend>Meeting Type</legend>
-		<select class="conferenceType" required>
-				<option value="scheduled">Scheduled</option>
-				<option value="reservationless">Reservationless</option>
-		</select>
-		<legend class='recurrenceLabel'>Meeting Recurrence</legend>
-		<select class="recurrenceType" required>
-			<option value="none">One time event</option>
-			<option value="day">Every week day</option>
-			<option value="week">Every week</option>
-		</select>
-		<legend>Start Date</legend>
-		<input type="date" name="date" class="dateInput" required >
-		<legend class='endDateLabel'>End Date</legend>
-		<input type="date" name="enddate" class="endDateInput dateInput" required disabled>
-		<legend>Hour (locale)</legend>
-		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
-		<legend class='durationLabel'>Duration (hours)</legend>
-		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a digit password</span>
-	 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
-	 	<span class='digit'> Digit only</span> 	
-		
-		<button type="submit" class="createButton">Schedule this Meeting</button>
+		<img class='logo' src='./otc_48.png' width="32" height="32" />
+		<div class='options'>
+			<button type="action" id='cancelBtn' class="actionButton right">Cancel</button>
+			<button type="action" id='scheduleBtn' class='actionButton left'>Schedule</button>
+		</div>
+		<div class='background'>
+		 	<legend class='firstTitle'>Meeting name</legend>
+		 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
+		 	<br>
+		 	<legend>Meeting Type</legend>
+			<select class="conferenceType" required>
+					<option value="scheduled">Scheduled</option>
+					<option value="reservationless">Reservationless</option>
+			</select>
+			<legend class='recurrenceLabel'>Meeting Recurrence</legend>
+			<select class="recurrenceType" required>
+				<option value="none">One time event</option>
+				<option value="day">Every week day</option>
+				<option value="week">Every week</option>
+			</select>
+			<legend>Start Date</legend>
+			<input type="date" name="date" class="dateInput" required >
+			<legend class='endDateLabel'>End Date</legend>
+			<input type="date" name="enddate" class="endDateInput dateInput" required disabled>
+			<legend>Hour (locale)</legend>
+			<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
+			<legend class='durationLabel'>Duration (hours)</legend>
+			<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
+		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a digit password</span>
+		 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
+		 	<span class='digit'> Digit only</span> 	
+		</div>
 	</form>
 
 	<div id="openModal" class="modalDialog target">
@@ -77,6 +83,20 @@
 			<p class='okP participantURL'></p>
 			<button type="action" id='clearButton' class="loginButton">Close</button>
 		</div>
+	</div>
+
+	<div id='list' class='displayed'>
+		<legend class='title'> OpenTouch LIFT</legend>
+		<img class='logo' src='./otc_48.png' width="32" height="32" />
+		<div class='options'>
+			<button type="action" id='createBtn' class="actionButton left">+ Meeting</button>
+			<button type="action" id='settingBtn' class="actionButton right">Settings</button>
+		</div>
+		<div class='spinner' id='spinner'>
+		</div>
+		<ul id='meetings' class='meetings'>
+		</ul>
+
 	</div>
 
 </body>

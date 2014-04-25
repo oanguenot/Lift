@@ -34,8 +34,10 @@ var that = this;
 var isNotificationAllowed = false;
 
 var STATE = 'disconnected';
+var loaded = false;
 
 var startMeeting = new Date();
+var spinner = null;
 
 /**
  * Initialize
@@ -47,7 +49,7 @@ function init() {
 	var loginField = document.querySelector('#login');
 	var passwordField = document.querySelector('#password');
 	var otField = document.querySelector('#ot');
-	var btn = document.querySelector(".createButton");
+	var btn = document.querySelector("#scheduleBtn");
 	var startDate = document.querySelector('.dateInput');
 	var endDate = document.querySelector('.endDateInput');
 	var recurrence = document.querySelector('.recurrenceType');
@@ -56,17 +58,24 @@ function init() {
 	var loginButton = document.querySelector('.loginButton');
 	var closeButton = document.querySelector('#closeButton');
 	var clearButton = document.querySelector('#clearButton');
+
+	var editor = document.querySelector('#editor');
+
+	var meetings = document.querySelector('#list');
+	var createBtn = document.querySelector('#createBtn');
+
+	var cancelBtn = document.querySelector('#cancelBtn');
 	
-	if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
-		isNotificationAllowed = true;
-		console.log("Notification allowed");
-	}
-	else {
-		console.log("request");
-		window.webkitNotifications.requestPermission();
-	}
+	//if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
+	//	isNotificationAllowed = true;
+	//	console.log("Notification allowed");
+	//}
+	//else {
+	//	console.log("request");
+	//	window.webkitNotifications.requestPermission();
+	//}
 	
-	btn.addEventListener("click", function(event){
+	btn.onclick = function(event){
 		event.preventDefault();
 		event.stopPropagation();
 
@@ -87,7 +96,7 @@ function init() {
 				console.log('You have to open the Options for configuring your parameters (user, server).');
 			}
 		}
-	});
+	};
 
 	startDate.onchange = function() {
 		var date = startDate.value;
@@ -129,6 +138,8 @@ function init() {
 
 	
 	loginButton.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		localStorage["lift_login"] = loginField.value;
     	localStorage["lift_password"] = passwordField.value;
     	localStorage["lift_host"] = otField.value;
@@ -161,7 +172,9 @@ function init() {
 		checkLoginButton();
 	};
 
-	closeButton.onclick = function() {
+	closeButton.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		var error= document.querySelector('#errorModal');
 		error.classList.remove('visible');
 
@@ -169,12 +182,32 @@ function init() {
 		editor.classList.remove('blur');
 	};
 
-	clearButton.onclick = function() {
+	clearButton.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		var ok= document.querySelector('#okModal');
 		ok.classList.remove('visible');
 
 		var editor= document.querySelector('.editor');
 		editor.classList.remove('blur');
+	};
+
+	createBtn.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		meetings.classList.remove('displayed');
+		meetings.classList.add('masked');
+		editor.classList.remove('masked');
+		editor.classList.add('displayed');
+	};
+
+	cancelBtn.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		editor.classList.remove('displayed');
+		editor.classList.add('masked');
+		meetings.classList.add('displayed');
+		meetings.classList.remove('masked');
 	};
 
 	document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
@@ -506,13 +539,30 @@ function getGlobalSettings() {
 	sendRequest(url, onGlobalSettingsReceived, that);
 };
 
+function list() {
+
+	displaySpinner();
+
+	var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true";
+	sendRequest(url, displayMeetings, that);
+};
+
+function deleteConference(vanity) {
+	displaySpinner();
+
+	var url = "http://" + host_param + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true";
+	sendRequest(url, displayMeetings, that);
+};
+
 function onGlobalSettingsReceived(response) {
 
 	var xml = response.data;
 
 	timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
 
-	schedule_conference();
+	list();
+
+	//schedule_conference();
 };
 
 /**
@@ -613,27 +663,185 @@ function displayResult(response) {
 	
 }
 
+function displayMeetings(response) {
+
+	var xml = response.data;
+
+	if(xml) {
+		var conference = xml.getElementsByTagName("conference");
+
+		//var number = document.querySelector(".conferenceNumber");
+		//number.innerHTML = "<b>" + conference.length + "</b>";
+
+		// Initialize or delete all conferences displayed in list
+		var list = document.querySelector("#meetings");
+		list.innerHTML = "";
+
+		for(var i=0, len=conference.length;i<len;i++) {
+			displayMeeting(conference[i]);
+		}
+	}
+
+	hideSpinner();
+};
+
+function displayMeeting(xml) {
+
+	var list = document.querySelector("#meetings");
+
+	console.log(xml);
+
+	var typeConf = xml.getAttribute("type");
+	console.log(typeConf);
+
+	var subject = "Unnamed";
+	if(xml.getElementsByTagName("subject")[0]) {
+		subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
+	}
+	var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+	var name = from.substr(0, from.indexOf('@'));
+	var company = from.substring(from.indexOf('@') + 1);
+	var day = xml.getElementsByTagName("day")[0].childNodes[0].nodeValue;
+	var month = xml.getElementsByTagName("month")[0].childNodes[0].nodeValue;
+	var year = xml.getElementsByTagName("year")[0].childNodes[0].nodeValue;
+	var day_end = xml.getElementsByTagName("day")[1].childNodes[0].nodeValue;
+	var month_end = xml.getElementsByTagName("month")[1].childNodes[0].nodeValue;
+	var year_end = xml.getElementsByTagName("year")[1].childNodes[0].nodeValue;
+
+	var hasRecurrence = false;
+	var recurrenceType = "";
+	if(xml.getElementsByTagName("recurrence").length > 0) {
+		hasRecurrence = true;
+		recurrenceType = xml.getElementsByTagName("recurrence")[0].getAttribute('type');
+	}
+	
+	var hour = xml.getElementsByTagName("hour")[0].childNodes[0].nodeValue;
+	if(parseInt(hour) == 0)  {
+		hour = "00";
+	} else if (parseInt(hour) < 10) {
+		hour = "0" + hour;
+	}
+	
+	var minute = xml.getElementsByTagName("minute")[0].childNodes[0].nodeValue;
+	if(parseInt(minute) == 0) {
+		minute = "00";
+	} else if (parseInt(minute) < 10) {
+		minute = "0" + minute;
+	}
+
+	var hour_end = xml.getElementsByTagName("hour")[1].childNodes[0].nodeValue;
+	if(parseInt(hour_end) == 0) {
+		hour_end = "00";
+	} else if(parseInt(hour_end) < 10) {
+		hour_end = "0" + hour_end;
+	}
+	
+	var minute_end = xml.getElementsByTagName("minute")[1].childNodes[0].nodeValue;
+	if(parseInt(minute_end) == 0) {
+		minute_end = "00";
+	} else if(parseInt(minute_end) < 10) {
+		minute_end = "0" + minute_end;
+	}
+
+	var timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
+	var vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
+
+	var state = xml.getElementsByTagName("access")[1].getAttribute("state");
+	var stateDisplayed = capitaliseFirstLetter(state);
+
+	var startDate = moment(year + '-' + month + '-' + day);
+	var endDate = moment(year_end + '-' + month_end + '-' + day_end);
+
+	var startDateString = moment(startDate).format("ddd, MMMM Do");
+	if(hasRecurrence) {
+		switch (recurrenceType) {
+			case "weekly":
+				startDateString = "Each " + moment(startDate).format("dddd") + " since " + moment(startDate).format("MMMM Do");
+				break;
+			case "daily":
+				startDateString = "Every Week Day from " + startDateString;
+				break;
+		}
+	}
+	
+	var item = document.createElement("li");
+	item.className = "buddies-item";
+	item.innerHTML += '<span class="meetingTitle">' + subject + '</span>';
+	item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
+
+
+	item.innerHTML += '<span class="meetingStartDate">'+ startDateString + '</span>';
+	if(typeConf == "scheduled") {
+		item.innerHTML += '<span class="meetingTime">' + hour + ":" + minute + "-" + hour_end + ":" + minute_end + '</span>';
+		item.innerHTML += '<span class="meetingTimezone">' + timezone + '</span>';
+	}
+	else {
+		item.innerHTML += '<span class="meetingTime">' + moment(endDate).format("ddd, MMMM Do") + '</span>';
+		item.innerHTML += '<span class="meetingTimezone">' + "Reservationless" + '</span>';
+	}
+	
+	var removeID = "remove-" + vanity;
+
+	item.innerHTML += '<button type="action" id="' + removeID + '" class="actionButton meetingRemoveButton">Remove</button>';
+
+
+	//item.innerHTML += '<img class="' + vanityCls + '" src="control_close.png" style="bottom: 44px; right: 16px; width: 27x; height: 27px; position:absolute;">';
+
+	//item.setAttribute("data-buddies", "userid");
+	item.addEventListener("click", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var answer = confirm("Join the conference '" + subject + "' ?");
+		if(answer) {
+			join(vanity);
+		}
+	});
+
+
+	//item.innerHTML = participantAdded.nickname;
+	list.appendChild(item);
+
+	remove = document.querySelector("#" + removeID);
+	remove.addEventListener("click", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var answer = confirm("Are you sure you want to remove this Meeting '" + subject + "' ?");
+		if(answer) {
+			deleteConference(vanity);
+		}
+	});
+	
+};
+
+
+
+
 /* ----------------------------------------- ON LOAD ---------------------------------------------- */
 
 /**
  * When page is loaded, start the extension
  */
 document.addEventListener('DOMContentLoaded', function () {
+	if(!loaded) {
+		onLoad();
+		loaded = true;
+	}
+});
 
+function onLoad() {
 	// Delete all previously used cookie
-	deletePreviouslyUsedCookies();	
-  	
+	deletePreviouslyUsedCookies();
+
   	// Initialize the extension
   	init();
 
   	if(login_param && password_param && host_param) {
-			//login();
+			login();
 	}
 	else {
 		editConfig();
 	}
-
-});
+};
 
 function editConfig() {
 	setTimeout(function() {
@@ -663,3 +871,39 @@ function getDay(day) {
 			return 'SAT';
 	}
 }
+
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function displaySpinner() {
+	var opts = {
+		lines: 11, // The number of lines to draw
+		length: 15, // The length of each line
+		width: 9, // The line thickness
+		radius: 28,// The radius of the inner circle
+		corners: 0.9, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#000', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 50, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent
+		left: '50%' // Left position relative to parent
+	};
+	var target = document.getElementById('spinner');
+	spinner = new Spinner(opts).spin(target);
+};
+
+function hideSpinner() {
+	if(spinner) {
+		spinner.stop()
+		spinner = null;	
+	}
+	
+};
