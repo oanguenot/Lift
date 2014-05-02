@@ -367,8 +367,8 @@ function sendRequest(req, callback, errorCallback, context) {
 				errorCallback.apply(context, [null]);
 			}
 		} else {
-			console.log("--- Error");
-			errorCallback.apply(context, [null]);
+			//console.log("--- Status: ", http.status, http.readyState, http);
+			//errorCallback.apply(context, [null]);
 		}
 	};
 
@@ -447,17 +447,12 @@ function schedule_conference() {
 			else {
 
 			}
-
 			//"&end_year=" + date_end.getFullYear() +  
 			//"&end_month=" + (date_end.getMonth()+1) +
 			//"&end_day=" + date_end.getDate() +
 			//"&end_hour=" + date_end.getHours() +
 			//"&end_min=" + date_end.getMinutes() +
 			//"&end_sec=" + date_end.getSeconds();
-
-
-
-
 		}
 		else {
 			
@@ -558,10 +553,23 @@ function getGlobalSettings() {
 
 function list() {
 
+	//Remove default no result view
+	hideEmptyArea();
+
 	displaySpinner();
 
 	var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true";
 	sendRequest(url, displayMeetings, that);
+};
+
+function hideEmptyArea() {
+	var empty = document.querySelector('#empty');
+	empty.classList.add('masked');
+};
+
+function showEmptyArea() {
+	var empty = document.querySelector('#empty');
+	empty.classList.remove('masked');
 };
 
 function deleteConference(vanity) {
@@ -685,15 +693,18 @@ function displayMeetings(response) {
 	if(xml) {
 		var conference = xml.getElementsByTagName("conference");
 
-		//var number = document.querySelector(".conferenceNumber");
-		//number.innerHTML = "<b>" + conference.length + "</b>";
-
 		// Initialize or delete all conferences displayed in list
 		var list = document.querySelector("#meetings");
 		list.innerHTML = "";
 
-		for(var i=0, len=conference.length;i<len;i++) {
-			displayMeeting(conference[i]);
+		var len = conference.length;
+		if(len > 0) {
+			for(var i=0, len=conference.length;i<len;i++) {
+				displayMeeting(conference[i]);
+			}	
+		}
+		else {
+			showEmptyArea();		
 		}
 	}
 
