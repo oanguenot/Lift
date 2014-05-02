@@ -46,18 +46,17 @@ function init() {
 
 	console.log("--init");
 
-	var loginField = document.querySelector('#login');
-	var passwordField = document.querySelector('#password');
-	var otField = document.querySelector('#ot');
 	var btn = document.querySelector("#scheduleBtn");
 	var startDate = document.querySelector('.dateInput');
 	var endDate = document.querySelector('.endDateInput');
 	var recurrence = document.querySelector('.recurrenceType');
 	var confTypeElt = document.querySelector(".conferenceType");
 	var confPassword = document.querySelector('.passwordCheck');
-	var loginButton = document.querySelector('.loginButton');
+	
 	var closeButton = document.querySelector('#closeButton');
 	var clearButton = document.querySelector('#clearButton');
+	var closeLoginButton = document.querySelector('#closeLoginButton');
+	var settingBtn = document.querySelector('#settingBtn');
 
 	var editor = document.querySelector('#editor');
 
@@ -65,6 +64,8 @@ function init() {
 	var createBtn = document.querySelector('#createBtn');
 
 	var cancelBtn = document.querySelector('#cancelBtn');
+
+	
 	
 	//if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
 	//	isNotificationAllowed = true;
@@ -135,22 +136,7 @@ function init() {
 			document.querySelector('.passwordInput').value = '';
 		}
 	};
-
 	
-	loginButton.onclick = function(event) {
-		event.preventDefault();
-		event.stopPropagation();
-		localStorage["lift_login"] = loginField.value;
-    	localStorage["lift_password"] = passwordField.value;
-    	localStorage["lift_host"] = otField.value;
-
-    	var modal= document.querySelector('#openModal');
-		modal.classList.remove('visible');
-
-		var editor= document.querySelector('.editor');
-		editor.classList.remove('blur');
-	};
-
 	checkLoginButton = function() {
 		if(loginField.value.length && passwordField.value.length && otField.value.length) {
 			loginButton.disabled = false;
@@ -160,18 +146,6 @@ function init() {
 		}
 	};
 	
-	login.onkeyup = function() {
-		checkLoginButton();
-	};
-
-	password.onkeyup = function() {
-		checkLoginButton();
-	};
-
-	ot.onkeyup = function() {
-		checkLoginButton();
-	};
-
 	closeButton.onclick = function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -209,6 +183,26 @@ function init() {
 		meetings.classList.add('displayed');
 		meetings.classList.remove('masked');
 	};
+
+	closeLoginButton.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var loginError= document.querySelector('#errorLogin');
+		loginError.classList.add('masked');
+		loginError.classList.remove('visible');
+
+		var list= document.querySelector('#list');
+		list.classList.remove('blur');
+	};
+
+	settingBtn.onclick = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		displayConfig();
+
+	};
+
+
 
 	document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
 	/* __FIX__ Use toLocaleTimeString() instead of toJSONString() to avoid issue with GMT+xxx */
@@ -329,7 +323,7 @@ function deletePreviouslyUsedCookies() {
 /**
  * Send an ajax request to ACS
  */
-function sendRequest(req, callback, context) {
+function sendRequest(req, callback, errorCallback, context) {
 
 	req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
@@ -343,29 +337,38 @@ function sendRequest(req, callback, context) {
 
 	http.onreadystatechange = function (arg) {
 		if (http.readyState == 4) {
-			var res = null;
+			if (http.status === 200) {  
+				var res = null;
 
-			var headers = http.getAllResponseHeaders();
+				var headers = http.getAllResponseHeaders();
 
-			if(http.responseXML) {
-				res = http.responseXML;
-				console.log(http);
+				if(http.responseXML) {
+					res = http.responseXML;
+					console.log(http);
+				}
+				else if(http.responseText) {
+					res = http.responseText;
+					console.log(http);
+				}
+				
+				if(callback) {
+
+					var msg = {
+						headers: headers,
+						data: res
+					};
+
+					//callback.apply(context, [res]);
+					callback.apply(context, [msg])
+				}
 			}
-			else if(http.responseText) {
-				res = http.responseText;
-				console.log(http);
+			else {
+				console.log("--- Error");
+				errorCallback.apply(context, [null]);
 			}
-			
-			if(callback) {
-
-				var msg = {
-					headers: headers,
-					data: res
-				};
-
-				//callback.apply(context, [res]);
-				callback.apply(context, [msg])
-			}
+		} else {
+			console.log("--- Error");
+			errorCallback.apply(context, [null]);
 		}
 	};
 
@@ -490,7 +493,21 @@ function login() {
 	
 	var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
 
-	sendRequest(url, getGlobalSettings, that);
+	sendRequest(url, getGlobalSettings, errorLogin, that);
+};
+
+function errorLogin() {
+	setTimeout(function() {
+
+		createBtn.disabled = true;
+
+		var loginError= document.querySelector('#errorLogin');
+		loginError.classList.remove('masked');
+		loginError.classList.add('visible');
+
+		var list= document.querySelector('#list');
+		list.classList.add('blur');
+	}, 500);
 };
 
 /**
@@ -659,8 +676,6 @@ function displayResult(response) {
 			console.log("Conference can\'t be scheduled. Check your parameters and try again!");
 		}
 	}
-
-	
 }
 
 function displayMeetings(response) {
@@ -839,19 +854,11 @@ function onLoad() {
 			login();
 	}
 	else {
-		editConfig();
+		displayConfig();
 	}
 };
 
-function editConfig() {
-	setTimeout(function() {
-		var login= document.querySelector('#openModal');
-		login.classList.add('visible');
 
-		var editor= document.querySelector('.editor');
-		editor.classList.add('blur');
-	}, 1000);
-};
 
 function getDay(day) {
 	switch (day) {

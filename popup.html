@@ -9,6 +9,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
 	<script src='spin.js'></script>
 	<script src="moment.js"></script>
+	<script src="config.js"></script>
 	<script src="popup.js"></script>
 </head>
 <body>
@@ -49,16 +50,18 @@
 	</form>
 
 	<div id="openModal" class="modalDialog target">
-		<div class='popup'>
-			<h2>LIFT SIGN-IN</h2>
-			<p>Please sign in with your OpenTouch credentials to use LIFT</p>
+		<div class='popupSettings'>
+			<h2>SETTINGS</h2>
+			<p>Please enter your OpenTouch credentials to use LIFT</p>
 			<legend class='popupLegend'>Login</legend>
 		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="e.g. jsmith" autofocus>
 		 	<legend class='popupLegend'>Password</legend>
 		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
 		 	<legend class='popupLegend'>OpenTouch server</legend>
 		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="e.g. vm-155.alcatel-lucent.com" >
-		 	 <button type="submit" class="loginButton" disabled>Login</button>
+		 	 <button type="action" class="cancelSettingButton">Cancel</button>
+		 	 <button type="action" class="loginButton">Save</button>
+		 	 
 		</div>
 	</div>
 
@@ -72,8 +75,18 @@
 		</div>
 	</div>
 
-	<div id='okModal' class="modalDialog">
+	<div id='errorLogin' class="modalDialog masked">
 		<div class='popup'>
+			<h2>ERROR</h2>
+			<p>Lift can't connect to the OpenTouch server.</p>
+			<p class='error'></p>
+			<p>Please check your parameters and try again !</p>
+			<button type="submit" id='closeLoginButton' class="loginButton">Close</button>
+		</div>
+	</div>
+
+	<div id='okModal' class="modalDialog">
+		<div class='popupSettings'>
 			<h2>NEW MEETING CREATED</h2>
 			<p class='okP firstLine'>The meeting has been successfully created</p>
 			<p class='okP'>Please use the following information to join it:</p>
@@ -93,6 +106,11 @@
 			<button type="action" id='settingBtn' class="actionButton right">Settings</button>
 		</div>
 		<div class='spinner' id='spinner'>
+		</div>
+		<div class='empty' id='empty'>
+			<img class='emptyLogo' width='80' height='80' src='./otc_128.png' />
+			<div class='emptyTitle'>No Meeting</div>
+			<div class='emptyMessage'>List of Meetings scheduled appears here</div>
 		</div>
 		<ul id='meetings' class='meetings'>
 		</ul>
