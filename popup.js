@@ -198,7 +198,7 @@ function init() {
 	settingBtn.onclick = function(event) {
 		event.preventDefault();
 		event.stopPropagation();
-		displayConfig();
+		displayConfig(onLoad, this);
 
 	};
 
@@ -238,142 +238,11 @@ function updateGUI() {
 	}
 }
 
-/* ------------------------------------------ Cookie management ------------------------------------- */
 
-/**
- * create cookie
- */
-function createCookie(name,value,days) {
-	try {
-		var expires;
-		if (days) {
-			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
-			expires = "; expires="+date.toGMTString();
-		}
-		else {
-			expires = "";
-		}
-		document.cookie = name+"="+value+expires+"; path=/";
-	} catch (err) {
-		console.log("error create cookie:" + err);
-	}
-};
-
-/**
- * read cookie
- */
-function readCookie(name) {
-	try {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') {
-				c = c.substring(1,c.length);
-			}
-			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length,c.length);
-			}
-		}
-		return null;
-	} catch (err) {
-		console.log("error read cookie:" + err);
-	}
-};
-
-/**
- * delete cookie
- */
-function eraseCookie(name) {
-	try {
-		var value = readCookie(name);
-		if (value) {
-			createCookie(name, value, -1);
-			return true;
-		}
-		return false;
-	} catch (err) {
-		console.log("error erase cookie:" + err);
-	}
-};
-
-/**
- * delete all created cookies
- */
-function deletePreviouslyUsedCookies() {
-
-	console.log("--deletePreviouslyUsedCookies");
-
-	eraseCookie("AlcUserId");
-	eraseCookie("OTUCSSO");
-	eraseCookie("ed_client_tag.");
-	eraseCookie("ics.login.0.");
-	eraseCookie("ics.login.1.");
-	eraseCookie("ics.login.2.");
-	eraseCookie("edial_vcs2.login");
-	eraseCookie("edial_vcs2.login_persistent");
-	eraseCookie("ed_client_guid.");
-	eraseCookie("edial_vcs2.remember_pw");
-	eraseCookie("ed_usernum");
-};
 
 /* ------------------------------------- Ajax request ----------------------------------------------- */
 
-/**
- * Send an ajax request to ACS
- */
-function sendRequest(req, callback, errorCallback, context) {
 
-	req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
-
-	var http = new XMLHttpRequest;
-
-	var parts = req.split('?');
-
-	http.open("POST", parts[0], true);
-	http.setRequestHeader("Cache-Control", "no-cache");
-	http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-	http.onreadystatechange = function (arg) {
-		if (http.readyState == 4) {
-			if (http.status === 200) {  
-				var res = null;
-
-				var headers = http.getAllResponseHeaders();
-
-				if(http.responseXML) {
-					res = http.responseXML;
-					console.log(http);
-				}
-				else if(http.responseText) {
-					res = http.responseText;
-					console.log(http);
-				}
-				
-				if(callback) {
-
-					var msg = {
-						headers: headers,
-						data: res
-					};
-
-					//callback.apply(context, [res]);
-					callback.apply(context, [msg])
-				}
-			}
-			else {
-				console.log("--- Error");
-				errorCallback.apply(context, [null]);
-			}
-		} else {
-			//console.log("--- Status: ", http.status, http.readyState, http);
-			//errorCallback.apply(context, [null]);
-		}
-	};
-
-	http.send(parts[1]);
-};
 
 /* ----------------------------------------- ACS functions used --------------------------------------- */
 
@@ -479,69 +348,8 @@ function schedule_conference() {
 	sendRequest(url, displayResult, that);
 };
 
-/**
- * Log in to ACS
- */
-function login() {
 
-	console.log("--login");
-	
-	var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
 
-	sendRequest(url, getGlobalSettings, errorLogin, that);
-};
-
-function errorLogin() {
-	setTimeout(function() {
-
-		createBtn.disabled = true;
-
-		var loginError= document.querySelector('#errorLogin');
-		loginError.classList.remove('masked');
-		loginError.classList.add('visible');
-
-		var list= document.querySelector('#list');
-		list.classList.add('blur');
-	}, 500);
-};
-
-/**
- * Check the login with the ACS
- */
-function checkLogin(host, login, password, callback, context) {
-
-	console.log("--checkLogin");
-	
-	var url = "http://" + host +"/ics?action=signin&userid=" + encodeURIComponent(login) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
-
-	sendRequest(url, function(msg) {
-
-		if(!msg.headers && msg.headers.length > 0) {
-			if(msg.data && msg.data.length > 0) {
-				callback.call(this, true);
-			}
-			else {
-				callback.call(this, false);
-			}
-		}
-		else {
-			callback.call(this, false);
-		}
-
-	}, this);
-};
-
-/**
- * Log off from ACS
- */
-function logoff() {
-
-	console.log("--logoff");
-
-	var url = "http://" + host_param + "/ics?action=signout";
-
-	sendRequest(url, deletePreviouslyUsedCookies, that);
-};
 
 function getGlobalSettings() {
 
@@ -599,7 +407,7 @@ function displayResult(response) {
 
 	var xml = response.data;
 
-	logoff();
+	//logoff();
 
 	if(xml) {
 
@@ -849,27 +657,65 @@ function displayMeeting(xml) {
  */
 document.addEventListener('DOMContentLoaded', function () {
 	if(!loaded) {
-		onLoad();
+		onInitialize();
 		loaded = true;
 	}
 });
 
-function onLoad() {
-	// Delete all previously used cookie
-	deletePreviouslyUsedCookies();
+document.addEventListener("unload", function (event) {
+   logoff();
+}, true);
 
-  	// Initialize the extension
+function onInitialize() {
+	// Initialize the extension
   	init();
+  	// Load the extension
+  	onLoad();
+} 
 
-  	if(login_param && password_param && host_param) {
+function onLoad() {
+	//Signout from previous session
+	erasePreviousUserData();
+};
+
+function erasePreviousUserData() {
+
+	logoff()
+	.then(function() {
+		return(deletePreviouslyUsedCookies());
+	}, function() {
+
+	})
+	.then(function() {
+		return(login());
+	}, function() {
+
+	});
+		
+};
+
+function tryToLog() {
+	if(login_param && password_param && host_param) {
 			login();
 	}
 	else {
-		displayConfig();
+		displayConfig(onLoad, this);
 	}
 };
 
+function errorLogin() {
+	setTimeout(function() {
 
+		createBtn.disabled = true;
+
+		var loginError= document.querySelector('#errorLogin');
+		loginError.classList.remove('masked');
+		loginError.classList.add('visible');
+
+		var list= document.querySelector('#list');
+		list.classList.add('blur');
+	}, 500);
+};
 
 function getDay(day) {
 	switch (day) {

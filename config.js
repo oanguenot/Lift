@@ -1,4 +1,4 @@
-function displayConfig() {
+function displayConfig(callback, context) {
 	var login= document.querySelector('#openModal');
 	login.classList.add('visible');
 
@@ -29,8 +29,12 @@ function displayConfig() {
 		localStorage["lift_login"] = loginField.value;
     	localStorage["lift_password"] = passwordField.value;
     	localStorage["lift_host"] = otField.value;
+    	login_param = loginField.value;
+    	password_param = passwordField.value;
+    	host_param = otField.value;
 
     	hideConfig();
+    	callback.call(context);
 	};
 };
 
