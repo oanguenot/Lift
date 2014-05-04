@@ -7,8 +7,8 @@
   	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
 	<link href="screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
-	<script src='spin.js'></script>
-	<script src="moment.js"></script>
+	<script src='./vendor/spin.js'></script>
+	<script src="./vendor/moment.js"></script>
 	<script src="cookies.js"></script>
 	<script src="ajax.js"></script>
 	<script src="config.js"></script>
@@ -89,13 +89,13 @@
 
 	<div id='okModal' class="modalDialog">
 		<div class='popupSettings'>
-			<h2>NEW MEETING CREATED</h2>
-			<p class='okP firstLine'>The meeting has been successfully created</p>
-			<p class='okP'>Please use the following information to join it:</p>
+			<h2>MEETING ACCESS</h2>
+			<p class='okP firstLine'>Here are the access code for this meeting</p>
 			<p class='okP leader'></p>
 			<p class='okP leaderURL'></p>
 			<p class='okP participant'></p>
 			<p class='okP participantURL'></p>
+			<p class="'okP"></p>
 			<button type="action" id='clearButton' class="loginButton">Close</button>
 		</div>
 	</div>
@@ -114,7 +114,7 @@
 			<div class='emptyTitle'>No Meeting</div>
 			<div class='emptyMessage'>List of Meetings scheduled appears here</div>
 		</div>
-		<ul id='meetings' class='meetings'>
+		<ul id='meetings' class='meetings scrollbars'>
 		</ul>
 
 	</div>

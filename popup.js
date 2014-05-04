@@ -39,6 +39,8 @@ var loaded = false;
 var startMeeting = new Date();
 var spinner = null;
 
+var meetingsList = null;
+
 /**
  * Initialize
  */
@@ -54,7 +56,7 @@ function init() {
 	var confPassword = document.querySelector('.passwordCheck');
 	
 	var closeButton = document.querySelector('#closeButton');
-	var clearButton = document.querySelector('#clearButton');
+	
 	var closeLoginButton = document.querySelector('#closeLoginButton');
 	var settingBtn = document.querySelector('#settingBtn');
 
@@ -65,38 +67,11 @@ function init() {
 
 	var cancelBtn = document.querySelector('#cancelBtn');
 
-	
-	
-	//if ( (window.webkitNotifications) && (window.webkitNotifications.checkPermission() == 0) ) {
-	//	isNotificationAllowed = true;
-	//	console.log("Notification allowed");
-	//}
-	//else {
-	//	console.log("request");
-	//	window.webkitNotifications.requestPermission();
-	//}
-	
 	btn.onclick = function(event){
 		event.preventDefault();
 		event.stopPropagation();
 
-		if(login_param && password_param && host_param) {
-			login();
-		}
-		else {
-			if(isNotificationAllowed) {
-				var notification = webkitNotifications.createNotification(
-			        'otc_48.png',  
-			        'OTC Conference Scheduler',  
-			        'You have to open the Options for configuring your parameters (user, server).'
-			    );
-
-			    notification.show();
-			}
-			else {
-				console.log('You have to open the Options for configuring your parameters (user, server).');
-			}
-		}
+		schedule();
 	};
 
 	startDate.onchange = function() {
@@ -151,16 +126,6 @@ function init() {
 		event.stopPropagation();
 		var error= document.querySelector('#errorModal');
 		error.classList.remove('visible');
-
-		var editor= document.querySelector('.editor');
-		editor.classList.remove('blur');
-	};
-
-	clearButton.onclick = function(event) {
-		event.preventDefault();
-		event.stopPropagation();
-		var ok= document.querySelector('#okModal');
-		ok.classList.remove('visible');
 
 		var editor= document.querySelector('.editor');
 		editor.classList.remove('blur');
@@ -249,9 +214,9 @@ function updateGUI() {
 /**
  * Schedue a conference
  */
-function schedule_conference() {
+function schedule() {
 
-	console.log("--schedule_conference");
+	console.log("--schedule");
 
 	var conf_title = document.querySelector(".titleInput").value;
 	var conf_date = document.querySelector(".dateInput").value;
@@ -265,109 +230,30 @@ function schedule_conference() {
 	timestamp = Date.parse(end + " " + "23:59");
 	date_end = new Date(timestamp);
 
-	var day = getDay(moment(date_start).day() + 1);
-
 	var hasPassword = document.querySelector(".passwordCheck").checked;
 
-	var url = "http://" + host_param + 
-		"/cgi-bin/vcs_conf_schedule?" + 
-		"conf_type=" + confType + 
-		"&no_audio=false" + 
-		"&calling_disabled=false" + 
-		"&create_callback=true" + 
-		"&timezone=" + timezone +  
-		"&start_year=" + date_start.getFullYear() + 
-		"&start_month=" + (date_start.getMonth()+1) +
-		"&start_day=" + date_start.getDate();
-	
-		if(confType == "scheduled") {
-			url += "&start_hour=" + date_start.getHours() +
-			"&start_min=" + date_start.getMinutes() +
-			"&start_sec=" + date_start.getSeconds() +
-			"&duration_hours=" + conf_duration;
+	var password = document.querySelector('.passwordInput').value;
 
-			switch (recurrenceValue) {
-				case 'none':
-					url += "&num_occurrences=1";
-				break;
-				case 'day':
-					url += "&recurrence=D-WE"+
-					"&end_year=" + date_end.getFullYear() +  
-					"&end_month=" + (date_end.getMonth()+1) +
-					"&end_day=" + date_end.getDate() +
-					"&end_hour=" + date_end.getHours() +
-					"&end_min=" + date_end.getMinutes() +
-					"&end_sec=" + date_end.getSeconds(); 
-				break;
-				case 'week':
-					url += "&recurrence=W-1-" + day + 
-					"&end_year=" + date_end.getFullYear() +  
-					"&end_month=" + (date_end.getMonth()+1) +
-					"&end_day=" + date_end.getDate() +
-					"&end_hour=" + date_end.getHours() +
-					"&end_min=" + date_end.getMinutes() +
-					"&end_sec=" + date_end.getSeconds(); 
-				break;
-			}
+	if(!hasPassword) {
+		password = null;
+	}
 
-			if(recurrenceValue === 'none') {
-				 
-			}
-			else {
+	var meeting = {
+		type: confType,
+		title: conf_title,
+		timezone: timezone,
+		start: date_start,
+		end: date_end,
+		duration: conf_duration,
+		recurrence: recurrenceValue,
+		password: password
+	};
 
-			}
-			//"&end_year=" + date_end.getFullYear() +  
-			//"&end_month=" + (date_end.getMonth()+1) +
-			//"&end_day=" + date_end.getDate() +
-			//"&end_hour=" + date_end.getHours() +
-			//"&end_min=" + date_end.getMinutes() +
-			//"&end_sec=" + date_end.getSeconds();
-		}
-		else {
-			
-			
-			url += "&start_hour=0" +
-			"&start_min=0" +
-			"&start_sec=0" +
-			"&end_year=" + date_end.getFullYear() +  
-			"&end_month=" + (date_end.getMonth()+1) +
-			"&end_day=" + date_end.getDate() +
-			"&end_hour=" + date_end.getHours() +
-			"&end_min=" + date_end.getMinutes() +
-			"&end_sec=" + date_end.getSeconds(); 
-		}
+	scheduleMeeting(meeting).then(function(jsonResponse) {
+		displayResult(jsonResponse);
+	}, function() {
 
-		url += "&subject=" + conf_title;
-
-		if(hasPassword) {
-			var password = document.querySelector('.passwordInput').value;
-			url += "&web_password=" + password;
-			url += "&audio_password=" + password;
-		}
-
-	sendRequest(url, displayResult, that);
-};
-
-
-
-
-function getGlobalSettings() {
-
-	console.log("--getGlobalSettings");
-	/* __FIX__ Get the timezone */
-	var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
-	sendRequest(url, onGlobalSettingsReceived, that);
-};
-
-function list() {
-
-	//Remove default no result view
-	hideEmptyArea();
-
-	displaySpinner();
-
-	var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true";
-	sendRequest(url, displayMeetings, that);
+	});
 };
 
 function hideEmptyArea() {
@@ -380,23 +266,9 @@ function showEmptyArea() {
 	empty.classList.remove('masked');
 };
 
-function deleteConference(vanity) {
-	displaySpinner();
 
-	var url = "http://" + host_param + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true";
-	sendRequest(url, displayMeetings, that);
-};
 
-function onGlobalSettingsReceived(response) {
 
-	var xml = response.data;
-
-	timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
-
-	list();
-
-	//schedule_conference();
-};
 
 /**
  * Display result of scheduled conference
@@ -406,8 +278,6 @@ function displayResult(response) {
 	console.log("--displayResult");
 
 	var xml = response.data;
-
-	//logoff();
 
 	if(xml) {
 
@@ -477,20 +347,22 @@ function displayResult(response) {
 			var editor= document.querySelector('.editor');
 			editor.classList.add('blur');
 		}
+
+		var clearButton = document.querySelector('#clearButton');
+		clearButton.onclick = function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var ok= document.querySelector('#okModal');
+			ok.classList.remove('visible');
+			var editor= document.querySelector('.editor');
+			editor.classList.remove('blur');
+			clearButton.onclick = null;
+			clearButton = null;
+		};
+
 	}
 	else {
-		if(isNotificationAllowed) {
-			var notification = webkitNotifications.createNotification(
-		        'otc_48.png',  
-		        'OTC Conference Scheduler',  
-		        'Conference can\'t be scheduled. Check your parameters and try again!'
-		    );
-
-		    notification.show();
-		}
-		else {
-			console.log("Conference can\'t be scheduled. Check your parameters and try again!");
-		}
+		console.log("Conference can\'t be scheduled. Check your parameters and try again!");
 	}
 }
 
@@ -504,6 +376,7 @@ function displayMeetings(response) {
 		// Initialize or delete all conferences displayed in list
 		var list = document.querySelector("#meetings");
 		list.innerHTML = "";
+		meetingsList = {};
 
 		var len = conference.length;
 		if(len > 0) {
@@ -516,7 +389,6 @@ function displayMeetings(response) {
 		}
 	}
 
-	hideSpinner();
 };
 
 function displayMeeting(xml) {
@@ -603,6 +475,10 @@ function displayMeeting(xml) {
 	item.innerHTML += '<span class="meetingTitle">' + subject + '</span>';
 	item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
 
+	var documents = xml.getElementsByTagName('document');
+	if (documents && documents.length > 0) {
+		item.innerHTML += '<img class="meetingFiles" src="./files.png" width="16" height="16" alt="coucou" title="This meeting contains file(s)" />';
+	}
 
 	item.innerHTML += '<span class="meetingStartDate">'+ startDateString + '</span>';
 	if(typeConf == "scheduled") {
@@ -611,17 +487,38 @@ function displayMeeting(xml) {
 	}
 	else {
 		item.innerHTML += '<span class="meetingTime">' + moment(endDate).format("ddd, MMMM Do") + '</span>';
-		item.innerHTML += '<span class="meetingTimezone">' + "Reservationless" + '</span>';
+		var days = endDate.utc().diff(startDate, 'days');
+		if(days > 30) {
+			item.innerHTML += '<span class="meetingTimezone">' + "More than 1 month left" + '</span>';
+		}
+		else {
+			if(days > 1) {
+				item.innerHTML += '<span class="meetingTimezone">' + days + " days left" + '</span>';
+			}
+			else {
+				if(days == 1) {
+					item.innerHTML += '<span class="meetingTimezone">' + days + " day left" + '</span>';
+				}
+				else {
+					item.innerHTML += '<span class="meetingTimezone">' + "Expires today" + '</span>';
+				}
+			}
+		}
 	}
 	
 	var removeID = "remove-" + vanity;
+	var editID = "edit-" + vanity;
+	var detailsID = "details-" + vanity;
 
-	item.innerHTML += '<button type="action" id="' + removeID + '" class="actionButton meetingRemoveButton">Remove</button>';
+	item.innerHTML += '<button type="action" id="' + detailsID + '" class="meetingActionButton meetingDetailsButton">Details</button>';
+	item.innerHTML += '<button type="action" id="' + editID + '" class="meetingActionButton meetingEditButton">Edit</button>';
+	item.innerHTML += '<button type="action" id="' + removeID + '" class="meetingActionButton meetingRemoveButton">Remove</button>';
 
+	var callVanityLeader = xml.getElementsByTagName("access")[1].childNodes[1].textContent;
+	var callVanityParticipant = xml.getElementsByTagName("access")[2].childNodes[1].textContent;
 
-	//item.innerHTML += '<img class="' + vanityCls + '" src="control_close.png" style="bottom: 44px; right: 16px; width: 27x; height: 27px; position:absolute;">';
-
-	//item.setAttribute("data-buddies", "userid");
+	var path = xml.getElementsByTagName("join_url_root")[0].textContent;
+	
 	item.addEventListener("click", function(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -631,18 +528,86 @@ function displayMeeting(xml) {
 		}
 	});
 
-
-	//item.innerHTML = participantAdded.nickname;
 	list.appendChild(item);
 
-	remove = document.querySelector("#" + removeID);
+	var leaderURL= "https://" + host_param + path + callVanityLeader;
+	var participantURL= "https://" + host_param + path + callVanityParticipant;
+
+	var remove = document.querySelector("#" + removeID);
 	remove.addEventListener("click", function(event) {
 		event.preventDefault();
 		event.stopPropagation();
 		var answer = confirm("Are you sure you want to remove this Meeting '" + subject + "' ?");
 		if(answer) {
-			deleteConference(vanity);
+			displaySpinner();
+			deleteMeeting(host_param, vanity).then(function(jsonResponse) {
+				// Display meetings
+				displayMeetings(jsonResponse);
+				// Hide Spinner
+				hideSpinner();
+			}, function() {
+
+			});
 		}
+	});
+
+	var edit = document.querySelector("#" + editID);
+	edit.addEventListener("click", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		
+
+	});
+
+	var details = document.querySelector("#" + detailsID);
+	details.addEventListener("click", function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		document.querySelector('#okModal').classList.add('visible');
+		document.querySelector('#list').classList.add('blur');
+		var clearButton = document.querySelector('#clearButton');
+
+		// Update leader information
+		document.querySelector('.leader').innerHTML = 'Leader code = ' + callVanityLeader;
+		
+		var a=document.createElement("a");
+		a.href = leaderURL;
+		a.innerHTML = leaderURL;
+		a.onclick = function() {
+			window.open(leaderURL,"_blank"); 
+		}
+
+		var leaderNode = document.querySelector('.leaderURL');
+		while (leaderNode.firstChild) {
+			leaderNode.removeChild(leaderNode.firstChild);
+		}
+
+		leaderNode.appendChild( a );
+		
+		// Update Participant information
+		document.querySelector('.participant').innerHTML = 'Participant code = ' + callVanityParticipant;
+		
+		var b=document.createElement("a");
+		b.href = participantURL;
+		b.innerHTML = participantURL;
+		b.onclick = function() {
+			window.open(participantURL,"_blank"); 
+		}
+
+		var participantNode = document.querySelector('.participantURL');
+		while (participantNode.firstChild) {
+			participantNode.removeChild(participantNode.firstChild);
+		}
+		participantNode.appendChild( b );
+
+		clearButton.onclick = function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			document.querySelector('#okModal').classList.remove('visible');
+			document.querySelector('#list').classList.remove('blur');
+			clearButton.onclick = null;
+			clearButton = null;
+		};
 	});
 	
 };
@@ -679,34 +644,66 @@ function onLoad() {
 };
 
 function erasePreviousUserData() {
-
+	// Logoff from previous session if exits
 	logoff()
 	.then(function() {
-		return(deletePreviouslyUsedCookies());
+		// Delete previous used cookies if exist
+		return(deletePreviouslyUsedCookies())
+		.then(function() {
+			// Login
+			return(login(host_param, login_param, password_param))
+			.then(function() {
+				// Get the global settings (Timezone)
+				return(getGlobalSettings())
+				.then(function(jsonResponse) {
+					var settings = jsonResponse.data;
+					timezone = settings.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
+					console.log("Timezone:", timezone);
+					// Remove default no result view
+					hideEmptyArea();
+					// Display Spinner
+					displaySpinner();
+					// Get the list of Meetings
+					return(getListofMeetings())
+					.then(function(jsonResponse) {
+						// Display meetings
+						displayMeetings(jsonResponse);
+						// Hide Spinner
+						hideSpinner();
+						// Enable create new meeting button
+						enableCreateNewMeetingButton();
+					}, function() {
+						displayErrorLogin();
+						// Hide Spinner
+						hideSpinner();
+						// Remove default no result view
+						showEmptyArea();
+					});
+				}, function() {
+					displayErrorLogin();
+				});
+			}, function() {
+				displayErrorLogin();
+			});
+		}, function() {
+		})
 	}, function() {
-
-	})
-	.then(function() {
-		return(login());
-	}, function() {
-
+		displayErrorLogin();
 	});
-		
 };
 
-function tryToLog() {
-	if(login_param && password_param && host_param) {
-			login();
-	}
-	else {
-		displayConfig(onLoad, this);
-	}
+function enableCreateNewMeetingButton() {
+	createBtn.disabled = false;
 };
 
-function errorLogin() {
+function disableCreateNewMeetingButton() {
+	createBtn.disabled = true;
+};
+
+function displayErrorLogin() {
 	setTimeout(function() {
 
-		createBtn.disabled = true;
+		disableCreateNewMeetingButton();
 
 		var loginError= document.querySelector('#errorLogin');
 		loginError.classList.remove('masked');

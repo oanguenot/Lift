@@ -1,8 +1,17 @@
 /**
+ * Manage request thru the ACS
+ * Use Promise to deal with asynchrounous call
+ */
+
+
+/**
  * Send an ajax request to ACS
  * Using promise
+ * @param {String} req The request URL
+ * @private
  */
-function request(req) {
+
+function _request(req) {
   	// Return a new promise.
   	return new Promise(function(resolve, reject) {
 
@@ -25,11 +34,9 @@ function request(req) {
 
 					if(http.responseXML) {
 						res = http.responseXML;
-						console.log(http);
 					}
 					else if(http.responseText) {
 						res = http.responseText;
-						console.log(http);
 					}
 					
 					var msg = {
@@ -37,17 +44,14 @@ function request(req) {
 						data: res
 					};
 
-					//callback.apply(context, [res]);
-					resolve([msg]);
+					resolve(msg);
 				}
 				else {
 					console.log("--- Error", http);
 					reject([null]);
-					//errorCallback.apply(context, [null]);
 				}
 			} else {
-				//console.log("--- Status: ", http.status, http.readyState, http);
-				//errorCallback.apply(context, [null]);
+
 			}
 		};
 
@@ -58,13 +62,13 @@ function request(req) {
 
 
 function sendRequest(req, callback, errorCallback, context) {
-
-	
+	console.log("TO REPLACE -- BAD CODE");
 };
 
 /**
- * Log off from ACS
+ * Log off the logged in user from ACS
  */
+
 function logoff() {
 
 	return new Promise(function(resolve, reject) {
@@ -74,7 +78,8 @@ function logoff() {
 		// Logout previous user - if any
 		var url = "http://" + host_param + "/ics?action=signout";
 
-		request(url).then(function(res) {
+		_request(url).then(function() {
+
 			console.log("--logOff Successfull");
 			resolve();
 		}, function(err) {
@@ -88,25 +93,185 @@ function logoff() {
 
 /**
  * Log in to ACS
+ * @param {String} hostname The OT server hostname
+ * @param {String} username The user name
+ * @param {String} password The user password
  */
-function login() {
+
+function login(hostname, username, password) {
 
 	return new Promise(function(resolve, reject) {
 
 		console.log("--login");
 	
 		//Login with user data
-		var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(login_param) + "&password=" + encodeURIComponent(password_param) + "&remember_password=false&display=none";
+		var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
 
-		request(url).then(function() {
-			console.log("--logIn Successfull");
-			resolve();
+		_request(url).then(function(jsonResponse) {
+			console.log("data", jsonResponse);
+			if(jsonResponse && jsonResponse.data !== null) {
+				console.log("--logIn Error");
+				reject();
+			}
+			else {
+				console.log("--logIn Successfull", jsonResponse);
+				resolve();
+			}
+			
 		}, function(err) {
 			console.log("--logIn Error", err);
 			reject();
 		});
 
-		//	sendRequest(url, getGlobalSettings, errorLogin, that);
+	});
+};
+
+/**
+ * Get global setting from the server
+ * Used to get the timezone parameter
+ */
+
+function getGlobalSettings() {
+
+	return new Promise(function(resolve, reject) {
+
+		console.log("--getGlobalSettings");
+
+		/* __FIX__ Get the timezone */
+		var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
+
+		_request(url).then(function(jsonResponse) {
+			console.log("--getGlobalSettings Successfull", jsonResponse);
+			resolve(jsonResponse);
+		}, function(err) {
+			console.log("--getGlobalSettings Error", err);
+			reject();
+		});
+	});
+};
+
+function getListofMeetings() {
+
+	return new Promise(function(resolve, reject) {
+
+		console.log("--getListofMeetings");
+
+		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true";
+
+		_request(url).then(function(jsonResponse) {
+			console.log("--getListofMeetings Successfull");
+			resolve(jsonResponse);
+		}, function(err) {
+			console.log("--getListofMeetings Error", err);
+			reject();
+		});
+
+	});
+};
+
+function scheduleMeeting(params) {
+
+	return new Promise(function(resolve, reject) {
+
+		console.log("--scheduleConference", params);
+
+		var day = getDay(moment(params.start).day() + 1);
+
+		var url = "http://" + host_param + 
+		"/cgi-bin/vcs_conf_schedule?" + 
+		"conf_type=" + params.type + 
+		"&no_audio=false" + 
+		"&calling_disabled=false" + 
+		"&create_callback=true" + 
+		"&timezone=" + params.timezone +  
+		"&start_year=" + params.start.getFullYear() + 
+		"&start_month=" + (params.start.getMonth()+1) +
+		"&start_day=" + params.start.getDate();
+	
+		if(params.type == "scheduled") {
+			url += "&start_hour=" + params.start.getHours() +
+			"&start_min=" + params.start.getMinutes() +
+			"&start_sec=" + params.start.getSeconds() +
+			"&duration_hours=" + params.duration;
+
+			switch (params.recurrence) {
+				case 'none':
+					url += "&num_occurrences=1";
+				break;
+				case 'day':
+					url += "&recurrence=D-WE"+
+					"&end_year=" + params.end.getFullYear() +  
+					"&end_month=" + (params.end.getMonth()+1) +
+					"&end_day=" + params.end.getDate() +
+					"&end_hour=" + params.end.getHours() +
+					"&end_min=" + params.end.getMinutes() +
+					"&end_sec=" + params.end.getSeconds(); 
+				break;
+				case 'week':
+					url += "&recurrence=W-1-" + day + 
+					"&end_year=" + params.end.getFullYear() +  
+					"&end_month=" + (params.end.getMonth()+1) +
+					"&end_day=" + params.end.getDate() +
+					"&end_hour=" + params.end.getHours() +
+					"&end_min=" + params.end.getMinutes() +
+					"&end_sec=" + params.end.getSeconds(); 
+				break;
+			}
+		}
+		else {
+			url += "&start_hour=0" +
+			"&start_min=0" +
+			"&start_sec=0" +
+			"&end_year=" + params.end.getFullYear() +  
+			"&end_month=" + (params.end.getMonth()+1) +
+			"&end_day=" + params.end.getDate() +
+			"&end_hour=" + params.end.getHours() +
+			"&end_min=" + params.end.getMinutes() +
+			"&end_sec=" + params.end.getSeconds(); 
+		}
+
+		url += "&subject=" + params.title;
+
+		if(params.password) {
+			url += "&web_password=" + params.password;
+			url += "&audio_password=" + params.password;
+		}
+
+		_request(url).then(function(jsonResponse) {
+			console.log("--scheduleConference Successfull");
+			resolve(jsonResponse);
+		}, function(err) {
+			console.log("--scheduleConference Error", err);
+			reject();
+		});
+
+	});
+
+};
+
+/**
+ * Delete a meeting
+ * @param {String} hostname The OT server host name
+ * @param {String} vanity The identifier of the meeting to delete
+ */
+
+function deleteMeeting(hostname, vanity) {
+
+	console.log("hostname, vanity", hostname, vanity);
+	
+	return new Promise(function(resolve, reject) {
+
+		console.log("--deleteMeeting");
+
+		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true";
+		
+		_request(url).then(function(jsonResponse) {
+			console.log("--deleteMeeting Successfull");
+			resolve(jsonResponse);
+		}, function(err) {
+			console.log("--deleteMeeting Error", err);
+			reject();
+		});
 
 	});
 };

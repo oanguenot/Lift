@@ -35,7 +35,8 @@ a:visited {
 
 legend {
 	color: #135571;
-	font-weight: 100; 
+	font-weight: 100;
+	font-size: 12px; 
 }
 
 label {
@@ -117,6 +118,25 @@ select option {
 	border: 1px solid #0F4257;
 }
 
+.meetingActionButton {
+	border: 0 solid rgba(96, 107, 111, 0.60);
+	background-color: rgba(96, 107, 111, 0.60);
+	font-family: "Roboto",sans-serif;
+	color: #ffffff;
+	text-align: center;
+	cursor: pointer;
+	min-height: 30px;
+	height: 30px;
+	display: inline-block;
+	outline: none; 
+}
+
+.meetingActionButton:hover {
+	border: 0 solid rgba(96, 107, 111, 1);
+	background-color: rgba(96, 107, 111, 1);
+}
+
+
 .left {
 position: relative;
 width: 90px;
@@ -138,19 +158,19 @@ font-weight: 100;
 .endDateLabel {
 	position: absolute;
 	left: 195px;
-	top: 262px;
+	top: 255px;
 }
 
 .recurrenceLabel {
 	position: absolute;
 	left: 195px;
-	top: 188px;
+	top: 184px;
 }
 
 .durationLabel {
 	position: absolute;
 	left: 195px;
-	top: 334px;
+	top: 325px;
 }
 
 .endDateInput {
@@ -171,6 +191,7 @@ font-weight: 100;
 
 .firstTitle {
 	margin-top: 16px;
+	font-size: 12px;
 }
 
 .titleInput, .urlInput{
@@ -185,7 +206,7 @@ font-weight: 100;
 	background-color: #ffffff;
 	position: absolute;
 	left: 195px;
-	top: 206px;
+	top: 200px;
 	padding-left: 10px;
 }
 
@@ -241,7 +262,7 @@ font-weight: 100;
 	width: 75px;
 	position: absolute;
 	left: 195px;
-	top: 352px;
+	top: 341px;
 	padding-left: 10px;
 }
 
@@ -324,6 +345,12 @@ font-weight: 100;
 	margin-bottom: 0;
 }
 
+.meetingFiles {
+	position: absolute;
+	top: 40px;
+	right: 10px;
+}
+
 .modalDialog {
 	position: fixed;
 	font-family: Arial, Helvetica, sans-serif;
@@ -402,18 +429,18 @@ font-weight: 100;
 	list-style: none;
 	height: 422px;
 	width: 100%;
-	overflow: auto;
-	/* padding-top: 6px; */
 	margin: 0;
 	-webkit-padding-start: 0px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 li.buddies-item {
   position: relative;
   cursor: pointer;
-  height: 100px;
+  height: 110px;
   width: 332px;
-  background-color: rgba(124, 135, 139, 0.72);
+  background-color: rgba(130, 139, 138, 0.75);
   margin-bottom: 12px;
 }
 
@@ -423,9 +450,9 @@ li.buddies-item {
 	font-size: 16px;
 	color: #fff;
 	position: absolute;
-	top: 32px;
+	top: 35px;
 	left: 10px;
-	width: 300px;
+	width: 290px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -460,7 +487,7 @@ li.buddies-item {
 	font-size: 11px;
 	color: #0F4257;
 	position: absolute;
-	top: 17px;
+	top: 20px;
 	left: 220px;
 	width: 100px;
 	text-align: right;
@@ -472,22 +499,43 @@ li.buddies-item {
 	font-size: 11px;
 	color: #F5F5F5;
 	position: absolute;
-	top: 53px;
+	top: 55px;
 	left: 11px;
 	width: 300px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	/* font-style: italic; */
 }
 
 .meetingRemoveButton {
 	position: absolute;
-	width: 70px;
-	height: 24px;
-	min-height: 24px;
-	left: 255px;
-	top: 67px;
+	width: 55px;
+	height: 20px;
+	min-height: 20px;
+	left: 265px;
+	top: 80px;
+	font-size: 10px;
+	font-weight: 100;
+}
+
+.meetingEditButton {
+	position: absolute;
+	width: 55px;
+	height: 20px;
+	min-height: 20px;
+	left: 200px;
+	top: 80px;
+	font-size: 10px;
+	font-weight: 100;
+}
+
+.meetingDetailsButton {
+	position: absolute;
+	width: 55px;
+	height: 20px;
+	min-height: 20px;
+	left: 10px;
+	top: 80px;
 	font-size: 10px;
 	font-weight: 100;
 }
