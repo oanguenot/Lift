@@ -156,7 +156,7 @@ function getListofMeetings() {
 
 		console.log("--getListofMeetings");
 
-		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true";
+		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true";
 
 		_request(url).then(function(jsonResponse) {
 			console.log("--getListofMeetings Successfull");
@@ -263,7 +263,7 @@ function deleteMeeting(hostname, vanity) {
 
 		console.log("--deleteMeeting");
 
-		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true";
+		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true";
 		
 		_request(url).then(function(jsonResponse) {
 			console.log("--deleteMeeting Successfull");

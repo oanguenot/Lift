@@ -433,6 +433,8 @@ font-weight: 100;
 	-webkit-padding-start: 0px;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	margin-top: 30px;
+	margin-bottom: 10px;
 }
 
 li.buddies-item {
@@ -446,7 +448,7 @@ li.buddies-item {
 
 .meetingTitle {
 	font-family: "Roboto",sans-serif;
-	font-weight: 100;
+	font-weight: 300;
 	font-size: 16px;
 	color: #fff;
 	position: absolute;
@@ -471,7 +473,7 @@ li.buddies-item {
 
 .meetingTime {
 	font-family: "Roboto",sans-serif;
-	font-weight: 400;
+	font-weight: 300;
 	font-size: 11px;
 	color: #0F4257;
 	position: absolute;
@@ -484,10 +486,10 @@ li.buddies-item {
 .meetingTimezone {
 	font-family: "Roboto",sans-serif;
 	font-weight: 400;
-	font-size: 11px;
-	color: #0F4257;
+	font-size: 9px;
+	color: #5A676C;
 	position: absolute;
-	top: 20px;
+	top: 21px;
 	left: 220px;
 	width: 100px;
 	text-align: right;
@@ -495,9 +497,9 @@ li.buddies-item {
 
 .meetingState {
 	font-family: "Roboto",sans-serif;
-	font-weight: 100;
-	font-size: 11px;
-	color: #F5F5F5;
+	font-weight: 400;
+	font-size: 10px;
+	color: #5A676C;
 	position: absolute;
 	top: 55px;
 	left: 11px;
@@ -582,4 +584,12 @@ color: #155F7E;
 	height: 80px;
 	margin: 100px auto 0 auto;
 	display: block;
+}
+
+.copyright {
+	font-family: "Roboto",sans-serif;
+	color: #155F7E;
+	text-align: center;
+	width: 100%;
+	font-size: 10px;
 }
