@@ -156,7 +156,7 @@ function getListofMeetings() {
 
 		console.log("--getListofMeetings");
 
-		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true";
+		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
 
 		_request(url).then(function(jsonResponse) {
 			console.log("--getListofMeetings Successfull");
@@ -175,7 +175,7 @@ function scheduleMeeting(params) {
 
 		console.log("--scheduleConference", params);
 
-		var day = getDay(moment(params.start).day() + 1);
+		var day = _getDay(moment(params.start).day() + 1);
 
 		var url = "http://" + host_param + 
 		"/cgi-bin/vcs_conf_schedule?" + 
@@ -187,6 +187,10 @@ function scheduleMeeting(params) {
 		"&start_year=" + params.start.getFullYear() + 
 		"&start_month=" + (params.start.getMonth()+1) +
 		"&start_day=" + params.start.getDate();
+
+		if(params.modify) {
+			url += "&mod_vanity=" + params.modify;
+		}
 	
 		if(params.type == "scheduled") {
 			url += "&start_hour=" + params.start.getHours() +
@@ -198,8 +202,8 @@ function scheduleMeeting(params) {
 				case 'none':
 					url += "&num_occurrences=1";
 				break;
-				case 'day':
-					url += "&recurrence=D-WE"+
+				case 'dayly':
+					url += "&recurrence=D-WE" +
 					"&end_year=" + params.end.getFullYear() +  
 					"&end_month=" + (params.end.getMonth()+1) +
 					"&end_day=" + params.end.getDate() +
@@ -207,8 +211,8 @@ function scheduleMeeting(params) {
 					"&end_min=" + params.end.getMinutes() +
 					"&end_sec=" + params.end.getSeconds(); 
 				break;
-				case 'week':
-					url += "&recurrence=W-1-" + day + 
+				case 'weekly':
+					url += "&recurrence=W-1-" + day +
 					"&end_year=" + params.end.getFullYear() +  
 					"&end_month=" + (params.end.getMonth()+1) +
 					"&end_day=" + params.end.getDate() +
@@ -263,7 +267,7 @@ function deleteMeeting(hostname, vanity) {
 
 		console.log("--deleteMeeting");
 
-		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true";
+		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
 		
 		_request(url).then(function(jsonResponse) {
 			console.log("--deleteMeeting Successfull");
@@ -275,3 +279,22 @@ function deleteMeeting(hostname, vanity) {
 
 	});
 };
+
+function _getDay(day) {
+	switch (day) {
+		case 1:
+			return 'SUN';
+		case 2:
+			return 'MON';
+		case 3:
+			return 'TUE';
+		case 4:
+			return 'WED';
+		case 5:
+			return 'THU';
+		case 6:
+			return 'FRI';
+		case 7:
+			return 'SAT';
+	}
+}

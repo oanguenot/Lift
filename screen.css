@@ -278,7 +278,7 @@ font-weight: 100;
 	font-size: 18px;
 	font-weight: 300; 
 	text-align: left;
-	padding-left: 37px;
+	padding-left: 40px;
 }
 
 .loginButton, .cancelSettingButton {
@@ -347,8 +347,14 @@ font-weight: 100;
 
 .meetingFiles {
 	position: absolute;
-	top: 40px;
-	right: 10px;
+top: 40px;
+right: 8px;
+font-family: "Roboto",sans-serif;
+font-weight: 400;
+font-size: 9px;
+color: #5A676C;
+text-align: right;
+width: 100px;
 }
 
 .modalDialog {
@@ -449,10 +455,10 @@ li.buddies-item {
 .meetingTitle {
 	font-family: "Roboto",sans-serif;
 	font-weight: 300;
-	font-size: 16px;
+	font-size: 14px;
 	color: #fff;
 	position: absolute;
-	top: 35px;
+	top: 38px;
 	left: 10px;
 	width: 290px;
 	white-space: nowrap;
@@ -461,38 +467,49 @@ li.buddies-item {
 }
 
 .meetingStartDate {
+font-family: "Roboto",sans-serif;
+font-weight: 300;
+font-size: 11px;
+color: #0F4257;
+position: absolute;
+top: 6px;
+left: 8px;
+width: 225px;
+}
+
+.meetingStartDateNext {
 	font-family: "Roboto",sans-serif;
-	font-weight: 400;
-	font-size: 11px;
-	color: #0F4257;
-	position: absolute;
-	top: 7px;
-	left: 9px;
-	width: 225px;
+font-weight: 400;
+font-size: 9px;
+color: #5A676C;
+position: absolute;
+top: 20px;
+left: 8px;
+width: 225px;
 }
 
 .meetingTime {
 	font-family: "Roboto",sans-serif;
-	font-weight: 300;
-	font-size: 11px;
-	color: #0F4257;
-	position: absolute;
-	top: 7px;
-	left: 220px;
-	width: 100px;
-	text-align: right;
+font-weight: 300;
+font-size: 11px;
+color: #0F4257;
+position: absolute;
+top: 6px;
+right: 8px;
+width: 100px;
+text-align: right;
 }
 
 .meetingTimezone {
 	font-family: "Roboto",sans-serif;
-	font-weight: 400;
-	font-size: 9px;
-	color: #5A676C;
-	position: absolute;
-	top: 21px;
-	left: 220px;
-	width: 100px;
-	text-align: right;
+font-weight: 400;
+font-size: 9px;
+color: #5A676C;
+position: absolute;
+top: 20px;
+right: 8px;
+width: 100px;
+text-align: right;
 }
 
 .meetingState {
@@ -514,7 +531,7 @@ li.buddies-item {
 	width: 55px;
 	height: 20px;
 	min-height: 20px;
-	left: 265px;
+	right: 8px;
 	top: 80px;
 	font-size: 10px;
 	font-weight: 100;
@@ -525,7 +542,7 @@ li.buddies-item {
 	width: 55px;
 	height: 20px;
 	min-height: 20px;
-	left: 200px;
+	right: 70px;
 	top: 80px;
 	font-size: 10px;
 	font-weight: 100;
@@ -536,8 +553,8 @@ li.buddies-item {
 	width: 55px;
 	height: 20px;
 	min-height: 20px;
-	left: 10px;
-	top: 80px;
+	left: 8px;
+	bottom: 8px;
 	font-size: 10px;
 	font-weight: 100;
 }

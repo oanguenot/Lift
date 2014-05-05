@@ -17,7 +17,7 @@
 <body>
 	<form id='editor' class='masked'>
 	 	<legend class='title'> OpenTouch LIFT</legend>
-		<img class='logo' src='./otc_48.png' width="32" height="32" />
+		<img class='logo' src='./lift_48.png' width="32" height="32" />
 		<div class='options'>
 			<button type="action" id='cancelBtn' class="actionButton right">Cancel</button>
 			<button type="action" id='scheduleBtn' class='actionButton left'>Schedule</button>
@@ -34,8 +34,8 @@
 			<legend class='recurrenceLabel'>Meeting Recurrence</legend>
 			<select class="recurrenceType" required>
 				<option value="none">One time event</option>
-				<option value="day">Every week day</option>
-				<option value="week">Every week</option>
+				<option value="dayly">Every week day</option>
+				<option value="weekly">Every week</option>
 			</select>
 			<legend>Start Date</legend>
 			<input type="date" name="date" class="dateInput" required >
@@ -45,7 +45,7 @@
 			<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
 			<legend class='durationLabel'>Duration (hours)</legend>
 			<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect my meeting with a digit password</span>
+		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect the meeting with a password</span>
 		 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
 		 	<span class='digit'> Digit only</span> 	
 		</div>
@@ -102,7 +102,7 @@
 
 	<div id='list' class='displayed'>
 		<legend class='title'> OpenTouch LIFT</legend>
-		<img class='logo' src='./otc_48.png' width="32" height="32" />
+		<img class='logo' src='./lift_48.png' width="32" height="32" />
 		<div class='options'>
 			<button type="action" id='createBtn' class="actionButton left">+ Meeting</button>
 			<button type="action" id='settingBtn' class="actionButton right">Settings</button>
@@ -110,7 +110,7 @@
 		<div class='spinner' id='spinner'>
 		</div>
 		<div class='empty' id='empty'>
-			<img class='emptyLogo' width='80' height='80' src='./otc_128.png' />
+			<img class='emptyLogo' width='80' height='80' src='./lift_128.png' />
 			<div class='emptyTitle'>No Meeting</div>
 			<div class='emptyMessage'>List of Meetings scheduled appears here</div>
 		</div>

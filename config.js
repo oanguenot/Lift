@@ -9,9 +9,9 @@ function displayConfig(callback, context) {
 	var passwordField = document.querySelector('#password');
 	var otField = document.querySelector('#ot');
 
-	loginField.value = localStorage["lift_login"];
-	passwordField.value = localStorage["lift_password"];
-	otField.value = localStorage["lift_host"];
+	loginField.value = localStorage["lift_login"] || "";
+	passwordField.value = localStorage["lift_password"] || "";
+	otField.value = localStorage["lift_host"] || "";
 
 	var cancelSettingBtn = document.querySelector('.cancelSettingButton');
 
