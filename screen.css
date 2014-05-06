@@ -10,6 +10,7 @@ body {
 	width: 350px;
 	min-height: 500px;
 	overflow: hidden;
+	margin: 0;
 }
 
 h2 {
@@ -81,9 +82,9 @@ select option {
 }
 
 .logo {
-	position: absolute;
-	top: 12px;
-	left: 12px;
+position: absolute;
+top: 9px;
+left: 9px;
 }
 
 .masked {
@@ -96,13 +97,12 @@ select option {
 }
 
 .options {
-	height: 48px;
-	background-color: #fff;
+	height: 40px;
 }
 
 .actionButton {
-	border: 1px solid #155F7E;
-	background-color: #155F7E;
+	border: 1px solid #4790D2;
+	background-color: #4790D2;
 	font-family: "Roboto",sans-serif;
 	color: #ffffff;
 	text-align: center;
@@ -114,13 +114,11 @@ select option {
 }
 
 .actionButton:hover {
-	background-color: #0F4257;
-	border: 1px solid #0F4257;
+	background-color: #3373A9;
+	border: 1px solid #3373A9;
 }
 
 .meetingActionButton {
-	border: 0 solid rgba(96, 107, 111, 0.60);
-	background-color: rgba(96, 107, 111, 0.60);
 	font-family: "Roboto",sans-serif;
 	color: #ffffff;
 	text-align: center;
@@ -131,28 +129,22 @@ select option {
 	outline: none; 
 }
 
-.meetingActionButton:hover {
-	border: 0 solid rgba(96, 107, 111, 1);
-	background-color: rgba(96, 107, 111, 1);
-}
-
-
 .left {
 position: relative;
-width: 90px;
-margin-left: 163px;
-margin-top: 9px;
+width: 175px;
+height: 40px;
 font-size: 12px;
 font-weight: 100;
 }
 
 .right {
 position: absolute;
-width: 90px;
-left: 268px;
-top: 57px;
+width: 175px;
+left: 175px;
+height: 40px;
 font-size: 12px;
 font-weight: 100;
+border-left: 1px solid #5CA1E7;
 }
 
 .endDateLabel {
@@ -271,14 +263,14 @@ font-weight: 100;
 }
 
 .title {
-	line-height: 40px;
-	background-color: #0F4257;
-	width: 99%;
+	line-height: 50px;
+	background-color: #262D40;
+	width: 100%;
 	color: #ffffff;
 	font-size: 18px;
-	font-weight: 300; 
+	font-weight: 300;
 	text-align: left;
-	padding-left: 40px;
+	padding-left: 49px;
 }
 
 .loginButton, .cancelSettingButton {
@@ -433,37 +425,39 @@ width: 100px;
 .meetings {
 	position: relative;
 	list-style: none;
-	height: 422px;
+	height: 450px;
 	width: 100%;
 	margin: 0;
 	-webkit-padding-start: 0px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	margin-top: 30px;
-	margin-bottom: 10px;
 }
 
 li.buddies-item {
-  position: relative;
-  cursor: pointer;
-  height: 110px;
-  width: 332px;
-  background-color: rgba(130, 139, 138, 0.75);
-  margin-bottom: 12px;
+position: relative;
+cursor: pointer;
+height: 120px;
+width: 100%;
+background-color: #fff;
+border-bottom: 1px solid #efefef;
+}
+
+li.buddies-item:hover {
+	background-color: #DBE0E4;;
 }
 
 .meetingTitle {
 	font-family: "Roboto",sans-serif;
-	font-weight: 300;
-	font-size: 14px;
-	color: #fff;
-	position: absolute;
-	top: 38px;
-	left: 10px;
-	width: 290px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+font-weight: 300;
+font-size: 14px;
+color: #434757;
+position: absolute;
+top: 45px;
+left: 16px;
+width: 290px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .meetingStartDate {
@@ -473,40 +467,45 @@ font-size: 11px;
 color: #0F4257;
 position: absolute;
 top: 6px;
-left: 8px;
-width: 225px;
+left: 16px;
+/* width: 225px; */
+/* padding: 1px 4px 1px 4px; */
+/* background-color: #efefef; */
+/* border-radius: 10px; */
 }
 
 .meetingStartDateNext {
-	font-family: "Roboto",sans-serif;
+font-family: "Roboto",sans-serif;
 font-weight: 400;
 font-size: 9px;
 color: #5A676C;
 position: absolute;
-top: 20px;
-left: 8px;
+top: 23px;
+left: 16px;
 width: 225px;
 }
 
 .meetingTime {
-	font-family: "Roboto",sans-serif;
+font-family: "Roboto",sans-serif;
 font-weight: 300;
 font-size: 11px;
 color: #0F4257;
 position: absolute;
 top: 6px;
 right: 8px;
-width: 100px;
 text-align: right;
+background-color: #E9E9E9;
+padding: 1px 4px 1px 4px;
+border-radius: 4px;
 }
 
 .meetingTimezone {
-	font-family: "Roboto",sans-serif;
+font-family: "Roboto",sans-serif;
 font-weight: 400;
 font-size: 9px;
 color: #5A676C;
 position: absolute;
-top: 20px;
+top: 23px;
 right: 8px;
 width: 100px;
 text-align: right;
@@ -514,16 +513,16 @@ text-align: right;
 
 .meetingState {
 	font-family: "Roboto",sans-serif;
-	font-weight: 400;
-	font-size: 10px;
-	color: #5A676C;
-	position: absolute;
-	top: 55px;
-	left: 11px;
-	width: 300px;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+font-weight: 400;
+font-size: 10px;
+color: #AAA7B5;
+position: absolute;
+top: 60px;
+left: 16px;
+width: 300px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .meetingRemoveButton {
@@ -532,20 +531,34 @@ text-align: right;
 	height: 20px;
 	min-height: 20px;
 	right: 8px;
-	top: 80px;
+	top: 90px;
 	font-size: 10px;
 	font-weight: 100;
+	background-color: #929191;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingRemoveButton:hover {
+	background-color: #6F6C6C;
 }
 
 .meetingEditButton {
 	position: absolute;
-	width: 55px;
-	height: 20px;
-	min-height: 20px;
-	right: 70px;
-	top: 80px;
-	font-size: 10px;
-	font-weight: 100;
+width: 55px;
+height: 20px;
+min-height: 20px;
+right: 70px;
+top: 90px;
+font-size: 10px;
+font-weight: 100;
+background-color: #F5AF02;
+border-radius: 2px;
+border: 0;
+}
+
+.meetingEditButton:hover {
+	background-color: #DDA00A;
 }
 
 .meetingDetailsButton {
@@ -553,17 +566,24 @@ text-align: right;
 	width: 55px;
 	height: 20px;
 	min-height: 20px;
-	left: 8px;
+	left: 16px;
 	bottom: 8px;
 	font-size: 10px;
 	font-weight: 100;
+	background-color: #86B817;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingDetailsButton:hover {
+	background-color: #76A214;
 }
 
 .spinner {
 	position: absolute;
-	top: 100px;
+	top: 90px;
 	width: 350px;
-	height: 400px;
+	height: 410px;
 }
 
 .empty {
@@ -605,8 +625,33 @@ color: #155F7E;
 
 .copyright {
 	font-family: "Roboto",sans-serif;
-	color: #155F7E;
-	text-align: center;
-	width: 100%;
-	font-size: 10px;
+font-weight: 100;
+color: #efefef;
+text-align: center;
+width: 100%;
+font-size: 11px;
+height: 20px;
+line-height: 20px;
+background-color: #262D40;
 }
+
+.meeting-not_begun {
+	background-color: rgba(105, 105, 105, 0.25);
+}
+
+.meeting-ended {
+	background-color: rgba(105, 105, 105, 0.25);
+}
+
+.meeting-active {
+	background-color: #EBB221;
+}
+
+.meeting-state {
+	position: absolute;
+top: 0;
+height: 120px;
+width: 9px;
+}
+
+

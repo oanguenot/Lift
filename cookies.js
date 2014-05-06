@@ -76,6 +76,8 @@ function eraseCookie(name) {
  * Delete all created cookies
  * Found and delete all cookies from a host using chrome extension API chrome.cookies
  * Asynchronous function: use Promise to get result
+ * BE CAREFULL = DON't BE USED BECAUSE IT DECONNECTS OTC/WEB FROM ITS CURRENT SESSION 
+ * IF ON THE SAME SERVER
  */
 
 function deletePreviouslyUsedCookies() {
@@ -85,19 +87,20 @@ function deletePreviouslyUsedCookies() {
 
 		try {
 			console.log("--deletePreviouslyUsedCookies");
-			eraseCookie("s_fid");
-			eraseCookie("AlcUserId");
-			eraseCookie("OTUCSSO");
-			eraseCookie("ed_client_tag.");
-			eraseCookie("ics.login.0.");
-			eraseCookie("ics.login.1.");
-			eraseCookie("ics.login.2.");
-			eraseCookie("edial_vcs2.login");
-			eraseCookie("edial_vcs2.login_persistent");
-			eraseCookie("ed_client_guid.");
-			eraseCookie("edial_vcs2.remember_pw");
-			eraseCookie("ed_usernum");
+			//eraseCookie("s_fid");
+			//eraseCookie("AlcUserId");
+			//eraseCookie("OTUCSSO");
+			//eraseCookie("ed_client_tag.");
+			//eraseCookie("ics.login.0.");
+			//eraseCookie("ics.login.1.");
+			//eraseCookie("ics.login.2.");
+			//eraseCookie("edial_vcs2.login");
+			//eraseCookie("edial_vcs2.login_persistent");
+			//eraseCookie("ed_client_guid.");
+			//eraseCookie("edial_vcs2.remember_pw");
+			//eraseCookie("ed_usernum");
 
+			/*
 			var domain = host_param.substring(host_param.indexOf('.') +1);
 			console.log("--deletePreviouslyUsedCookies - Domain:", domain);
 
@@ -126,6 +129,9 @@ function deletePreviouslyUsedCookies() {
 		    	}
 		    	
 			});
+			*/
+
+			resolve();
 		}
 		catch(error) {
 			console.log("--deletePreviouslyUsedCookies Error", error);

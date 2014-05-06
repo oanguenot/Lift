@@ -76,6 +76,7 @@ function logoff() {
 		console.log("--logoff");
 
 		// Logout previous user - if any
+		/*
 		var url = "http://" + host_param + "/ics?action=signout";
 
 		_request(url).then(function() {
@@ -86,6 +87,9 @@ function logoff() {
 			console.log("--logOff Error", err);
 			reject();
 		});
+		*/
+
+		resolve();
 
 	});
 };

@@ -7,6 +7,12 @@
  */
 
 /**
+ * 
+ * Version 0.9
+ * - Merge the two extensions into a single one for listing, scheduling and modifying meetings
+ * - Do not use 'logoff' and 'removeCookies' because it deconnects OTC/Web from its session
+ * ...
+ * 
  * Version 0.3:
  * - Read timezone from vcs?settings=global
  * - Fix issue with notification. Only displayed if possible
@@ -563,7 +569,8 @@ function displayMeeting(xml) {
 	}
 	
 	var item = document.createElement("li");
-	item.className = "buddies-item";
+	item.className =  "buddies-item";
+	item.innerHTML += '<div class=" meeting-state meeting-' + state + '" />';
 	item.innerHTML += '<span class="meetingTitle">' + subject + '</span>';
 
 	var documents = xml.getElementsByTagName('document');
@@ -793,13 +800,13 @@ function erasePreviousUserData() {
 	if(host_param && login_param && password_param) {
 
 		// Logoff from previous session if exits
-		logoff()
-		.then(function() {
+		//logoff()
+		//.then(function() {
 			// Delete previous used cookies if exist
-			return(deletePreviouslyUsedCookies())
-			.then(function() {
+			//return(deletePreviouslyUsedCookies())
+			//.then(function() {
 				// Login
-				return(login(host_param, login_param, password_param))
+				login(host_param, login_param, password_param)
 				.then(function() {
 					// Get the global settings (Timezone)
 					return(getGlobalSettings())
@@ -833,11 +840,11 @@ function erasePreviousUserData() {
 				}, function() {
 					displayErrorLogin();
 				});
-			}, function() {
-			})
-		}, function() {
-			displayErrorLogin();
-		});
+			//}, function() {
+			//})
+		//}, function() {
+			//displayErrorLogin();
+		//});
 	}
 	else {
 		displayErrorLogin();
