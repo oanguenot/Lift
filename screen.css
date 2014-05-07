@@ -35,9 +35,9 @@ a:visited {
 }
 
 legend {
-	color: #135571;
-	font-weight: 100;
-	font-size: 12px; 
+	color: #B47237;
+	font-weight: 500;
+	font-size: 12px;
 }
 
 label {
@@ -52,7 +52,8 @@ input {
 	font-size: 14px;
 	height: 22px;
 	line-height: 22px;
-	border:1px solid #ccc;
+	border:1px solid #EC913F;
+	background-color: #EC913F;
 	font-size:14px;
 	/*display: block;*/
 	min-height:22px;
@@ -79,12 +80,15 @@ select option {
 }
 
 .background {
+	background-color: #fff; /* #25190E */;
+	padding-top: 20px;
+	height: 450px;
 }
 
 .logo {
-position: absolute;
-top: 9px;
-left: 9px;
+	position: absolute;
+	top: 9px;
+	left: 9px;
 }
 
 .masked {
@@ -130,107 +134,170 @@ left: 9px;
 }
 
 .left {
-position: relative;
-width: 175px;
-height: 40px;
-font-size: 12px;
-font-weight: 100;
+	position: relative;
+	width: 175px;
+	height: 40px;
+	font-size: 12px;
+	font-weight: 100;
 }
 
 .right {
-position: absolute;
-width: 175px;
-left: 175px;
-height: 40px;
-font-size: 12px;
-font-weight: 100;
-border-left: 1px solid #5CA1E7;
+	position: absolute;
+	width: 175px;
+	left: 175px;
+	height: 40px;
+	font-size: 12px;
+	font-weight: 100;
+	border-left: 1px solid #5CA1E7;
 }
 
 .endDateLabel {
 	position: absolute;
-	left: 195px;
-	top: 255px;
+	left: 190px;
+	top: 285px;
 }
 
 .recurrenceLabel {
 	position: absolute;
-	left: 195px;
-	top: 184px;
+	left: 190px;
+	top: 199px;
 }
 
 .durationLabel {
 	position: absolute;
-	left: 195px;
-	top: 325px;
+left: 190px;
+top: 372px;
 }
 
 .endDateInput {
 	position: absolute;
-	left: 195px;
+	left: 190px;
+	width: 138px;
+	height: 23px;
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+}
+
+.endDateInput:disabled {
+	background-color: #E1E5EE;
+border-color: #E1E5EE;
+color: #A9A9A9;
 }
 
 .meetingPassword {
-	font-weight: 100;
 	position: relative;
 	top: -6px;
-	color: #696969;
+	color: #B47237;
+	font-weight: 500;
+	font-size: 12px;
 }
 
 .passwordCheck {
 	margin-bottom: 0;
+	border: 1px solid #B47237;
+	background-color: #B47237;
+	margin-left: 12px;
 }
 
 .firstTitle {
-	margin-top: 16px;
-	font-size: 12px;
+	margin-left: 10px;
 }
 
-.titleInput, .urlInput{
-	width: 335px;
+.titleInput {
 	padding-left: 10px;
-	margin-bottom: 25px;
+	margin-left: 10px;
+	margin-bottom: 40px;
+	margin-right: 10px;
+	width: 320px;
+	color: #fff;
+	font-weight: 100;
+}
+
+.titleInput:hover {
+	background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .recurrenceType {
-	width: 160px;
+	width: 150px;
 	height: 25px;
-	background-color: #ffffff;
-	position: absolute;
-	left: 195px;
-	top: 200px;
+	color: #fff;
+	font-weight: 100;
 	padding-left: 10px;
+	position: absolute;
+	border:1px solid #EC913F;
+	background-color: #EC913F;
+	left: 190px;
+	top: 213px;
+}
+
+.recurrenceType:hover {
+	background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .recurrenceType:disabled {
-	background-color: #efefef;
+	background-color: #E1E5EE;
+	border-color: #E1E5EE;
+	color: #A9A9A9;
 }
 
 .conferenceType {
-	width: 160px;
-	height: 25px;
-	background-color: #ffffff;
-	padding-left: 10px;
+	width: 150px;
+height: 25px;
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+margin-left: 10px;
+border: 1px solid #EC913F;
+background-color: #EC913F;
+margin-bottom: 40px;
+}
+
+.conferenceType:hover {
+		background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .dateInput {
-	width: 150px;
-	padding-left: 10px;
+	width: 138px;
+height: 23px;
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+margin-left: 10px;
+margin-bottom: 40px;
+}
+
+.dateInput:hover {
+	background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .passwordInput {
-	width: 150px;
+	width: 140px;
 	padding-left: 10px;
+	margin-left: 10px;
+	color: #fff;
+	font-weight: 100;
+}
+
+.passwordInput:hover {
+		background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .passwordInput:disabled {
-	background-color: #efefef;
+	background-color: #E1E5EE;
+	border-color: #E1E5EE;
+	color: #A9A9A9;
 }
 
 .digit {
 	font-family: "Roboto",sans-serif;
-	font-weight: 300;
-	color: #2980B9;
+	font-weight: 500;
+	color: #B47237;
 	font-size: 12px;
 	margin-left: 10px;
 }
@@ -246,16 +313,34 @@ border-left: 1px solid #5CA1E7;
 
 .startTimeInput {
 	width: 75px;
-	padding-left: 10px;
-	display: block;
+padding-left: 10px;
+display: block;
+color: #fff;
+font-weight: 100;
+margin-left: 10px;
+margin-bottom: 40px;
+}
+
+.startTimeInput:hover {
+	background-color: #CF7C31;
+	border-color: #CF7C31;
 }
 
 .durationInput {
 	width: 75px;
-	position: absolute;
-	left: 195px;
-	top: 341px;
-	padding-left: 10px;
+position: absolute;
+left: 190px;
+/* height: 22px; */
+top: 385px;
+padding-left: 10px;
+color: #fff;
+font-weight: 100;
+/* margin-left: 10px; */
+}
+
+.durationInput:hover {
+	background-color:#CF7C31;
+	border-color: #CF7C31;
 }
 
 .result {
@@ -321,15 +406,17 @@ border-left: 1px solid #5CA1E7;
 }
 
 :invalid { 
+/*	
   border-color: #2980B9;
   background-color: #2980B9;
   -webkit-box-shadow: 0 0 5px #2980B9;
   box-shadow:0 0 5px #2980B9;
   color: #ffffff;
+  */
 }
 
 :required {
-  border-color: #2980B9;
+  /*border-color: #2980B9; */
   /*-webkit-box-shadow: 0 0 5px #2980B9; */
 }
 
@@ -339,14 +426,14 @@ border-left: 1px solid #5CA1E7;
 
 .meetingFiles {
 	position: absolute;
-top: 40px;
-right: 8px;
-font-family: "Roboto",sans-serif;
-font-weight: 400;
-font-size: 9px;
-color: #5A676C;
-text-align: right;
-width: 100px;
+	top: 40px;
+	right: 8px;
+	font-family: "Roboto",sans-serif;
+	font-weight: 400;
+	font-size: 9px;
+	color: #5A676C;
+	text-align: right;
+	width: 100px;
 }
 
 .modalDialog {
@@ -460,6 +547,8 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
+
+
 .meetingStartDate {
 font-family: "Roboto",sans-serif;
 font-weight: 300;
@@ -488,13 +577,13 @@ width: 225px;
 .meetingTime {
 font-family: "Roboto",sans-serif;
 font-weight: 300;
-font-size: 11px;
-color: #0F4257;
+font-size: 10px;
+color: #fff;
 position: absolute;
 top: 6px;
 right: 8px;
 text-align: right;
-background-color: #E9E9E9;
+background-color: #9D55B9;
 padding: 1px 4px 1px 4px;
 border-radius: 4px;
 }
@@ -552,7 +641,7 @@ right: 70px;
 top: 90px;
 font-size: 10px;
 font-weight: 100;
-background-color: #F5AF02;
+background-color: #F59D08;
 border-radius: 2px;
 border: 0;
 }
@@ -635,6 +724,11 @@ line-height: 20px;
 background-color: #262D40;
 }
 
+.fixed {
+	position: fixed;
+	bottom: 0;
+}
+
 .meeting-not_begun {
 	background-color: rgba(105, 105, 105, 0.25);
 }
@@ -643,15 +737,19 @@ background-color: #262D40;
 	background-color: rgba(105, 105, 105, 0.25);
 }
 
+.meeting-inactive {
+	background-color: rgba(105, 105, 105, 0.25);
+}
+
 .meeting-active {
-	background-color: #EBB221;
+	background-color: #F1C212;
 }
 
 .meeting-state {
 	position: absolute;
-top: 0;
-height: 120px;
-width: 9px;
+	top: 0;
+	height: 120px;
+	width: 9px;
 }
 
 

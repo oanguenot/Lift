@@ -26,7 +26,7 @@
 		 	<legend class='firstTitle'>Meeting name</legend>
 		 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
 		 	<br>
-		 	<legend>Meeting Type</legend>
+		 	<legend class="firstTitle">Meeting Type</legend>
 			<select class="conferenceType" required>
 					<option value="scheduled">Scheduled</option>
 					<option value="reservationless">Reservationless</option>
@@ -37,17 +37,18 @@
 				<option value="dayly">Every week day</option>
 				<option value="weekly">Every week</option>
 			</select>
-			<legend>Start Date</legend>
+			<legend class="firstTitle">Start Date</legend>
 			<input type="date" name="date" class="dateInput" required >
 			<legend class='endDateLabel'>End Date</legend>
-			<input type="date" name="enddate" class="endDateInput dateInput" required disabled>
-			<legend>Hour (locale)</legend>
+			<input type="date" name="enddate" class="endDateInput" required disabled>
+			<legend class="firstTitle">Hour (locale)</legend>
 			<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
 			<legend class='durationLabel'>Duration (hours)</legend>
 			<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
 		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect the meeting with a password</span>
 		 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
-		 	<span class='digit'> Digit only</span> 	
+		 	<span class='digit'> Digit only</span>
+		 	<div class='copyright fixed'>&copy;Alcatel-Lucent - 2014</div> 	
 		</div>
 	</form>
 
