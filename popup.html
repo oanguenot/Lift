@@ -5,10 +5,13 @@
   	<title>OpenTouch Lift: Meeting Scheduler</title>
   	<meta id="mobile" name="apple-mobile-web-app-capable" content="yes">
   	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
-	<link href="screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+	<link href="./css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100' rel='stylesheet' type='text/css'>
+	<link href="./css/font-awesome.min.css" rel="stylesheet">
 	<script src='./vendor/spin.js'></script>
 	<script src="./vendor/moment.js"></script>
+	<script src="./vendor/fileSaver.js"></script>
+	<script src="./vendor/ics.js"></script>
 	<script src="cookies.js"></script>
 	<script src="ajax.js"></script>
 	<script src="config.js"></script>
@@ -24,7 +27,7 @@
 		</div>
 		<div class='background'>
 		 	<legend class='firstTitle'>Meeting name</legend>
-		 	<input type="text" name="title" class="titleInput" required placeholder="Enter a name" value="New Meeting" autofocus>	
+		 	<input type="text" name="title" class="titleInput" required placeholder="&#61508;   Enter a name" value="New Meeting" autofocus>	
 		 	<br>
 		 	<legend class="firstTitle">Meeting Type</legend>
 			<select class="conferenceType" required>
@@ -46,7 +49,7 @@
 			<legend class='durationLabel'>Duration (hours)</legend>
 			<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
 		 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect the meeting with a password</span>
-		 	<input type="password" name="password" class="passwordInput" placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
+		 	<input type="password" name="password" class="passwordInput" placeholder="&#61475;   e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
 		 	<span class='digit'> Digit only</span>
 		 	<div class='copyright fixed'>&copy;Alcatel-Lucent - 2014</div> 	
 		</div>
@@ -57,11 +60,11 @@
 			<h2>SETTINGS</h2>
 			<p>Please enter your OpenTouch credentials to use LIFT</p>
 			<legend class='popupLegend'>Login</legend>
-		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="e.g. jsmith" autofocus>
+		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="&#61447;   e.g. jsmith" autofocus>
 		 	<legend class='popupLegend'>Password</legend>
-		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
+		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="&#61475;   e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
 		 	<legend class='popupLegend'>OpenTouch server</legend>
-		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="e.g. vm-155.alcatel-lucent.com" >
+		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="&#61634;   e.g. vm-155.alcatel-lucent.com" >
 		 	 <button type="action" class="cancelSettingButton">Cancel</button>
 		 	 <button type="action" class="loginButton">Save</button>
 		 	 

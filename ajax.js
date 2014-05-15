@@ -12,58 +12,58 @@
  */
 
 function _request(req) {
-  	// Return a new promise.
-  	return new Promise(function(resolve, reject) {
+    // Return a new promise.
+    return new Promise(function(resolve, reject) {
 
-  		req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
+        req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
-		var http = new XMLHttpRequest;
+        var http = new XMLHttpRequest();
 
-		var parts = req.split('?');
+        var parts = req.split('?');
 
-		http.open("POST", parts[0], true);
-		http.setRequestHeader("Cache-Control", "no-cache");
-		http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        http.open("POST", parts[0], true);
+        http.setRequestHeader("Cache-Control", "no-cache");
+        http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-		http.onreadystatechange = function (arg) {
-			if (http.readyState == 4) {
-				if (http.status === 200) {  
-					var res = null;
+        http.onreadystatechange = function (arg) {
+            if (http.readyState === 4) {
+                if (http.status === 200) {  
+                    var res = null;
 
-					var headers = http.getAllResponseHeaders();
+                    var headers = http.getAllResponseHeaders();
 
-					if(http.responseXML) {
-						res = http.responseXML;
-					}
-					else if(http.responseText) {
-						res = http.responseText;
-					}
-					
-					var msg = {
-						headers: headers,
-						data: res
-					};
+                    if(http.responseXML) {
+                        res = http.responseXML;
+                    }
+                    else if(http.responseText) {
+                        res = http.responseText;
+                    }
+                    
+                    var msg = {
+                        headers: headers,
+                        data: res
+                    };
 
-					resolve(msg);
-				}
-				else {
-					console.log("--- Error", http);
-					reject([null]);
-				}
-			} else {
+                    resolve(msg);
+                }
+                else {
+                    console.log("--- Error", http);
+                    reject([null]);
+                }
+            } else {
 
-			}
-		};
+            }
+        };
 
-		http.send(parts[1]);
+        http.send(parts[1]);
 
-	});
+    });
 }
 
 
 function sendRequest(req, callback, errorCallback, context) {
-	console.log("TO REPLACE -- BAD CODE");
-};
+    console.log("TO REPLACE -- BAD CODE");
+}
 
 /**
  * Log off the logged in user from ACS
@@ -71,28 +71,28 @@ function sendRequest(req, callback, errorCallback, context) {
 
 function logoff() {
 
-	return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-		console.log("--logoff");
+        console.log("--logoff");
 
-		// Logout previous user - if any
-		/*
-		var url = "http://" + host_param + "/ics?action=signout";
+        // Logout previous user - if any
+        /*
+        var url = "http://" + host_param + "/ics?action=signout";
 
-		_request(url).then(function() {
+        _request(url).then(function() {
 
-			console.log("--logOff Successfull");
-			resolve();
-		}, function(err) {
-			console.log("--logOff Error", err);
-			reject();
-		});
-		*/
+            console.log("--logOff Successfull");
+            resolve();
+        }, function(err) {
+            console.log("--logOff Error", err);
+            reject();
+        });
+        */
 
-		resolve();
+        resolve();
 
-	});
-};
+    });
+}
 
 
 /**
@@ -104,31 +104,31 @@ function logoff() {
 
 function login(hostname, username, password) {
 
-	return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-		console.log("--login");
-	
-		//Login with user data
-		var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
+        console.log("--login");
+    
+        //Login with user data
+        var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
 
-		_request(url).then(function(jsonResponse) {
-			console.log("data", jsonResponse);
-			if(jsonResponse && jsonResponse.data !== null) {
-				console.log("--logIn Error");
-				reject();
-			}
-			else {
-				console.log("--logIn Successfull", jsonResponse);
-				resolve();
-			}
-			
-		}, function(err) {
-			console.log("--logIn Error", err);
-			reject();
-		});
+        _request(url).then(function(jsonResponse) {
+            console.log("data", jsonResponse);
+            if(jsonResponse && jsonResponse.data !== null) {
+                console.log("--logIn Error");
+                reject();
+            }
+            else {
+                console.log("--logIn Successfull", jsonResponse);
+                resolve();
+            }
+            
+        }, function(err) {
+            console.log("--logIn Error", err);
+            reject();
+        });
 
-	});
-};
+    });
+}
 
 /**
  * Get global setting from the server
@@ -137,125 +137,125 @@ function login(hostname, username, password) {
 
 function getGlobalSettings() {
 
-	return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-		console.log("--getGlobalSettings");
+        console.log("--getGlobalSettings");
 
-		/* __FIX__ Get the timezone */
-		var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
+        /* __FIX__ Get the timezone */
+        var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
 
-		_request(url).then(function(jsonResponse) {
-			console.log("--getGlobalSettings Successfull", jsonResponse);
-			resolve(jsonResponse);
-		}, function(err) {
-			console.log("--getGlobalSettings Error", err);
-			reject();
-		});
-	});
-};
+        _request(url).then(function(jsonResponse) {
+            console.log("--getGlobalSettings Successfull", jsonResponse);
+            resolve(jsonResponse);
+        }, function(err) {
+            console.log("--getGlobalSettings Error", err);
+            reject();
+        });
+    });
+}
 
 function getListofMeetings() {
 
-	return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-		console.log("--getListofMeetings");
+        console.log("--getListofMeetings");
 
-		var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
+        var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
 
-		_request(url).then(function(jsonResponse) {
-			console.log("--getListofMeetings Successfull");
-			resolve(jsonResponse);
-		}, function(err) {
-			console.log("--getListofMeetings Error", err);
-			reject();
-		});
+        _request(url).then(function(jsonResponse) {
+            console.log("--getListofMeetings Successfull");
+            resolve(jsonResponse);
+        }, function(err) {
+            console.log("--getListofMeetings Error", err);
+            reject();
+        });
 
-	});
-};
+    });
+}
 
 function scheduleMeeting(params) {
 
-	return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
 
-		console.log("--scheduleConference", params);
+        console.log("--scheduleConference", params);
 
-		var day = _getDay(moment(params.start).day() + 1);
+        var day = _getDay(moment(params.start).day() + 1);
 
-		var url = "http://" + host_param + 
-		"/cgi-bin/vcs_conf_schedule?" + 
-		"conf_type=" + params.type + 
-		"&no_audio=false" + 
-		"&calling_disabled=false" + 
-		"&create_callback=true" + 
-		"&timezone=" + params.timezone +  
-		"&start_year=" + params.start.getFullYear() + 
-		"&start_month=" + (params.start.getMonth()+1) +
-		"&start_day=" + params.start.getDate();
+        var url = "http://" + host_param + 
+        "/cgi-bin/vcs_conf_schedule?" + 
+        "conf_type=" + params.type + 
+        "&no_audio=false" + 
+        "&calling_disabled=false" + 
+        "&create_callback=true" + 
+        "&timezone=" + params.timezone +  
+        "&start_year=" + params.start.getFullYear() + 
+        "&start_month=" + (params.start.getMonth()+1) +
+        "&start_day=" + params.start.getDate();
 
-		if(params.modify) {
-			url += "&mod_vanity=" + params.modify;
-		}
-	
-		if(params.type == "scheduled") {
-			url += "&start_hour=" + params.start.getHours() +
-			"&start_min=" + params.start.getMinutes() +
-			"&start_sec=" + params.start.getSeconds() +
-			"&duration_hours=" + params.duration;
+        if(params.modify) {
+            url += "&mod_vanity=" + params.modify;
+        }
+    
+        if(params.type === "scheduled") {
+            url += "&start_hour=" + params.start.getHours() +
+            "&start_min=" + params.start.getMinutes() +
+            "&start_sec=" + params.start.getSeconds() +
+            "&duration_hours=" + params.duration;
 
-			switch (params.recurrence) {
-				case 'none':
-					url += "&num_occurrences=1";
-				break;
-				case 'dayly':
-					url += "&recurrence=D-WE" +
-					"&end_year=" + params.end.getFullYear() +  
-					"&end_month=" + (params.end.getMonth()+1) +
-					"&end_day=" + params.end.getDate() +
-					"&end_hour=" + params.end.getHours() +
-					"&end_min=" + params.end.getMinutes() +
-					"&end_sec=" + params.end.getSeconds(); 
-				break;
-				case 'weekly':
-					url += "&recurrence=W-1-" + day +
-					"&end_year=" + params.end.getFullYear() +  
-					"&end_month=" + (params.end.getMonth()+1) +
-					"&end_day=" + params.end.getDate() +
-					"&end_hour=" + params.end.getHours() +
-					"&end_min=" + params.end.getMinutes() +
-					"&end_sec=" + params.end.getSeconds(); 
-				break;
-			}
-		}
-		else {
-			url += "&start_hour=0" +
-			"&start_min=0" +
-			"&start_sec=0" +
-			"&end_year=" + params.end.getFullYear() +  
-			"&end_month=" + (params.end.getMonth()+1) +
-			"&end_day=" + params.end.getDate() +
-			"&end_hour=" + params.end.getHours() +
-			"&end_min=" + params.end.getMinutes() +
-			"&end_sec=" + params.end.getSeconds(); 
-		}
+            switch (params.recurrence) {
+                case 'none':
+                    url += "&num_occurrences=1";
+                break;
+                case 'dayly':
+                    url += "&recurrence=D-WE" +
+                    "&end_year=" + params.end.getFullYear() +  
+                    "&end_month=" + (params.end.getMonth()+1) +
+                    "&end_day=" + params.end.getDate() +
+                    "&end_hour=" + params.end.getHours() +
+                    "&end_min=" + params.end.getMinutes() +
+                    "&end_sec=" + params.end.getSeconds(); 
+                break;
+                case 'weekly':
+                    url += "&recurrence=W-1-" + day +
+                    "&end_year=" + params.end.getFullYear() +  
+                    "&end_month=" + (params.end.getMonth()+1) +
+                    "&end_day=" + params.end.getDate() +
+                    "&end_hour=" + params.end.getHours() +
+                    "&end_min=" + params.end.getMinutes() +
+                    "&end_sec=" + params.end.getSeconds(); 
+                break;
+            }
+        }
+        else {
+            url += "&start_hour=0" +
+            "&start_min=0" +
+            "&start_sec=0" +
+            "&end_year=" + params.end.getFullYear() +  
+            "&end_month=" + (params.end.getMonth()+1) +
+            "&end_day=" + params.end.getDate() +
+            "&end_hour=" + params.end.getHours() +
+            "&end_min=" + params.end.getMinutes() +
+            "&end_sec=" + params.end.getSeconds(); 
+        }
 
-		url += "&subject=" + params.title;
+        url += "&subject=" + params.title;
 
-		if(params.password) {
-			url += "&web_password=" + params.password;
-			url += "&audio_password=" + params.password;
-		}
+        if(params.password) {
+            url += "&web_password=" + params.password;
+            url += "&audio_password=" + params.password;
+        }
 
-		_request(url).then(function(jsonResponse) {
-			console.log("--scheduleConference Successfull");
-			resolve(jsonResponse);
-		}, function(err) {
-			console.log("--scheduleConference Error", err);
-			reject();
-		});
+        _request(url).then(function(jsonResponse) {
+            console.log("--scheduleConference Successfull");
+            resolve(jsonResponse);
+        }, function(err) {
+            console.log("--scheduleConference Error", err);
+            reject();
+        });
 
-	});
+    });
 
-};
+}
 
 /**
  * Delete a meeting
@@ -265,40 +265,40 @@ function scheduleMeeting(params) {
 
 function deleteMeeting(hostname, vanity) {
 
-	console.log("hostname, vanity", hostname, vanity);
-	
-	return new Promise(function(resolve, reject) {
+    console.log("hostname, vanity", hostname, vanity);
+    
+    return new Promise(function(resolve, reject) {
 
-		console.log("--deleteMeeting");
+        console.log("--deleteMeeting");
 
-		var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
-		
-		_request(url).then(function(jsonResponse) {
-			console.log("--deleteMeeting Successfull");
-			resolve(jsonResponse);
-		}, function(err) {
-			console.log("--deleteMeeting Error", err);
-			reject();
-		});
+        var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
+        
+        _request(url).then(function(jsonResponse) {
+            console.log("--deleteMeeting Successfull");
+            resolve(jsonResponse);
+        }, function(err) {
+            console.log("--deleteMeeting Error", err);
+            reject();
+        });
 
-	});
-};
+    });
+}
 
 function _getDay(day) {
-	switch (day) {
-		case 1:
-			return 'SUN';
-		case 2:
-			return 'MON';
-		case 3:
-			return 'TUE';
-		case 4:
-			return 'WED';
-		case 5:
-			return 'THU';
-		case 6:
-			return 'FRI';
-		case 7:
-			return 'SAT';
-	}
+    switch (day) {
+        case 1:
+            return 'SUN';
+        case 2:
+            return 'MON';
+        case 3:
+            return 'TUE';
+        case 4:
+            return 'WED';
+        case 5:
+            return 'THU';
+        case 6:
+            return 'FRI';
+        case 7:
+            return 'SAT';
+    }
 }

@@ -1,0 +1,808 @@
+	html {
+	overflow: hidden;
+	min-height: 500px;
+}
+
+@font-face
+{
+	font-family: clanot-thin;
+	src: url("../fonts/ClanOT-Thin_0.otf");
+	-webkit-font-smoothing: antialiased;
+}
+
+@font-face
+{
+	font-family: clanot-book;
+	src: url("../fonts/ClanOT-Book_0.otf");
+	-webkit-font-smoothing: antialiased;
+}
+
+@font-face
+{
+	font-family: clanot-news;
+	src: url("../fonts/ClanOT-News_0.otf");
+	-webkit-font-smoothing: antialiased;
+} 
+
+@font-face
+{
+	font-family: clanot-medium;
+	src: url("../fonts/ClanOT-Medium_.otf");
+	-webkit-font-smoothing: antialiased;
+}    
+
+body {
+	font-family: "Roboto",sans-serif;
+	background-color: #fff;
+	font-size:90%;
+	width: 350px;
+	min-height: 500px;
+	overflow: hidden;
+	margin: 0;
+}
+
+h2 {
+	font-family: "Roboto",sans-serif;
+	font-size: 20px;
+	font-weight: 400;
+}
+
+p {
+	font-family: "Roboto",sans-serif;
+	font-weight: 100;
+	font-size: 12px;
+	/*margin-bottom: 30px;*/
+}
+
+a {
+	color: #ffffff;
+}
+
+a:visited {
+	color: #ffffff;
+}
+
+legend {
+	color: #4E5256;;
+	font-weight: 500;
+	font-size: 12px;
+}
+
+label {
+	margin-top:20px;
+	padding-top: 20px;
+	display:block;
+}
+
+input {
+	position: relative;
+font-weight: 300;
+font-family: "Roboto",sans-serif;
+font-size: 14px;
+height: 28px;
+line-height: 28px;
+border: 1px solid #666A6F;;
+background-color: #666A6F;;
+font-size: 14px;
+/* display: block; */
+min-height: 22px;
+margin-bottom: 25px;
+margin-top: 5px;
+outline: none;
+}
+
+input::-webkit-input-placeholder {
+    font-family:'FontAwesome';
+}
+
+input:disabled {
+	background-color: #F0F0EF;
+	border-color: #F0F0EF;
+	color: #A9A9A9;
+}
+
+
+
+select {
+font-size: 14px;
+font-family: "Roboto",sans-serif;
+line-height: 33px;
+min-height: 22px;
+height: 33px;
+border: 1px solid #666A6F;;
+background-color: #666A6F;;
+display: block;
+margin-top: 5px;
+outline: none;
+}
+
+select:disabled {
+	background-color: #E1E5EE;
+	border-color: #E1E5EE;
+	color: #A9A9A9;
+}
+
+select:hover {
+	background-color: #72539E;
+	border-color: #72539E;
+}
+
+select option {
+    background: rgba(0,0,0,0.3);
+}
+
+.background {
+	background-color: #fff; /* #25190E */;
+	padding-top: 20px;
+	height: 450px;
+}
+
+.logo {
+	position: absolute;
+	top: 9px;
+	left: 9px;
+}
+
+.masked {
+	display: none;
+}
+
+.displayed {
+	display: block;
+	pointer-events: auto;
+}
+
+.options {
+	height: 40px;
+}
+
+.actionButton {
+	border: 0; 
+	background-color: #666A6F;/*4790D2 */
+	font-family: "Roboto",sans-serif;
+	color: #ffffff;
+	text-align: center;
+	cursor: pointer;
+	min-height: 30px;
+	height: 30px;
+	display: inline-block;
+	outline: none; 
+}
+
+.actionButton:hover {
+	background-color: #72539E; /*#3373A9*/
+}
+
+.meetingActionButton {
+	font-family: "Roboto",sans-serif;
+	color: #ffffff;
+	text-align: center;
+	cursor: pointer;
+	min-height: 30px;
+	height: 30px;
+	display: inline-block;
+	outline: none; 
+}
+
+.left {
+	position: relative;
+	width: 175px;
+	height: 40px;
+	font-size: 12px;
+	font-weight: 100;
+}
+
+
+
+.right {
+	position: absolute;
+	width: 175px;
+	left: 175px;
+	height: 40px;
+	font-size: 12px;
+	font-weight: 100;
+	border-left: 1px solid #999; /*#5CA1E7*/
+}
+
+.endDateLabel {
+	position: absolute;
+	left: 190px;
+	top: 281px;
+}
+
+.recurrenceLabel {
+	position: absolute;
+	left: 190px;
+	top: 196px;
+}
+
+.durationLabel {
+	position: absolute;
+	left: 190px;
+	top: 364px;
+}
+
+.endDateInput {
+	position: absolute;
+	left: 190px;
+	width: 138px;
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+}
+
+.endDateInput {
+	 background-color: #72539E;
+	 border-color:  #72539E;
+}
+
+.meetingPassword {
+	position: relative;
+	top: -10px;
+	color: #4E5256;;
+	font-weight: 500;
+	font-size: 12px;
+	}
+
+.passwordCheck {
+	margin-bottom: 0;
+	border: 1px solid #B47237;
+	background-color: #B47237;
+	margin-left: 12px;
+}
+
+.firstTitle {
+	margin-left: 10px;
+}
+
+.titleInput {
+	padding-left: 10px;
+	margin-left: 10px;
+	margin-bottom: 32px;
+	margin-right: 10px;
+	width: 320px;
+	color: #fff;
+	font-weight: 100;
+}
+
+.titleInput:hover {
+background-color: #72539E;
+	border-color: #72539E;
+}
+
+.recurrenceType {
+	width: 150px;
+	/* height: 25px; */
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+	position: absolute;
+	left: 190px;
+	top: 211px;
+}
+
+
+.conferenceType {
+width: 150px;
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+margin-left: 10px;
+margin-bottom: 32px;
+}
+
+.conferenceType:hover {
+	background-color: #72539E;
+	border-color: #72539E;
+}
+
+.dateInput {
+	width: 138px;
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+	margin-left: 10px;
+	margin-bottom: 32px;
+}
+
+.dateInput:hover {
+background-color: #72539E;
+	border-color: #72539E;
+}
+
+.passwordInput {
+	width: 140px;
+	padding-left: 10px;
+	margin-left: 10px;
+	color: #fff;
+	font-weight: 100;
+}
+
+.passwordInput:hover {
+background-color: #72539E;
+	border-color: #72539E;
+}
+
+.digit {
+	font-family: "Roboto",sans-serif;
+	font-weight: 500;
+	color: #4E5256;;
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+.firstLine {
+	margin-top: 30px;
+}
+
+.leader, .participant {
+	font-weight: 400;
+	margin-top: 30px;
+}
+
+.startTimeInput {
+	width: 75px;
+padding-left: 10px;
+display: block;
+color: #fff;
+font-weight: 100;
+margin-left: 10px;
+margin-bottom: 26px;
+}
+
+.startTimeInput:hover {
+background-color: #72539E;
+	border-color: #72539E;
+}
+
+.durationInput {
+	width: 75px;
+	position: absolute;
+	left: 190px;
+	height: 27px;
+	top: 379px;
+	padding-left: 10px;
+	color: #fff;
+	font-weight: 100;
+}
+
+.durationInput:hover {
+background-color: #72539E;
+	border-color: #72539E;
+}
+
+.result {
+	font-style: italic;
+}
+
+.title {
+	line-height: 50px;
+	background-color:  #4E5256; /*#262D40*/
+	width: 100%;
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 300;
+	text-align: left;
+	padding-left: 49px;
+	border-bottom: 1px solid #999;
+}
+
+.loginButton, .cancelSettingButton {
+ 	border: 1px solid #4E5256;
+	background-color: #4E5256;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	margin: 10px 10px 10px 0;
+	min-height: 30px;
+	line-height: 30px;
+	display: inline-block;
+	outline: none; 
+}
+
+.loginButton:hover, .cancelSettingButton:hover {
+	background-color: #72539E;
+	border: 1px solid #72539E;
+}
+
+.loginButton:disabled, #createBtn:disabled {
+	background-color: #D1D5D8;
+	border: 1px solid #D1D5D8;
+	cursor:default;
+}
+
+.left:disabled {
+	background-color: #F0F0EF;
+}
+
+.createButton {
+ 	border: 1px solid #155F7E;
+	background-color: #155F7E;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	margin: 30px auto 5px auto;
+	min-height: 30px;
+	line-height: 30px;
+	display: block;
+	outline: none; 
+}
+
+.createButton:hover {
+	background-color: #0F4257;
+}
+
+:invalid { 
+/*	
+  border-color: #2980B9;
+  background-color: #2980B9;
+  -webkit-box-shadow: 0 0 5px #2980B9;
+  box-shadow:0 0 5px #2980B9;
+  color: #ffffff;
+  */
+}
+
+:required {
+  /*border-color: #2980B9; */
+  /*-webkit-box-shadow: 0 0 5px #2980B9; */
+}
+
+.okP {
+	margin-bottom: 0;
+}
+
+.meetingFiles {
+	position: absolute;
+	top: 40px;
+	right: 8px;
+	font-family: "Roboto",sans-serif;
+	font-weight: 400;
+	font-size: 9px;
+	color: #5A676C;
+	text-align: right;
+	width: 100px;
+}
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.4);
+	z-index: 99999;
+	display: none;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+
+.error {
+	font-weight: 400;
+}
+
+.visible {
+	display:block;
+	pointer-events: auto;
+}
+
+.blur {
+	-webkit-filter: grayscale(0.5) blur(2px);
+}
+
+.registerInput {
+	width: 94%;
+  	height: 25px;
+  	margin-bottom: 10px;
+  	padding-left: 15px;
+  	background: #fff;
+  	border: none;
+  	color: #4E5256;
+  	outline: none;
+}
+
+.popup {
+	width: 260px;
+	position: relative;
+	margin: 140px auto;
+	padding: 5px 20px 13px 20px;
+	background-color: #666A6F;
+	color: #ffffff;
+}
+
+.popupSettings {
+	width: 260px;
+	position: relative;
+	margin: 77px auto;
+	padding: 5px 20px 13px 20px;
+	background-color: #666A6F; /*#2980B9;*/
+	color: #ffffff;
+}
+
+.popupLegend {
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: 100;
+	margin-top: 6px;
+	font-family: "Roboto",sans-serif;
+}
+
+.checkResult {
+	color: #ffffff;
+	font-weight: 400;
+	margin-top: 6px;
+	font-family: "Roboto",sans-serif;
+}
+
+.meetings {
+	position: relative;
+	list-style: none;
+	height: 450px;
+	width: 100%;
+	margin: 0;
+	-webkit-padding-start: 0px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+li.buddies-item {
+position: relative;
+cursor: pointer;
+height: 120px;
+width: 100%;
+background-color: #fff;
+border-bottom: 1px solid #efefef;
+}
+
+li.buddies-item:hover {
+	background-color: #F0F0EF; /*#DBE0E4*/
+}
+
+.meetingTitle {
+	font-family: "Roboto",sans-serif;
+font-weight: 300;
+font-size: 14px;
+color: #434757;
+position: absolute;
+top: 45px;
+left: 16px;
+width: 290px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+
+
+.meetingStartDate {
+font-family: "Roboto",sans-serif;
+font-weight: 300;
+font-size: 11px;
+color: #0F4257;
+position: absolute;
+top: 6px;
+left: 16px;
+/* width: 225px; */
+/* padding: 1px 4px 1px 4px; */
+/* background-color: #efefef; */
+/* border-radius: 10px; */
+}
+
+.meetingStartDateNext {
+font-family: "Roboto",sans-serif;
+font-weight: 400;
+font-size: 9px;
+color: #5A676C;
+position: absolute;
+top: 23px;
+left: 16px;
+width: 225px;
+}
+
+.meetingTime {
+font-family: "Roboto",sans-serif;
+font-weight: 300;
+font-size: 10px;
+color: #fff;
+position: absolute;
+top: 6px;
+right: 8px;
+text-align: right;
+background-color: #9B9D9C; /*#9D55B9;*/
+padding: 1px 4px 1px 4px;
+border-radius: 4px;
+}
+
+.meetingTimezone {
+font-family: "Roboto",sans-serif;
+font-weight: 400;
+font-size: 9px;
+color: #5A676C;
+position: absolute;
+top: 23px;
+right: 8px;
+width: 100px;
+text-align: right;
+}
+
+.meetingState {
+	font-family: "Roboto",sans-serif;
+font-weight: 400;
+font-size: 10px;
+color: #AAA7B5;
+position: absolute;
+top: 60px;
+left: 16px;
+width: 300px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.meetingRemoveButton {
+	position: absolute;
+	padding: 0 5px 0 5px;
+	height: 20px;
+	line-height: 20px;
+	min-height: 20px;
+	right: 8px;
+	top: 90px;
+	font-size: 10px;
+	font-weight: 300;
+	background-color: #BF1E45;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingRemoveButton:hover {
+	background-color: #A71B3D; /*#6F6C6C;*/
+}
+
+.meetingEditButton {
+	position: absolute;
+	width: 48px;
+	height: 20px;
+	line-height: 20px;
+	min-height: 20px;
+	right: 60px;
+	top: 90px;
+	font-size: 10px;
+	font-weight: 300;
+	background-color: #6E8391;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingEditButton:hover {
+	background-color: #5D6F7A;
+}
+
+.meetingShareButton {
+	position: absolute;
+	width: 48px;
+	height: 20px;
+	min-height: 20px;
+	right: 113px;
+	top: 90px;
+	font-size: 10px;
+	font-weight: 300;
+	background-color: #6E8391;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingShareButton:hover {
+	background-color: #5D6F7A;
+}
+
+.meetingDetailsButton {
+	position: absolute;
+	width: 55px;
+	height: 20px;
+	min-height: 20px;
+	left: 16px;
+	top: 90px;
+	font-size: 10px;
+	font-weight: 300;
+	background-color: #2C3E48;
+	border-radius: 2px;
+	border: 0;
+}
+
+.meetingDetailsButton:hover {
+	background-color: #1E2B31; /*#76A214;*/
+}
+
+.spinner {
+	position: absolute;
+	top: 90px;
+	width: 350px;
+	height: 410px;
+}
+
+.empty {
+	position: absolute;
+	top: 100px;
+	width: 350px;
+	height: 400px;
+}
+
+.emptyTitle {
+position: relative;
+width: 100%;
+text-align: center;
+font-size: 18px;
+margin-top: 10px;
+font-weight: 400;
+color: #155F7E;
+/* font-family: "Roboto",sans-serif; */
+}
+
+.emptyMessage {
+	position: relative;
+width: 150px;
+margin: 10px auto 0 auto;
+text-align: center;
+font-size: 12px;
+/* margin-top: 10px; */
+font-weight: 100;
+color: #155F7E;
+}
+
+.emptyLogo {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	margin: 100px auto 0 auto;
+	display: block;
+}
+
+.copyright {
+	font-family: "Roboto",sans-serif;
+font-weight: 100;
+color: #efefef;
+text-align: center;
+width: 100%;
+font-size: 11px;
+height: 20px;
+line-height: 20px;
+background-color: #4E5256; /*#262D40*/
+}
+
+.fixed {
+	position: fixed;
+	bottom: 0;
+}
+
+.meeting-not_begun {
+	background-color: #F0F0EF;
+}
+
+.meeting-ended {
+	background-color: #F0F0EF;
+}
+
+.meeting-inactive {
+	background-color: #F0F0EF; /*rgba(105, 105, 105, 0.25);*/
+}
+
+.meeting-active {
+	background-color: #D79F29; /*#F1C212;*/
+}
+
+.meeting-state {
+	position: absolute;
+	top: 0;
+	height: 120px;
+	width: 9px;
+}
+
+

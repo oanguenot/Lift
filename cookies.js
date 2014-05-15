@@ -14,21 +14,21 @@
  */
 
 function createCookie(name,value,days) {
-	try {
-		var expires;
-		if (days) {
-			var date = new Date();
-			date.setTime(date.getTime()+(days*24*60*60*1000));
-			expires = "; expires="+date.toGMTString();
-		}
-		else {
-			expires = "";
-		}
-		document.cookie = name+"="+value+expires+"; path=/";
-	} catch (err) {
-		console.log("error create cookie:" + err);
-	}
-};
+    try {
+        var expires;
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            expires = "; expires="+date.toGMTString();
+        }
+        else {
+            expires = "";
+        }
+        document.cookie = name+"="+value+expires+"; path=/";
+    } catch (err) {
+        console.log("error create cookie:" + err);
+    }
+}
 
 /**
  * Read cookie
@@ -36,23 +36,23 @@ function createCookie(name,value,days) {
  */
 
 function readCookie(name) {
-	try {
-		var nameEQ = name + "=";
-		var ca = document.cookie.split(';');
-		for(var i=0;i < ca.length;i++) {
-			var c = ca[i];
-			while (c.charAt(0)==' ') {
-				c = c.substring(1,c.length);
-			}
-			if (c.indexOf(nameEQ) == 0) {
-				return c.substring(nameEQ.length,c.length);
-			}
-		}
-		return null;
-	} catch (err) {
-		console.log("error read cookie:" + err);
-	}
-};
+    try {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') {
+                c = c.substring(1,c.length);
+            }
+            if (c.indexOf(nameEQ) == 0) {
+                return c.substring(nameEQ.length,c.length);
+            }
+        }
+        return null;
+    } catch (err) {
+        console.log("error read cookie:" + err);
+    }
+}
 
 /**
  * Delete cookie
@@ -60,17 +60,17 @@ function readCookie(name) {
  */
  
 function eraseCookie(name) {
-	try {
-		var value = readCookie(name);
-		if (value) {
-			createCookie(name, value, -1);
-			return true;
-		}
-		return false;
-	} catch (err) {
-		console.log("error erase cookie:" + err);
-	}
-};
+    try {
+        var value = readCookie(name);
+        if (value) {
+            createCookie(name, value, -1);
+            return true;
+        }
+        return false;
+    } catch (err) {
+        console.log("error erase cookie:" + err);
+    }
+}
 
 /**
  * Delete all created cookies
@@ -82,69 +82,69 @@ function eraseCookie(name) {
 
 function deletePreviouslyUsedCookies() {
 
-	// Return a new promise.
-  	return new Promise(function(resolve, reject) {
+    // Return a new promise.
+    return new Promise(function(resolve, reject) {
 
-		try {
-			console.log("--deletePreviouslyUsedCookies");
-			//eraseCookie("s_fid");
-			//eraseCookie("AlcUserId");
-			//eraseCookie("OTUCSSO");
-			//eraseCookie("ed_client_tag.");
-			//eraseCookie("ics.login.0.");
-			//eraseCookie("ics.login.1.");
-			//eraseCookie("ics.login.2.");
-			//eraseCookie("edial_vcs2.login");
-			//eraseCookie("edial_vcs2.login_persistent");
-			//eraseCookie("ed_client_guid.");
-			//eraseCookie("edial_vcs2.remember_pw");
-			//eraseCookie("ed_usernum");
+        try {
+            console.log("--deletePreviouslyUsedCookies");
+            //eraseCookie("s_fid");
+            //eraseCookie("AlcUserId");
+            //eraseCookie("OTUCSSO");
+            //eraseCookie("ed_client_tag.");
+            //eraseCookie("ics.login.0.");
+            //eraseCookie("ics.login.1.");
+            //eraseCookie("ics.login.2.");
+            //eraseCookie("edial_vcs2.login");
+            //eraseCookie("edial_vcs2.login_persistent");
+            //eraseCookie("ed_client_guid.");
+            //eraseCookie("edial_vcs2.remember_pw");
+            //eraseCookie("ed_usernum");
 
-			/*
-			var domain = host_param.substring(host_param.indexOf('.') +1);
-			console.log("--deletePreviouslyUsedCookies - Domain:", domain);
+            /*
+            var domain = host_param.substring(host_param.indexOf('.') +1);
+            console.log("--deletePreviouslyUsedCookies - Domain:", domain);
 
-			chrome.cookies.getAll({domain: domain}, function(cookies) {
-		    	var cookieNb = cookies.length;
-		    	var cookieDeleted = 0;
+            chrome.cookies.getAll({domain: domain}, function(cookies) {
+                var cookieNb = cookies.length;
+                var cookieDeleted = 0;
 
-		    	console.log("--deletePreviouslyUsedCookies - Cookies found:", cookieNb, cookies);
+                console.log("--deletePreviouslyUsedCookies - Cookies found:", cookieNb, cookies);
 
-		    	if(cookieNb > 0) {
-		    		for(var i=0; i<cookies.length;i++) {
-			        	console.log("--deletePreviouslyUsedCookies - Delete:", cookies[i].name);
-			        	chrome.cookies.remove({url: "http://" + host_param + cookies[i].path, name: cookies[i].name}, function(details) {
-			        		console.log("--deletePreviouslyUsedCookies - Deleted:", details.name);
-			        		cookieDeleted++;
-			        		if(cookieDeleted === cookieNb) {
-			        			console.log("--deletePreviouslyUsedCookies Successfull - All cookie deleted");
-			        			resolve();
-			        		}
-			        	});
-			    	}
-		    	}
-		    	else {
-		    		console.log("--deletePreviouslyUsedCookies Successfull - No cookie deleted");
-		    		resolve();
-		    	}
-		    	
-			});
-			*/
+                if(cookieNb > 0) {
+                    for(var i=0; i<cookies.length;i++) {
+                        console.log("--deletePreviouslyUsedCookies - Delete:", cookies[i].name);
+                        chrome.cookies.remove({url: "http://" + host_param + cookies[i].path, name: cookies[i].name}, function(details) {
+                            console.log("--deletePreviouslyUsedCookies - Deleted:", details.name);
+                            cookieDeleted++;
+                            if(cookieDeleted === cookieNb) {
+                                console.log("--deletePreviouslyUsedCookies Successfull - All cookie deleted");
+                                resolve();
+                            }
+                        });
+                    }
+                }
+                else {
+                    console.log("--deletePreviouslyUsedCookies Successfull - No cookie deleted");
+                    resolve();
+                }
+                
+            });
+            */
 
-			resolve();
-		}
-		catch(error) {
-			console.log("--deletePreviouslyUsedCookies Error", error);
-			reject(error);
-		}
-	});		
+            resolve();
+        }
+        catch(error) {
+            console.log("--deletePreviouslyUsedCookies Error", error);
+            reject(error);
+        }
+    });     
 
-};
+}
 
 /**
  * Listener on cookies change
  */
 
 chrome.cookies.onChanged.addListener(function(info) {
-	//console.log("onChanged" + JSON.stringify(info));
-});
+    //console.log("onChanged" + JSON.stringify(info));
+})
