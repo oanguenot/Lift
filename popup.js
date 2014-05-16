@@ -50,10 +50,6 @@ var timezone = "Europe/Paris";
 var confType = "scheduled";
 var recurrenceValue = 'none';
 
-var that = this;
-var isNotificationAllowed = false;
-
-var STATE = 'disconnected';
 var loaded = false;
 
 var startMeeting = new Date();
@@ -82,9 +78,6 @@ function init() {
     var closeLoginButton = document.querySelector('#closeLoginButton');
     var settingBtn = document.querySelector('#settingBtn');
 
-    var editor = document.querySelector('#editor');
-
-    var meetings = document.querySelector('#list');
     var createBtn = document.querySelector('#createBtn');
 
     var cancelBtn = document.querySelector('#cancelBtn');
@@ -118,26 +111,17 @@ function init() {
     recurrence.onchange = function() {
         recurrenceValue = recurrence.value;
         updateGUI();
-    }
+    };
     
-    confTypeElt.onchange = function(event) {
+    confTypeElt.onchange = function() {
         confType = confTypeElt.value;
         updateGUI();
     };
     
-    confPassword.onchange = function(event) {
+    confPassword.onchange = function() {
         document.querySelector('.passwordInput').disabled = !event.target.checked;
         if(!event.target.checked) {
             document.querySelector('.passwordInput').value = '';
-        }
-    };
-    
-    checkLoginButton = function() {
-        if(loginField.value.length && passwordField.value.length && otField.value.length) {
-            loginButton.disabled = false;
-        }
-        else {
-            loginButton.disabled = true;
         }
     };
     
@@ -285,7 +269,7 @@ function hideMeetingEditor() {
 }
 
 function updateGUI() {
-    if(confType == "scheduled") {
+    if(confType === "scheduled") {
         document.querySelector('.durationInput').disabled = false;
         document.querySelector('.startTimeInput').disabled = false;
         document.querySelector(".startTimeInput").value = startMeeting.toLocaleTimeString().substr(0, 5);
@@ -325,7 +309,7 @@ function schedule() {
 
     var end = document.querySelector(".endDateInput").value;
     timestamp = Date.parse(end + " " + "23:59");
-    date_end = new Date(timestamp);
+    var date_end = new Date(timestamp);
 
     var hasPassword = document.querySelector(".passwordCheck").checked;
 
@@ -384,7 +368,7 @@ function displayResult(response, isModified) {
     if(xml) {
 
         var code = xml.getElementsByTagName("message")[0].getAttribute("type");
-        if(code == "error") {
+        if(code === "error") {
             var reason = xml.getElementsByTagName("message")[0].children[0].innerHTML;
 
             var err = document.querySelector('.error');
@@ -441,7 +425,7 @@ function displayResult(response, isModified) {
                 b.innerHTML = urlParticipant;
                 b.onclick = function() {
                     window.open(urlParticipant,"_blank"); 
-                }
+                };
 
                 var participantNode = document.querySelector('.participantURL');
                 while (participantNode.firstChild) {
@@ -450,19 +434,18 @@ function displayResult(response, isModified) {
                 participantNode.appendChild( b );
             }
 
-            var ok = document.querySelector('#okModal').classList.add('visible');
-            var editor = document.querySelector('#editor').classList.add('blur');
+            document.querySelector('#okModal').classList.add('visible');
+            document.querySelector('#editor').classList.add('blur');
             var clearButton = document.querySelector('#clearButton');
             clearButton.onclick = function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                var ok= document.querySelector('#okModal').classList.remove('visible');
-                var editor= document.querySelector('#editor');
-                editor.classList.remove('blur');
+                document.querySelector('#okModal').classList.remove('visible');
+                document.querySelector('#editor').classList.remove('blur');
                 hideMeetingEditor();
                 displaySpinner();
                 // Get the list of Meetings
-                return(getListofMeetings())
+                getListofMeetings()
                 .then(function(jsonResponse) {
                     // Display meetings
                     displayMeetings(jsonResponse);
@@ -499,7 +482,7 @@ function displayMeetings(response) {
 
             hideEmptyArea();
 
-            for(var i=0, len=conference.length;i<len;i++) {
+            for(var i=0; i<len; i++) {
                 displayMeeting(conference[i]);
             }   
         }
@@ -522,9 +505,10 @@ function displayMeeting(xml) {
     if(xml.getElementsByTagName("subject")[0]) {
         subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
     }
-    var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
-    var name = from.substr(0, from.indexOf('@'));
-    var company = from.substring(from.indexOf('@') + 1);
+    
+    //var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+    //var name = from.substr(0, from.indexOf('@'));
+    //var company = from.substring(from.indexOf('@') + 1);
     var day = xml.getElementsByTagName('time')[0].getElementsByTagName('day')[0].textContent;
     var month = xml.getElementsByTagName('time')[0].getElementsByTagName('month')[0].textContent;
     var year = xml.getElementsByTagName('time')[0].getElementsByTagName('year')[0].textContent;
@@ -546,34 +530,34 @@ function displayMeeting(xml) {
     }
 
     var hour = xml.getElementsByTagName("hour")[0].childNodes[0].nodeValue;
-    if(parseInt(hour, 10) == 0)  {
+    if(parseInt(hour, 10) === 0)  {
         hour = "00";
     } else if (parseInt(hour, 10) < 10) {
         hour = "0" + hour;
     }
     
     var minute = xml.getElementsByTagName("minute")[0].childNodes[0].nodeValue;
-    if(parseInt(minute, 10) == 0) {
+    if(parseInt(minute, 10) === 0) {
         minute = "00";
     } else if (parseInt(minute, 10) < 10) {
         minute = "0" + minute;
     }
 
     var hour_end = xml.getElementsByTagName("hour")[1].childNodes[0].nodeValue;
-    if(parseInt(hour_end, 10) == 0) {
+    if(parseInt(hour_end, 10) === 0) {
         hour_end = "00";
     } else if(parseInt(hour_end, 10) < 10) {
         hour_end = "0" + hour_end;
     }
     
     var minute_end = xml.getElementsByTagName("minute")[1].childNodes[0].nodeValue;
-    if(parseInt(minute_end, 10) == 0) {
+    if(parseInt(minute_end, 10) === 0) {
         minute_end = "00";
     } else if(parseInt(minute_end, 10) < 10) {
         minute_end = "0" + minute_end;
     }
 
-    var duration = parseInt(hour_end, 10) - parseInt(hour, 10);
+    duration = parseInt(hour_end, 10) - parseInt(hour, 10);
 
     var timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
     var vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
@@ -627,7 +611,7 @@ function displayMeeting(xml) {
 
     item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
 
-    if(typeConf == "scheduled") {
+    if(typeConf === "scheduled") {
 
         var startTimeString = startDate.format('HH:mm');
         var endTimeString = hour_end + ":" + minute_end;
@@ -671,10 +655,10 @@ function displayMeeting(xml) {
         else if (days > 1) {
             item.innerHTML += '<span class="meetingTimezone">' + days + " days left" + '</span>';
         }
-        else if (days == 1) {
+        else if (days === 1) {
             item.innerHTML += '<span class="meetingTimezone">' + days + " day left" + '</span>';
         }
-        else if (days == 0) {
+        else if (days === 0) {
             item.innerHTML += '<span class="meetingTimezone">' + "Expires today" + '</span>';
         }
         else {
@@ -783,7 +767,7 @@ function displayMeeting(xml) {
         a.innerHTML = leaderURL;
         a.onclick = function() {
             window.open(leaderURL,"_blank"); 
-        }
+        };
 
         var leaderNode = document.querySelector('.leaderURL');
         while (leaderNode.firstChild) {
@@ -800,7 +784,7 @@ function displayMeeting(xml) {
         b.innerHTML = participantURL;
         b.onclick = function() {
             window.open(participantURL,"_blank"); 
-        }
+        };
 
         var participantNode = document.querySelector('.participantURL');
         while (participantNode.firstChild) {
@@ -828,7 +812,7 @@ function shareMeeting(meeting) {
     var cal = ics();
 
     if(meeting.type === 'scheduled') {
-        console.log("meeting", meeting.start)
+        console.log("meeting", meeting.start);
     }
 
     cal.addEvent(meeting.title, "You have been invited to the following meeting", "", meeting.start, meeting.end);
@@ -848,10 +832,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-document.addEventListener("unload", function (event) {
-   logoff();
-}, true);
-
 function onInitialize() {
     // Initialize the extension
     init();
@@ -860,6 +840,7 @@ function onInitialize() {
 }
 
 function onLoad() {
+    console.log("coucou");
     //Signout from previous session
     erasePreviousUserData();
 }
@@ -922,11 +903,11 @@ function erasePreviousUserData() {
 }
 
 function enableCreateNewMeetingButton() {
-    createBtn.disabled = false;
+    document.querySelector('#createBtn').disabled = false;
 }
 
 function disableCreateNewMeetingButton() {
-    createBtn.disabled = true;
+    document.querySelector('#createBtn').disabled = true;
 }
 
 function displayErrorLogin() {
@@ -980,7 +961,7 @@ function displaySpinner() {
 
 function hideSpinner() {
     if(spinner) {
-        spinner.stop()
+        spinner.stop();
         spinner = null; 
     }
     

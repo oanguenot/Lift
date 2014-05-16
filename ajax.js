@@ -25,7 +25,7 @@ function _request(req) {
         http.setRequestHeader("Cache-Control", "no-cache");
         http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        http.onreadystatechange = function (arg) {
+        http.onreadystatechange = function () {
             if (http.readyState === 4) {
                 if (http.status === 200) {  
                     var res = null;
@@ -60,15 +60,10 @@ function _request(req) {
     });
 }
 
-
-function sendRequest(req, callback, errorCallback, context) {
-    console.log("TO REPLACE -- BAD CODE");
-}
-
 /**
  * Log off the logged in user from ACS
  */
-
+/*
 function logoff() {
 
     return new Promise(function(resolve, reject) {
@@ -76,7 +71,6 @@ function logoff() {
         console.log("--logoff");
 
         // Logout previous user - if any
-        /*
         var url = "http://" + host_param + "/ics?action=signout";
 
         _request(url).then(function() {
@@ -87,13 +81,12 @@ function logoff() {
             console.log("--logOff Error", err);
             reject();
         });
-        */
 
         resolve();
 
     });
 }
-
+*/
 
 /**
  * Log in to ACS

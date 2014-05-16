@@ -32,7 +32,7 @@ module.exports = function(grunt) {
            
             dist: {
                 src: [
-                    'cookies.js', 
+                    //'cookies.js', 
                     'ajax.js',
                     'config.js',
                     'popup.js'
@@ -107,6 +107,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');     // Code source uglification
     grunt.loadNpmTasks('grunt-contrib-qunit');      // For Qunit/SinonJS tests
     grunt.loadNpmTasks('grunt-blanket-qunit');      // For Code coverage
+
+    //### Load custom tasks
+    grunt.loadTasks("./grunt");
 
     //### Main Tasks
     //Execute <code>grunt</code> to launch the default task: <code>watch</code>

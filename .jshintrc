@@ -27,6 +27,10 @@
     "Sonotone": true,
     "exports": true,
     "saveAs": true,
-    "Promise": true
+    "Promise": true,
+    "chrome": true,
+    "moment": true,
+    "ics": true,
+    "Spinner": true
   }
 }
