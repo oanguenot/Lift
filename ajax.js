@@ -153,7 +153,7 @@ function getListofMeetings() {
 
         console.log("--getListofMeetings");
 
-        var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
+        var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true&call_data=true";
 
         _request(url).then(function(jsonResponse) {
             console.log("--getListofMeetings Successfull");

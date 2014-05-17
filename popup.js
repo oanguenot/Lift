@@ -10,6 +10,7 @@
  * Version 1.0.4:
  * Use File API instead of localstorage for storing the Login/Password
  * Fix issue "expires today" label that is still displayed when meeting is eneded
+ * Fix all lint issue
  *
  * Version 1.0.3:
  * Use OTC clients graphical chart (font still roboto instead of clanOT)
@@ -40,7 +41,6 @@
  * Version 0.1:
  * - First version
  */
-
 
 var login_param = "";       //localStorage["lift_login"]"";
 var password_param = "";    //localStorage["lift_password"];
@@ -495,20 +495,16 @@ function displayMeetings(response) {
 
 function displayMeeting(xml) {
 
-    var list = document.querySelector("#meetings");
-
     console.log(xml);
 
+    var list = document.querySelector("#meetings");
     var typeConf = xml.getAttribute("type");
-
     var subject = "Unnamed";
     if(xml.getElementsByTagName("subject")[0]) {
         subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
     }
     
-    //var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
-    //var name = from.substr(0, from.indexOf('@'));
-    //var company = from.substring(from.indexOf('@') + 1);
+    var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
     var day = xml.getElementsByTagName('time')[0].getElementsByTagName('day')[0].textContent;
     var month = xml.getElementsByTagName('time')[0].getElementsByTagName('month')[0].textContent;
     var year = xml.getElementsByTagName('time')[0].getElementsByTagName('year')[0].textContent;
@@ -579,6 +575,7 @@ function displayMeeting(xml) {
 
     var endDate = moment(year_end + '-' + month_end + '-' + day_end);
     var meetingEndDate = endDate.format('YYYY-MM-DD');
+    endDate.add(parseInt(hour_end, 10), 'h').add(parseInt(minute_end, 10), 'm');
     
     var startDateString = startDate.format("dddd, MMMM Do");
     var startDateStringNext = "";
@@ -611,17 +608,19 @@ function displayMeeting(xml) {
 
     item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
 
+    var scheduledEndTime = null;
+
     if(typeConf === "scheduled") {
 
         var startTimeString = startDate.format('HH:mm');
         var endTimeString = hour_end + ":" + minute_end;
 
+        scheduledEndTime = startDate.clone();
+        scheduledEndTime.add(duration, 'h');
+
         if(hasRecurrence) {
             duration = parseInt(xml.getElementsByTagName('recurrence')[0].getElementsByTagName('duration')[0].textContent, 10) / 3600 ;
-        
-            var m = startDate.clone();
-            m.add(duration, 'h');
-            endTimeString = m.format('HH:mm');
+            endTimeString = scheduledEndTime.format('HH:mm');
         } 
 
         item.innerHTML += '<span class="meetingTime">' + startTimeString + " - " + endTimeString + '</span>';
@@ -690,6 +689,9 @@ function displayMeeting(xml) {
         password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
     }
 
+    var leaderURL= "https://" + host_param + path + callVanityLeader;
+    var participantURL= "https://" + host_param + path + callVanityParticipant;
+
     var meeting = {
         vanity: vanity,
         title: subject,
@@ -697,10 +699,23 @@ function displayMeeting(xml) {
         recurrence: recurrenceType || 'none',
         start: meetingStartDate,
         end: meetingEndDate,
+        scheduledEndTime: endDate.toDate(),
+        scheduledStartTime: startDate.toDate(),
         hour: hour,
         minute: minute,
         duration: duration,
-        password: password
+        password: password,
+    };
+
+    var invitation = {
+        title: subject,
+        type: typeConf,
+        owner: from,
+        url: participantURL,
+        accessCode: callVanityParticipant,
+        startDetails: startDateString,
+        start: startDate.toDate(),
+        end: endDate.toDate()
     };
     
     item.addEventListener("click", function(event) {
@@ -713,9 +728,6 @@ function displayMeeting(xml) {
     });
 
     list.appendChild(item);
-
-    var leaderURL= "https://" + host_param + path + callVanityLeader;
-    var participantURL= "https://" + host_param + path + callVanityParticipant;
 
     var remove = document.querySelector("#" + removeID);
     remove.addEventListener("click", function(event) {
@@ -739,7 +751,8 @@ function displayMeeting(xml) {
     share.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        shareMeeting(meeting);
+        console.log("Invite");
+        shareMeeting(invitation);
     });
 
     var edit = document.querySelector("#" + editID);
@@ -809,13 +822,24 @@ function join(vanity) {
 }
 
 function shareMeeting(meeting) {
+    console.log("ShareMeeting", meeting);
     var cal = ics();
 
-    if(meeting.type === 'scheduled') {
-        console.log("meeting", meeting.start);
-    }
+    var invitation = ["You have been invited to the following meeting",
+        meeting.title,
+        "When: " + meeting.startDetails,
+        "Meeting link: " + meeting.url,
+        "Access code: " + meeting.accessCode
+    ].join('\\n\\n');
 
-    cal.addEvent(meeting.title, "You have been invited to the following meeting", "", meeting.start, meeting.end);
+    console.log("invitation", invitation);
+
+    //if(meeting.type === 'scheduled') {
+        console.log("addEvent", meeting);
+        cal.addEvent(meeting.title, invitation, "", meeting.start, meeting.end);
+    //}
+
+    
     cal.download("meeting");
 }
 

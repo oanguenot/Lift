@@ -42,36 +42,44 @@ var ics = function() {
          * @param  {string} begin       Beginning date of event
          * @param  {string} stop        Ending date of event
          */
-        'addEvent': function(subject, description, location, begin, stop, starthour, startMinute, durationHour) {
+        'addEvent': function(subject, description, location, start_date, end_date ) {
+            
+            console.log("0")
             // I'm not in the mood to make these optional... So they are all required
             if (typeof subject === 'undefined' ||
                 typeof description === 'undefined' ||
                 typeof location === 'undefined' ||
-                typeof begin === 'undefined' ||
-                typeof stop === 'undefined'
+                typeof start_date === 'undefined' ||
+                typeof end_date === 'undefined'
             ) {
                 return false;
             };
 
             //TODO add time and time zone? use moment to format?
-            var start_date = new Date(begin);
-            var end_date = new Date(stop);
+            //var start_date = new Date(begin);
+            //var end_date = new Date(stop);
+
+            console.log("1");
 
             var start_year = ("0000" + (start_date.getFullYear().toString())).slice(-4);
             var start_month = ("00" + ((start_date.getMonth() + 1).toString())).slice(-2);
             var start_day = ("00" + ((start_date.getDate()).toString())).slice(-2);
-            var start_hours = ("00" + (starthour.toString())).slice(-2);
-            var start_minutes = ("00" + (startMinute.toString())).slice(-2);
+            var start_hours = ("00" + ((start_date.getHours()).toString())).slice(-2);
+            var start_minutes = ("00" + ((start_date.getMinutes()).toString())).slice(-2);
             var start_seconds = "00";
 
-            var endHour = startHour + durationHour;
+            console.log("2");
+
+            //var endHour = startHour + durationHour;
 
             var end_year = ("0000" + (end_date.getFullYear().toString())).slice(-4);
             var end_month = ("00" + ((end_date.getMonth() + 1).toString())).slice(-2);
             var end_day = ("00" + ((end_date.getDate()).toString())).slice(-2);
-            var end_hours = ("00" + (endHour.toString())).slice(-2);
-            var end_minutes = ("00" + (startMinute.toString())).slice(-2);
+            var end_hours = ("00" + ((end_date.getHours()).toString())).slice(-2);
+            var end_minutes = ("00" + ((end_date.getMinutes()).toString())).slice(-2);
             var end_seconds = "00";
+
+            console.log("3");
 
             // Since some calendars don't add 0 second events, we need to remove time if there is none...
             var start_time = '';
@@ -84,10 +92,14 @@ var ics = function() {
             var start = start_year + start_month + start_day + start_time;
             var end = end_year + end_month + end_day + end_time;
 
+            console.log("start", start);
+            console.log("end", end);
+
             var calendarEvent = [
                 'BEGIN:VEVENT',
                 'CLASS:PUBLIC',
-                'DESCRIPTION:' + description,
+                //'DESCRIPTION:' + description,
+                'DESCRIPTION;ENCODING=QUOTED-PRINTABLE:' + description,
                 'DTSTART;VALUE=DATE:' + start,
                 'DTEND;VALUE=DATE:' + end,
                 'LOCATION:' + location,
@@ -97,6 +109,9 @@ var ics = function() {
             ].join(SEPARATOR);
 
             calendarEvents.push(calendarEvent);
+
+            console.log("Calendar", calendarEvent);
+
             return calendarEvent;
         },
 
