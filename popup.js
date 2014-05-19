@@ -7,6 +7,12 @@
  */
 
 /**
+ * Version 1.0.5:
+ * Fix issue with bad end time (scheduled)
+ * Remove the Leader URL (Display the Leader Code)
+ * Display the password in the Conference Details panel
+ * Display Web Confirmation box instead of native one (should fix a bug on MAC)
+ * 
  * Version 1.0.4:
  * Use File API instead of localstorage for storing the Login/Password
  * Fix issue "expires today" label that is still displayed when meeting is eneded
@@ -355,6 +361,87 @@ function clearMeetingsList() {
     meetingsList = {};
 }
 
+function displayConfirmDelete(subject, host_param, vanity) {
+    
+    document.querySelector('.titleConfirm').innerHTML = "Remove a Meeting...";
+    document.querySelector('.detailsConfirm').innerHTML = "Are you sure you want to remove this Meeting '" + subject + "' ?";
+
+    document.querySelector('#confirmDialog').classList.add('visible');
+    document.querySelector('#list').classList.add('blur');
+
+    var cancel = document.querySelector('#cancelConfirm');
+    cancel.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.querySelector('#confirmDialog').classList.remove('visible');
+        document.querySelector('#list').classList.remove('blur');
+        cancel.onclick = null;
+        cancel = null;
+        ok.onclick = null;
+        ok = null;
+    };
+
+    var ok = document.querySelector('#okConfirm');
+    ok.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.querySelector('#confirmDialog').classList.remove('visible');
+        document.querySelector('#list').classList.remove('blur');
+        ok.onclick = null;
+        ok = null;
+        cancel.onclick = null;
+        cancel = null;
+
+        // Display a spinner
+        displaySpinner();
+        // Remove this meeting
+        deleteMeeting(host_param, vanity).then(function(jsonResponse) {
+            // Display meetings
+            displayMeetings(jsonResponse);
+            // Hide Spinner
+            hideSpinner();
+        }, function() {
+
+        });
+    };
+}
+
+function displayConfirmJoin (vanity, subject) {
+    document.querySelector('.titleConfirm').innerHTML = "Join a Meeting...";
+    document.querySelector('.detailsConfirm').innerHTML = "Are you sure you want to join this Meeting '" + subject + "' ?";
+
+    document.querySelector('#confirmDialog').classList.add('visible');
+    document.querySelector('#list').classList.add('blur');
+
+    var cancel = document.querySelector('#cancelConfirm');
+    cancel.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.querySelector('#confirmDialog').classList.remove('visible');
+        document.querySelector('#list').classList.remove('blur');
+        cancel.onclick = null;
+        cancel = null;
+        ok.onclick = null;
+        ok = null;
+    };
+
+    var ok = document.querySelector('#okConfirm');
+    ok.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        document.querySelector('#confirmDialog').classList.remove('visible');
+        document.querySelector('#list').classList.remove('blur');
+        ok.onclick = null;
+        ok = null;
+        cancel.onclick = null;
+        cancel = null;
+
+        join(vanity);
+    }; 
+}
+
 
 /**
  * Display result of scheduled conference
@@ -384,41 +471,34 @@ function displayResult(response, isModified) {
 
             if(isModified) {
                 document.querySelector('.firstLine').innerHTML = 'Your meeting has been successfully modified !';
+                document.querySelector('.leader').innerHTML = '';
+                document.querySelector('.participantURL').innerHTML = '';
+                document.querySelector('.participant').innerHTML = '';
+                document.querySelector('.password').innerHTML = '';
             }
             else {
-                document.querySelector('.firstLine').innerHTML = 'Here are the access code for this meeting';
+                document.querySelector('.firstLine').innerHTML = 'Here is the URL for joining this meeting';
+
+                var password = '';
+
+                if(xml.getElementsByTagName("documents")[0].getElementsByTagName('password') && xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0]) {
+                    password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
+                }
 
                 // Search for "url", first one leader, second participant, behind the /call/
                 var callVanityLeader = xml.getElementsByTagName("url")[0].childNodes[0].textContent.slice(6);
                 var callVanityParticipant = xml.getElementsByTagName("url")[1].childNodes[0].textContent.slice(6);
-
-                var urlLeader = "https://" + xml.getElementsByTagName("domain")[0].childNodes[0].nodeValue + 
-                            xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
-                            callVanityLeader;
 
                 var urlParticipant = "https://" + xml.getElementsByTagName("domain")[0].childNodes[0].nodeValue + 
                             xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
                             callVanityParticipant;
 
                 // Update leader information
-                document.querySelector('.leader').innerHTML = 'Leader code = ' + callVanityLeader;
+                document.querySelector('.leader').innerHTML = 'Leader Code = ' + callVanityLeader;
                 
-                var a=document.createElement("a");
-                a.href = urlLeader;
-                a.innerHTML = urlLeader;
-                a.onclick = function() {
-                    window.open(urlLeader,"_blank"); 
-                };
-
-                var leaderNode = document.querySelector('.leaderURL');
-                while (leaderNode.firstChild) {
-                    leaderNode.removeChild(leaderNode.firstChild);
-                }
-
-                leaderNode.appendChild( a );
                 
                 // Update Participant information
-                document.querySelector('.participant').innerHTML = 'Participant code = ' + callVanityParticipant;
+                document.querySelector('.participant').innerHTML = 'Access Code = ' + callVanityParticipant;
                 
                 var b=document.createElement("a");
                 b.href = urlParticipant;
@@ -432,6 +512,14 @@ function displayResult(response, isModified) {
                     participantNode.removeChild(participantNode.firstChild);
                 }
                 participantNode.appendChild( b );
+
+                // Password
+                if(password) {
+                    document.querySelector('.password').innerHTML = 'Meeting Password = ' + password;
+                }
+                else {
+                    document.querySelector('.password').innerHTML = '';
+                }
             }
 
             document.querySelector('#okModal').classList.add('visible');
@@ -504,7 +592,7 @@ function displayMeeting(xml) {
         subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
     }
     
-    var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+    //var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
     var day = xml.getElementsByTagName('time')[0].getElementsByTagName('day')[0].textContent;
     var month = xml.getElementsByTagName('time')[0].getElementsByTagName('month')[0].textContent;
     var year = xml.getElementsByTagName('time')[0].getElementsByTagName('year')[0].textContent;
@@ -608,20 +696,22 @@ function displayMeeting(xml) {
 
     item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
 
-    var scheduledEndTime = null;
+    
 
     if(typeConf === "scheduled") {
 
         var startTimeString = startDate.format('HH:mm');
         var endTimeString = hour_end + ":" + minute_end;
 
-        scheduledEndTime = startDate.clone();
-        scheduledEndTime.add(duration, 'h');
+        
 
         if(hasRecurrence) {
+            var scheduledEndTime = null;
+            scheduledEndTime = startDate.clone();
             duration = parseInt(xml.getElementsByTagName('recurrence')[0].getElementsByTagName('duration')[0].textContent, 10) / 3600 ;
+            scheduledEndTime.add(duration, 'h');            
             endTimeString = scheduledEndTime.format('HH:mm');
-        } 
+        }
 
         item.innerHTML += '<span class="meetingTime">' + startTimeString + " - " + endTimeString + '</span>';
         item.innerHTML += '<span class="meetingTimezone">' + timezone + '</span>';
@@ -671,10 +761,10 @@ function displayMeeting(xml) {
     var removeID = "remove-" + vanity;
     var editID = "edit-" + vanity;
     var detailsID = "details-" + vanity;
-    var shareID = "share-" + vanity;
+    //var shareID = "share-" + vanity;
 
     item.innerHTML += '<button type="action" id="' + detailsID + '" class="meetingActionButton meetingDetailsButton">Details</button>';
-    item.innerHTML += '<button type="action" id="' + shareID + '" class="meetingActionButton meetingShareButton">Share</button>';
+    //item.innerHTML += '<button type="action" id="' + shareID + '" class="meetingActionButton meetingShareButton">Share</button>';
     item.innerHTML += '<button type="action" id="' + editID + '" class="meetingActionButton meetingEditButton">Edit</button>';
     item.innerHTML += '<button type="action" id="' + removeID + '" class="meetingActionButton meetingRemoveButton">Remove</button>';
 
@@ -689,7 +779,6 @@ function displayMeeting(xml) {
         password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
     }
 
-    var leaderURL= "https://" + host_param + path + callVanityLeader;
     var participantURL= "https://" + host_param + path + callVanityParticipant;
 
     var meeting = {
@@ -707,24 +796,21 @@ function displayMeeting(xml) {
         password: password,
     };
 
-    var invitation = {
-        title: subject,
-        type: typeConf,
-        owner: from,
-        url: participantURL,
-        accessCode: callVanityParticipant,
-        startDetails: startDateString,
-        start: startDate.toDate(),
-        end: endDate.toDate()
-    };
+    // var invitation = {
+    //     title: subject,
+    //     type: typeConf,
+    //     owner: from,
+    //     url: participantURL,
+    //     accessCode: callVanityParticipant,
+    //     startDetails: startDateString,
+    //     start: startDate.toDate(),
+    //     end: endDate.toDate()
+    // };
     
     item.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        var answer = confirm("Join the conference '" + subject + "' ?");
-        if(answer) {
-            join(vanity);
-        }
+        displayConfirmJoin(vanity, subject);
     });
 
     list.appendChild(item);
@@ -733,27 +819,18 @@ function displayMeeting(xml) {
     remove.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        var answer = confirm("Are you sure you want to remove this Meeting '" + subject + "' ?");
-        if(answer) {
-            displaySpinner();
-            deleteMeeting(host_param, vanity).then(function(jsonResponse) {
-                // Display meetings
-                displayMeetings(jsonResponse);
-                // Hide Spinner
-                hideSpinner();
-            }, function() {
+        console.log("Display confirm");
+        displayConfirmDelete(subject, host_param, vanity);
 
-            });
-        }
     });
 
-    var share = document.querySelector('#' + shareID);
-    share.addEventListener("click", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("Invite");
-        shareMeeting(invitation);
-    });
+    // var share = document.querySelector('#' + shareID);
+    // share.addEventListener("click", function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     console.log("Invite");
+    //     shareMeeting(invitation);
+    // });
 
     var edit = document.querySelector("#" + editID);
     edit.addEventListener("click", function(event) {
@@ -772,26 +849,7 @@ function displayMeeting(xml) {
         document.querySelector('#list').classList.add('blur');
         var clearButton = document.querySelector('#clearButton');
 
-        // Update leader information
-        document.querySelector('.leader').innerHTML = 'Leader code = ' + callVanityLeader;
-        
-        var a=document.createElement("a");
-        a.href = leaderURL;
-        a.innerHTML = leaderURL;
-        a.onclick = function() {
-            window.open(leaderURL,"_blank"); 
-        };
-
-        var leaderNode = document.querySelector('.leaderURL');
-        while (leaderNode.firstChild) {
-            leaderNode.removeChild(leaderNode.firstChild);
-        }
-
-        leaderNode.appendChild( a );
-        
-        // Update Participant information
-        document.querySelector('.participant').innerHTML = 'Participant code = ' + callVanityParticipant;
-        
+        // Meeting URL (Participant URL)
         var b=document.createElement("a");
         b.href = participantURL;
         b.innerHTML = participantURL;
@@ -804,6 +862,20 @@ function displayMeeting(xml) {
             participantNode.removeChild(participantNode.firstChild);
         }
         participantNode.appendChild( b );
+
+        // Meeting Code (Participant)
+        document.querySelector('.participant').innerHTML = 'Access Code = ' + callVanityParticipant;
+
+        // Leader Code
+        document.querySelector('.leader').innerHTML = 'Leader Code = ' + callVanityLeader;
+
+        // Password
+        if(password) {
+            document.querySelector('.password').innerHTML = 'Meeting Password = ' + password;
+        }
+        else {
+            document.querySelector('.password').innerHTML = '';
+        }
 
         clearButton.onclick = function(event) {
             event.preventDefault();
@@ -821,27 +893,27 @@ function join(vanity) {
     window.open("https://" + host_param + "/call/" + vanity,"_blank");
 }
 
-function shareMeeting(meeting) {
-    console.log("ShareMeeting", meeting);
-    var cal = ics();
+// function shareMeeting(meeting) {
+//     console.log("ShareMeeting", meeting);
+//     var cal = ics();
 
-    var invitation = ["You have been invited to the following meeting",
-        meeting.title,
-        "When: " + meeting.startDetails,
-        "Meeting link: " + meeting.url,
-        "Access code: " + meeting.accessCode
-    ].join('\\n\\n');
+//     var invitation = ["You have been invited to the following meeting",
+//         meeting.title,
+//         "When: " + meeting.startDetails,
+//         "Meeting link: " + meeting.url,
+//         "Access code: " + meeting.accessCode
+//     ].join('\\n\\n');
 
-    console.log("invitation", invitation);
+//     console.log("invitation", invitation);
 
-    //if(meeting.type === 'scheduled') {
-        console.log("addEvent", meeting);
-        cal.addEvent(meeting.title, invitation, "", meeting.start, meeting.end);
-    //}
+//     //if(meeting.type === 'scheduled') {
+//         console.log("addEvent", meeting);
+//         cal.addEvent(meeting.title, invitation, "", meeting.start, meeting.end);
+//     //}
 
     
-    cal.download("meeting");
-}
+//     cal.download("meeting");
+// }
 
 
 /* ----------------------------------------- ON LOAD ---------------------------------------------- */

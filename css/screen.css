@@ -1,4 +1,4 @@
-	html {
+html {
 	overflow: hidden;
 	min-height: 500px;
 }
@@ -335,9 +335,19 @@ background-color: #72539E;
 	margin-top: 30px;
 }
 
-.leader, .participant {
-	font-weight: 400;
+.participant {
+	font-weight: 300;
 	margin-top: 30px;
+}
+
+.leader {
+	font-weight: 300;
+	margin-top: 10px;
+}
+
+.password {
+	font-weight: 300;
+	margin-top: 10px;
 }
 
 .startTimeInput {
