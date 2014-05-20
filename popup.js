@@ -53,8 +53,6 @@ var password_param = "";    //localStorage["lift_password"];
 var host_param = "";        //localStorage["lift_host"];        
 
 var timezone = "Europe/Paris";
-var confType = "scheduled";
-var recurrenceValue = 'none';
 
 var loaded = false;
 
@@ -115,12 +113,10 @@ function init() {
     };
     
     recurrence.onchange = function() {
-        recurrenceValue = recurrence.value;
         updateGUI();
     };
     
     confTypeElt.onchange = function() {
-        confType = confTypeElt.value;
         updateGUI();
     };
     
@@ -187,6 +183,8 @@ function displayEditor(meeting) {
     var editor = document.querySelector('#editor');
     var meetings = document.querySelector('#list');
 
+    var recurrenceValue = document.querySelector('.recurrenceType').value;
+
     meetings.classList.remove('displayed');
     meetings.classList.add('masked');
     editor.classList.remove('masked');
@@ -200,8 +198,6 @@ function displayEditor(meeting) {
         document.querySelector(".dateInput").value = meeting.start;
         document.querySelector(".endDateInput").value = meeting.end;
         document.querySelector('.conferenceType').value = meeting.type;
-        confType = meeting.type;
-        recurrenceValue = meeting.recurrence;
 
         if(meeting.type === 'reservationless') {
             document.querySelector('.recurrenceType').disabled = true;
@@ -210,10 +206,11 @@ function displayEditor(meeting) {
             document.querySelector('.startTimeInput').disabled = true;
             document.querySelector('.durationInput').value = 1;
             document.querySelector('.durationInput').disabled = true;
+            document.querySelector('.recurrenceType').value = 'none';
         }
         else {
             document.querySelector('.recurrenceType').disabled = false;
-            document.querySelector('.recurrenceType').value = meeting.recurrence;
+            document.querySelector('.recurrenceType').value = meeting.recurrence;    
             document.querySelector('.startTimeInput').value = meeting.hour + ':' + meeting.minute;
             document.querySelector('.startTimeInput').disabled = false;
             document.querySelector('.durationInput').value = meeting.duration;
@@ -275,6 +272,10 @@ function hideMeetingEditor() {
 }
 
 function updateGUI() {
+
+    var recurrenceValue = document.querySelector('.recurrenceType').value;
+    var confType = document.querySelector(".conferenceType").value;
+
     if(confType === "scheduled") {
         document.querySelector('.durationInput').disabled = false;
         document.querySelector('.startTimeInput').disabled = false;
@@ -309,6 +310,9 @@ function schedule() {
     var conf_date = document.querySelector(".dateInput").value;
     var conf_time = document.querySelector(".startTimeInput").value;
     var conf_duration = document.querySelector(".durationInput").value;
+
+    var recurrenceValue = document.querySelector('.recurrenceType').value;
+    var confType = document.querySelector('.conferenceType').value;
 
     var timestamp = Date.parse(conf_date + " " + conf_time);
     var date_start = new Date(timestamp);
@@ -845,6 +849,7 @@ function displayMeeting(xml) {
     details.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
+        document.querySelector('.firstLine').innerHTML = 'Here is the URL for joining this meeting';
         document.querySelector('#okModal').classList.add('visible');
         document.querySelector('#list').classList.add('blur');
         var clearButton = document.querySelector('#clearButton');

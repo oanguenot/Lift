@@ -199,7 +199,7 @@ function scheduleMeeting(params) {
                 case 'none':
                     url += "&num_occurrences=1";
                 break;
-                case 'dayly':
+                case 'daily':
                     url += "&recurrence=D-WE" +
                     "&end_year=" + params.end.getFullYear() +  
                     "&end_month=" + (params.end.getMonth()+1) +
