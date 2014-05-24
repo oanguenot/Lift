@@ -7,45 +7,51 @@
  */
 
 /**
+ *
+ * Version 1.1:
+ * - FEATURE: Allow to select the meeting profile: Meeting, Webinar, Training, Conference Call
+ * - FIX: Issue with meeting editor (end date not enabled when editing a scheduled with recurrence)
+ *
  * Version 1.0.5:
- * Fix issue with bad end time (scheduled)
- * Remove the Leader URL (Display the Leader Code)
- * Display the password in the Conference Details panel
- * Display Web Confirmation box instead of native one (should fix a bug on MAC)
+ * - FIX: Issue with bad end time (scheduled)
+ * - FEATURE: Leader Code
+ * - FEATURE: Display the password in the Conference Details panel
+ * - REFACTORING: Display Web Confirmation box instead of native one (should fix a bug on MAC)
  * 
  * Version 1.0.4:
- * Use File API instead of localstorage for storing the Login/Password
- * Fix issue "expires today" label that is still displayed when meeting is eneded
- * Fix all lint issue
+ * - REFACTORING; Use File API instead of localstorage for storing the Login/Password
+ * - FIX: Issue "expires today" label that is still displayed when meeting is eneded
+ * - FIX: All lint issue
+ * - REFACTORING: Provide minified and obfuscated version
  *
  * Version 1.0.3:
- * Use OTC clients graphical chart (font still roboto instead of clanOT)
+ * - REFACTORING: Use OTC clients graphical chart (font still roboto instead of clanOT)
  *
  * Version 1.0.2:
- * Fix issue (replace HTTP protocol with HTTPS for the URL)
+ * - FIX: issue (replace HTTP protocol with HTTPS for the URL)
  * 
  * Version 1.0 & 1.0.1:
- * - First released version on the Chrome Store
- * - Fix issue when re-scheduling a meeting (to have a new empty form without previous info)
- * - Add placeholder icon
+ * - REFACTORING: First released version on the Chrome Store
+ * - FIX: issue when re-scheduling a meeting (to have a new empty form without previous info)
+ * - FEATURE: Add placeholder icon
  *
- * Version 0.9:
- * - Merge the two extensions into a single one for listing, scheduling and modifying meetings
- * - Do not use 'logoff' and 'removeCookies' because it deconnects OTC/Web from its session
+ * Version 0.9-0.4:
+ * - REFACTORING: Merge the two extensions into a single one for listing, scheduling and modifying meetings
+ * - REFACTORING: Do not use 'logoff' and 'removeCookies' because it deconnects OTC/Web from its session
  * ...
  * 
  * Version 0.3:
- * - Read timezone from vcs?settings=global
- * - Fix issue with notification. Only displayed if possible
- * - Fix issue with start time (use toLocaleTimeString() function instead of to JSONString() function)
- * - Fix issue with Date&Time not taken into account
- * - Fix issue with bard parameters sent to vcs_conf_schedule API
+ * - REFACTORING: Read timezone from vcs?settings=global
+ * - FIX: issue with notification. Only displayed if possible
+ * - FIX: issue with start time (use toLocaleTimeString() function instead of to JSONString() function)
+ * - FIX: issue with Date&Time not taken into account
+ * - FIX: issue with bard parameters sent to vcs_conf_schedule API
  *
  * Version 0.2:
- * - Version compliant to Chrome Extension
+ * - REFACTORING: Version compliant to Chrome Extension
  *
  * Version 0.1:
- * - First version
+ * - FEATURE: First version
  */
 
 var login_param = "";       //localStorage["lift_login"]"";
@@ -183,8 +189,6 @@ function displayEditor(meeting) {
     var editor = document.querySelector('#editor');
     var meetings = document.querySelector('#list');
 
-    var recurrenceValue = document.querySelector('.recurrenceType').value;
-
     meetings.classList.remove('displayed');
     meetings.classList.add('masked');
     editor.classList.remove('masked');
@@ -198,6 +202,7 @@ function displayEditor(meeting) {
         document.querySelector(".dateInput").value = meeting.start;
         document.querySelector(".endDateInput").value = meeting.end;
         document.querySelector('.conferenceType').value = meeting.type;
+        document.querySelector('.profileType').value = meeting.profile;
 
         if(meeting.type === 'reservationless') {
             document.querySelector('.recurrenceType').disabled = true;
@@ -215,7 +220,7 @@ function displayEditor(meeting) {
             document.querySelector('.startTimeInput').disabled = false;
             document.querySelector('.durationInput').value = meeting.duration;
             document.querySelector('.durationInput').disabled = false;
-            if(recurrenceValue !== 'none') {
+            if(meeting.recurrence !== 'none') {
                 document.querySelector(".endDateInput").disabled = false;
             }
             else {
@@ -239,6 +244,8 @@ function displayEditor(meeting) {
 
         document.querySelector(".titleInput").value = "New Meeting";
         document.querySelector('.conferenceType').value = "scheduled";
+
+        document.querySelector('.profileType').value = 'meeting';
 
         document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);
         
@@ -314,6 +321,8 @@ function schedule() {
     var recurrenceValue = document.querySelector('.recurrenceType').value;
     var confType = document.querySelector('.conferenceType').value;
 
+    var profileType = document.querySelector('.profileType').value;
+
     var timestamp = Date.parse(conf_date + " " + conf_time);
     var date_start = new Date(timestamp);
 
@@ -338,7 +347,8 @@ function schedule() {
         duration: conf_duration,
         recurrence: recurrenceValue,
         password: password,
-        modify : editExistingMeeting
+        modify : editExistingMeeting,
+        profile: profileType
     };
 
     scheduleMeeting(meeting).then(function(jsonResponse) {
@@ -607,6 +617,31 @@ function displayMeeting(xml) {
     var duration = 0;
     var hasRecurrence = false;
 
+    var profile = 'meeting';
+    
+    var webinar = 'false';
+    if(xml.getElementsByTagName('options')[0].getElementsByTagName('webinar_mode').length > 0) {
+        webinar = xml.getElementsByTagName('options')[0].getElementsByTagName('webinar_mode')[0].textContent;
+    }
+    
+    var training = 'false';
+    if(xml.getElementsByTagName('options')[0].getElementsByTagName('owner_starts_presentation').length > 0) {
+        training = xml.getElementsByTagName('options')[0].getElementsByTagName('owner_starts_presentation')[0].textContent;
+    }
+
+    var call = 'false';
+    if(xml.getElementsByTagName('options')[0].getElementsByTagName('audio_only').length > 0) {
+        call = xml.getElementsByTagName('options')[0].getElementsByTagName('audio_only')[0].textContent;
+    }    
+
+    if(webinar === 'true') {
+        profile = 'webinar';
+    } else if (training === 'true') {
+        profile = 'training';
+    } else if (call === 'true') {
+        profile = 'call';
+    }
+
     var recurrenceType = "";
     if(xml.getElementsByTagName("recurrence").length > 0) {
         hasRecurrence = true;
@@ -651,7 +686,13 @@ function displayMeeting(xml) {
     var vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
 
     var state = xml.getElementsByTagName("access")[1].getAttribute("state");
-    var stateDisplayed = capitaliseFirstLetter(state);
+    
+    var profileDisplayed = profile;
+    if (profileDisplayed === 'call') {
+        profileDisplayed = 'Conference Call';
+    }
+
+    var stateDisplayed = capitaliseFirstLetter(profileDisplayed) + ' / ' + capitaliseFirstLetter(state);
 
     if(parseInt(month, 10) < 10) {
         month = '0' + month;
@@ -692,7 +733,7 @@ function displayMeeting(xml) {
     var documents = xml.getElementsByTagName('document');
     if (documents && documents.length > 0) {
         if(documents.length === 1) {
-            stateDisplayed += ' - with 1 file';
+            stateDisplayed += ' / 1 file';
         } else {
             stateDisplayed += ' - ' + documents.length + ' files';
         }
@@ -798,6 +839,7 @@ function displayMeeting(xml) {
         minute: minute,
         duration: duration,
         password: password,
+        profile: profile
     };
 
     // var invitation = {

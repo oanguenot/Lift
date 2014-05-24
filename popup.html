@@ -25,7 +25,13 @@
 		<div class='background'>
 		 	<legend class='firstTitle'>Meeting name</legend>
 		 	<input type="text" name="title" class="titleInput" required placeholder="&#61508;   Enter a name" value="New Meeting" autofocus>	
-		 	<br>
+		 	<legend class='profileTitle'>Meeting profile</legend>
+		 	<select class="profileType" required>
+				<option value="meeting">Meeting</option>
+				<option value="webinar">Webinar</option>
+				<option value='training'>Training</option>
+				<option value="call">Conference Call</option>
+			</select>
 		 	<legend class="firstTitle">Meeting Type</legend>
 			<select class="conferenceType" required>
 					<option value="scheduled">Scheduled</option>

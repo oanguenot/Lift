@@ -238,6 +238,48 @@ function scheduleMeeting(params) {
             url += "&audio_password=" + params.password;
         }
 
+        switch(params.profile) {
+            case 'meeting':
+                url +='&video_allowed=true';
+                url +='&announce_callers=true';
+                url +='&record_callers=true';
+                url +='&continuous_chat=true';
+                url +='&disable_join_tones=false';
+                break;
+            case 'webinar':
+                url +='&webinar_mode=true';     // Use this flag to test webinar mode
+                url +='&drop_with_leader=true';
+                url +='&lecture_mode=true';
+                url +='&leader_req=true';
+                url +='&disable_participant_mute=true';
+                url +='&disable_join_tones=true';
+                url +='&continuous_chat=true';
+                url +='&suppress_system_im=true';
+                break;
+            case 'training':
+                url +='&video_allowed=true';
+                url +='&announce_callers=true';
+                url +='&announce_callers_on_exit=true';
+                url +='&drop_with_leader=true';
+                url +='&lecture_mode=true';
+                url +='&disable_join_tones=true';
+                url +='&record_callers=true';
+                url +='&continuous_chat=true';
+                url +='&owner_starts_presentation=true';    // Use this flag to test training mode
+                url +='&suppress_system_im=true';
+                break;
+            case 'call':
+                url +='&announce_callers=true';
+                url +='&announce_callers_on_exit=true';
+                url +='&drop_with_leader=true';
+                url +='&disable_join_tones=true';
+                url +='&record_callers=true';
+                url +='&audio_only=true';   // Use this flag to test call only
+                url +='&continuous_chat=true';
+                url +='&suppress_system_im=true';
+                break;
+        }
+
         _request(url).then(function(jsonResponse) {
             console.log("--scheduleConference Successfull");
             resolve(jsonResponse);

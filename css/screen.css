@@ -260,7 +260,7 @@ select option {
 	margin-left: 10px;
 	margin-bottom: 32px;
 	margin-right: 10px;
-	width: 320px;
+	width: 138px;
 	color: #fff;
 	font-weight: 100;
 }
@@ -279,6 +279,24 @@ background-color: #72539E;
 	position: absolute;
 	left: 190px;
 	top: 211px;
+}
+
+.profileTitle {
+	width: 150px;
+	position: absolute;
+	left: 190px;
+	top: 110px;	
+}
+
+.profileType {
+width: 150px;
+	/* height: 25px; */
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+	position: absolute;
+	left: 190px;
+	top: 126px;
 }
 
 
@@ -649,7 +667,7 @@ font-weight: 400;
 font-size: 10px;
 color: #AAA7B5;
 position: absolute;
-top: 60px;
+top: 62px;
 left: 16px;
 width: 300px;
 white-space: nowrap;
