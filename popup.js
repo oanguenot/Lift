@@ -8,6 +8,9 @@
 
 /**
  *
+ * Version 1.2:
+ * - FEATURE: Allow to select the timezone 
+ *
  * Version 1.1:
  * - FEATURE: Allow to select the meeting profile: Meeting, Webinar, Training, Conference Call
  * - FIX: Issue with meeting editor (end date not enabled when editing a scheduled with recurrence)
@@ -59,6 +62,7 @@ var password_param = "";    //localStorage["lift_password"];
 var host_param = "";        //localStorage["lift_host"];        
 
 var timezone = "Europe/Paris";
+var timezones = [];
 
 var loaded = false;
 
@@ -188,11 +192,41 @@ function displayEditor(meeting) {
 
     var editor = document.querySelector('#editor');
     var meetings = document.querySelector('#list');
+    var select = document.querySelector('.timezoneType');
 
     meetings.classList.remove('displayed');
     meetings.classList.add('masked');
     editor.classList.remove('masked');
     editor.classList.add('displayed');
+
+    var opt = null;
+
+    if(timezones.length > 0) {
+        var index = 0;
+        for (var i = 0, l=timezones.length; i<=l; i++){
+            opt = document.createElement('option');
+            opt.value = timezones[i];
+            opt.innerHTML = timezones[i];
+            select.appendChild(opt);
+
+            var timezoneToFind = timezone;
+            if(meeting && meeting.timezone) {
+                timezoneToFind = meeting.timezone;
+            }
+
+            if(timezones[i] === timezoneToFind) {
+                index = i;
+            }
+        }
+
+        select.options.selectedIndex = index;
+    }
+    else {
+        opt = document.createElement('option');
+        opt.value = timezone;   
+        opt.innerHTML = timezone;
+        select.appendChild(opt);
+    }
 
     if(meeting) {
 
@@ -322,6 +356,8 @@ function schedule() {
     var confType = document.querySelector('.conferenceType').value;
 
     var profileType = document.querySelector('.profileType').value;
+
+    var timezone = document.querySelector('.timezoneType').value;
 
     var timestamp = Date.parse(conf_date + " " + conf_time);
     var date_start = new Date(timestamp);
@@ -838,6 +874,7 @@ function displayMeeting(xml) {
         hour: hour,
         minute: minute,
         duration: duration,
+        timezone: timezone,
         password: password,
         profile: profile
     };
@@ -983,7 +1020,6 @@ function onInitialize() {
 }
 
 function onLoad() {
-    console.log("coucou");
     //Signout from previous session
     erasePreviousUserData();
 }
@@ -994,7 +1030,6 @@ function erasePreviousUserData() {
 
     //Read data from file
     loadDataFromFile().then(function(data) {
-        console.log("data", data);
         host_param = data.host;
         login_param = data.login;
         password_param = data.password;
@@ -1015,6 +1050,11 @@ function erasePreviousUserData() {
                 .then(function(jsonResponse) {
                     var settings = jsonResponse.data;
                     timezone = settings.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
+
+                    var timezonesList = settings.getElementsByTagName('timezones')[0].getElementsByTagName('name');
+                    for (var i=0, l=timezonesList.length; i < l;i++) {
+                        timezones.push(timezonesList[i].innerHTML);
+                    }
                     
                     // Get the list of Meetings
                     return(getListofMeetings())

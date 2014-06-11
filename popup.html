@@ -12,7 +12,7 @@
 	<script src="./vendor/moment.js"></script>
 	<script src="./vendor/fileSaver.js"></script>
 	<script src="./vendor/ics.js"></script>
-	<script src="dist/lift-min.js"></script>
+	<script src="dist/lift.js"></script>
 </head>
 <body>
 	<form id='editor' class='masked'>
@@ -23,25 +23,28 @@
 			<button type="action" id='scheduleBtn' class='actionButton left'>Schedule</button>
 		</div>
 		<div class='background'>
-		 	<legend class='firstTitle'>Meeting name</legend>
+		 	<legend class='firstTitle'>Name</legend>
 		 	<input type="text" name="title" class="titleInput" required placeholder="&#61508;   Enter a name" value="New Meeting" autofocus>	
-		 	<legend class='profileTitle'>Meeting profile</legend>
+		 	<legend class='profileTitle'>Profile</legend>
 		 	<select class="profileType" required>
 				<option value="meeting">Meeting</option>
 				<option value="webinar">Webinar</option>
 				<option value='training'>Training</option>
 				<option value="call">Conference Call</option>
 			</select>
-		 	<legend class="firstTitle">Meeting Type</legend>
+		 	<legend class="firstTitle">Type</legend>
 			<select class="conferenceType" required>
 					<option value="scheduled">Scheduled</option>
 					<option value="reservationless">Reservationless</option>
 			</select>
-			<legend class='recurrenceLabel'>Meeting Recurrence</legend>
+			<legend class='recurrenceLabel'>Recurrence</legend>
 			<select class="recurrenceType" required>
 				<option value="none">One time event</option>
 				<option value="daily">Every week day</option>
 				<option value="weekly">Every week</option>
+			</select>
+			<legend class='firstTitle'>Timezone</legend>
+			<select class="timezoneType" required>
 			</select>
 			<legend class="firstTitle">Start Date</legend>
 			<input type="date" name="date" class="dateInput" required >

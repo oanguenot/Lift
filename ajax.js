@@ -135,7 +135,7 @@ function getGlobalSettings() {
         console.log("--getGlobalSettings");
 
         /* __FIX__ Get the timezone */
-        var url = "http://" + host_param + "/cgi-bin/vcs?settings=global";
+        var url = "http://" + host_param + "/cgi-bin/vcs?settings=global;phone;password&show_timezones=true";
 
         _request(url).then(function(jsonResponse) {
             console.log("--getGlobalSettings Successfull", jsonResponse);

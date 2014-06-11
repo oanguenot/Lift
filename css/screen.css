@@ -1,6 +1,6 @@
 html {
 	overflow: hidden;
-	min-height: 500px;
+	min-height: 540px;
 }
 
 @font-face
@@ -134,7 +134,7 @@ select option {
 .background {
 	background-color: #fff; /* #25190E */;
 	padding-top: 20px;
-	height: 450px;
+	height: 490px;
 }
 
 .logo {
@@ -207,38 +207,45 @@ select option {
 .endDateLabel {
 	position: absolute;
 	left: 190px;
-	top: 281px;
+	top: 334px;
+}
+
+.timezoneType {
+	width: 330px;
+	color: #fff;
+	font-weight: 100;
+	padding-left: 10px;
+	margin-left: 10px;
+	margin-bottom: 20px;
 }
 
 .recurrenceLabel {
 	position: absolute;
 	left: 190px;
-	top: 196px;
+	top: 186px;
 }
 
 .durationLabel {
 	position: absolute;
 	left: 190px;
-	top: 364px;
+	top: 406px;
 }
 
 .endDateInput {
 	position: absolute;
-	left: 190px;
-	width: 138px;
-	color: #fff;
-	font-weight: 100;
-	padding-left: 10px;
-}
-
-.endDateInput {
-	 background-color: #72539E;
-	 border-color:  #72539E;
+	position: absolute;
+left: 190px;
+width: 138px;
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .meetingPassword {
 	position: relative;
-	top: -10px;
+	top: -7px;
 	color: #4E5256;;
 	font-weight: 500;
 	font-size: 12px;
@@ -257,12 +264,13 @@ select option {
 
 .titleInput {
 	padding-left: 10px;
-	margin-left: 10px;
-	margin-bottom: 32px;
-	margin-right: 10px;
-	width: 138px;
-	color: #fff;
-	font-weight: 100;
+margin-left: 10px;
+margin-bottom: 20px;
+width: 138px;
+color: #fff;
+font-weight: 100;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .titleInput:hover {
@@ -278,14 +286,14 @@ background-color: #72539E;
 	padding-left: 10px;
 	position: absolute;
 	left: 190px;
-	top: 211px;
+	top: 202px;
 }
 
 .profileTitle {
 	width: 150px;
 	position: absolute;
 	left: 190px;
-	top: 110px;	
+	top: 111px;	
 }
 
 .profileType {
@@ -296,7 +304,7 @@ width: 150px;
 	padding-left: 10px;
 	position: absolute;
 	left: 190px;
-	top: 126px;
+	top: 127px;
 }
 
 
@@ -306,7 +314,7 @@ color: #fff;
 font-weight: 100;
 padding-left: 10px;
 margin-left: 10px;
-margin-bottom: 32px;
+margin-bottom: 20px;
 }
 
 .conferenceType:hover {
@@ -316,11 +324,13 @@ margin-bottom: 32px;
 
 .dateInput {
 	width: 138px;
-	color: #fff;
-	font-weight: 100;
-	padding-left: 10px;
-	margin-left: 10px;
-	margin-bottom: 32px;
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+margin-left: 10px;
+margin-bottom: 20px;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .dateInput:hover {
@@ -330,10 +340,12 @@ background-color: #72539E;
 
 .passwordInput {
 	width: 140px;
-	padding-left: 10px;
-	margin-left: 10px;
-	color: #fff;
-	font-weight: 100;
+padding-left: 10px;
+margin-left: 10px;
+color: #fff;
+font-weight: 100;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .passwordInput:hover {
@@ -369,13 +381,15 @@ background-color: #72539E;
 }
 
 .startTimeInput {
-	width: 75px;
+width: 75px;
 padding-left: 10px;
 display: block;
 color: #fff;
 font-weight: 100;
 margin-left: 10px;
 margin-bottom: 26px;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .startTimeInput:hover {
@@ -385,13 +399,15 @@ background-color: #72539E;
 
 .durationInput {
 	width: 75px;
-	position: absolute;
-	left: 190px;
-	height: 27px;
-	top: 379px;
-	padding-left: 10px;
-	color: #fff;
-	font-weight: 100;
+position: absolute;
+left: 190px;
+height: 27px;
+top: 422px;
+padding-left: 10px;
+color: #fff;
+font-weight: 100;
+border: 2px solid #666A6F;
+border-radius: 5px;
 }
 
 .durationInput:hover {
@@ -573,7 +589,7 @@ background-color: #72539E;
 .meetings {
 	position: relative;
 	list-style: none;
-	height: 450px;
+	height: 490px;
 	width: 100%;
 	margin: 0;
 	-webkit-padding-start: 0px;
