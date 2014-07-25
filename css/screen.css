@@ -380,6 +380,11 @@ background-color: #72539E;
 	margin-top: 10px;
 }
 
+.call {
+	font-weight: 300;
+	margin-top: 10px;	
+}
+
 .startTimeInput {
 width: 75px;
 padding-left: 10px;
@@ -599,7 +604,6 @@ background-color: #72539E;
 
 li.buddies-item {
 position: relative;
-cursor: pointer;
 height: 120px;
 width: 100%;
 background-color: #fff;
@@ -607,7 +611,7 @@ border-bottom: 1px solid #efefef;
 }
 
 li.buddies-item:hover {
-	background-color: #F0F0EF; /*#DBE0E4*/
+	background-color:  #9d61db; /*#F0F0EF #DBE0E4*/
 }
 
 .meetingTitle {
@@ -624,7 +628,9 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
-
+.buddies-item:hover > .meetingTitle {
+	color: #ffffff;
+}
 
 .meetingStartDate {
 font-family: "Roboto",sans-serif;
@@ -634,10 +640,11 @@ color: #0F4257;
 position: absolute;
 top: 6px;
 left: 16px;
-/* width: 225px; */
-/* padding: 1px 4px 1px 4px; */
-/* background-color: #efefef; */
-/* border-radius: 10px; */
+}
+
+
+.buddies-item:hover > .meetingStartDate {
+	color: #ffffff;
 }
 
 .meetingStartDateNext {
@@ -649,6 +656,10 @@ position: absolute;
 top: 23px;
 left: 16px;
 width: 225px;
+}
+
+.buddies-item:hover > .meetingStartDateNext {
+	color: #c2a1e2;
 }
 
 .meetingTime {
@@ -665,6 +676,11 @@ padding: 1px 4px 1px 4px;
 border-radius: 4px;
 }
 
+.buddies-item:hover > .meetingTime {
+	background-color: #c2a1e2;
+	color: #ffffff;
+}
+
 .meetingTimezone {
 font-family: "Roboto",sans-serif;
 font-weight: 400;
@@ -675,6 +691,10 @@ top: 23px;
 right: 8px;
 width: 100px;
 text-align: right;
+}
+
+.buddies-item:hover > .meetingTimezone {
+	color: #eeeeee;
 }
 
 .meetingState {
@@ -691,42 +711,46 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
-.meetingRemoveButton {
+.buddies-item:hover > .meetingState {
+	color: #c2a1e2;
+}
+
+.meeting-remove-button {
 	position: absolute;
-	padding: 0 5px 0 5px;
-	height: 20px;
-	line-height: 20px;
-	min-height: 20px;
+	cursor: pointer;
+	height: 30px;
+	width: 30px;
 	right: 8px;
-	top: 90px;
-	font-size: 10px;
-	font-weight: 300;
-	background-color: #BF1E45;
-	border-radius: 2px;
-	border: 0;
+	top: 82px;
+	background-image: url('../img/bt-small-delete-active.png');
+	background-size: cover;
 }
 
-.meetingRemoveButton:hover {
-	background-color: #A71B3D; /*#6F6C6C;*/
+.meeting-remove-button:hover {
+	background-image: url('../img/bt-small-delete-mouseover.png');
 }
 
-.meetingEditButton {
+.meeting-remove-button:active {
+	background-image: url('../img/bt-small-delete-press.png');
+}
+
+.meeting-edit-button {
 	position: absolute;
-	width: 48px;
-	height: 20px;
-	line-height: 20px;
-	min-height: 20px;
-	right: 60px;
-	top: 90px;
-	font-size: 10px;
-	font-weight: 300;
-	background-color: #6E8391;
-	border-radius: 2px;
-	border: 0;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	right: 45px;
+	top: 82px;
+	background-image: url('../img/bt-edit-active.png');
+	background-size: cover;
 }
 
-.meetingEditButton:hover {
-	background-color: #5D6F7A;
+.meeting-edit-button:hover {
+	background-image: url('../img/bt-edit-mouseover.png');
+}
+
+.meeting-edit-button:active {
+	background-image: url('../img/bt-edit-press.png');
 }
 
 .meetingShareButton {
@@ -747,22 +771,42 @@ text-overflow: ellipsis;
 	background-color: #5D6F7A;
 }
 
-.meetingDetailsButton {
+.meeting-join-button {
 	position: absolute;
-	width: 55px;
-	height: 20px;
-	min-height: 20px;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
 	left: 16px;
-	top: 90px;
-	font-size: 10px;
-	font-weight: 300;
-	background-color: #2C3E48;
-	border-radius: 2px;
-	border: 0;
+	top: 82px;
+	background-image: url('../img/bt-meeting-card-active.png');
+	background-size: cover;
 }
 
-.meetingDetailsButton:hover {
-	background-color: #1E2B31; /*#76A214;*/
+.meeting-join-button:hover {
+	background-image: url('../img/bt-meeting-card-mouseover.png');
+}
+
+.meeting-join-button:active {
+	background-image: url('../img/bt-meeting-card-press.png');
+}
+
+.meeting-details-button {
+	position: absolute;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	right: 83px;
+	top: 82px;
+	background-image: url('../img/bt-small-details-active.png');
+	background-size: cover;
+}
+
+.meeting-details-button:hover {
+	background-image: url('../img/bt-small-details-mouseover.png');
+}
+
+.meeting-details-button:active {
+	background-image: url('../img/bt-small-details-press.png');
 }
 
 .spinner {
@@ -830,16 +874,32 @@ background-color: #4E5256; /*#262D40*/
 	background-color: #F0F0EF;
 }
 
+.buddies-item:hover > .meeting-not_begun {
+	background-color: #9d61db;
+}
+
 .meeting-ended {
 	background-color: #F0F0EF;
+}
+
+.buddies-item:hover > .meeting-ended {
+	background-color: #9d61db;
 }
 
 .meeting-inactive {
 	background-color: #F0F0EF; /*rgba(105, 105, 105, 0.25);*/
 }
 
+.buddies-item:hover > .meeting-inactive {
+	background-color: #9d61db;
+}
+
 .meeting-active {
-	background-color: #D79F29; /*#F1C212;*/
+	background-color: #9d61db; /*#F1C212;*/
+}
+
+.buddies-item:hover > .meeting-active {
+	background-color: #9d61db;
 }
 
 .meeting-state {

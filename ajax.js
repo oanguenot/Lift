@@ -179,7 +179,6 @@ function scheduleMeeting(params) {
         "conf_type=" + params.type + 
         "&no_audio=false" + 
         "&calling_disabled=false" + 
-        "&create_callback=true" + 
         "&timezone=" + params.timezone +  
         "&start_year=" + params.start.getFullYear() + 
         "&start_month=" + (params.start.getMonth()+1) +
@@ -240,6 +239,7 @@ function scheduleMeeting(params) {
 
         switch(params.profile) {
             case 'meeting':
+                url +='&create_callback=true'; 
                 url +='&video_allowed=true';
                 url +='&announce_callers=true';
                 url +='&record_callers=true';
@@ -269,6 +269,7 @@ function scheduleMeeting(params) {
                 url +='&suppress_system_im=true';
                 break;
             case 'call':
+                url +='&create_callback=true'; 
                 url +='&announce_callers=true';
                 url +='&announce_callers_on_exit=true';
                 url +='&drop_with_leader=true';

@@ -7,6 +7,13 @@
  */
 
 /**
+ * Version 1.3
+ * - FEATURE: TODO: Add audio link (Number to call)
+ * - FEATURE: TODO: Set password rules
+ * 
+ * Version 1.2.1:
+ * - FIX: Issue with Webinar and Training profile that should not have a callback link
+ * - FEATURE: TODO: ADD OTC/PC icons
  *
  * Version 1.2:
  * - FEATURE: Allow to select the timezone 
@@ -63,6 +70,8 @@ var host_param = "";        //localStorage["lift_host"];
 
 var timezone = "Europe/Paris";
 var timezones = [];
+
+var conferenceCall = {};
 
 var loaded = false;
 
@@ -777,14 +786,10 @@ function displayMeeting(xml) {
 
     item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
 
-    
-
     if(typeConf === "scheduled") {
 
         var startTimeString = startDate.format('HH:mm');
         var endTimeString = hour_end + ":" + minute_end;
-
-        
 
         if(hasRecurrence) {
             var scheduledEndTime = null;
@@ -842,12 +847,21 @@ function displayMeeting(xml) {
     var removeID = "remove-" + vanity;
     var editID = "edit-" + vanity;
     var detailsID = "details-" + vanity;
+    var joinID = "join-" + vanity;
     //var shareID = "share-" + vanity;
 
-    item.innerHTML += '<button type="action" id="' + detailsID + '" class="meetingActionButton meetingDetailsButton">Details</button>';
-    //item.innerHTML += '<button type="action" id="' + shareID + '" class="meetingActionButton meetingShareButton">Share</button>';
-    item.innerHTML += '<button type="action" id="' + editID + '" class="meetingActionButton meetingEditButton">Edit</button>';
-    item.innerHTML += '<button type="action" id="' + removeID + '" class="meetingActionButton meetingRemoveButton">Remove</button>';
+    // item.innerHTML += '<button type="action" id="' + detailsID + '" class="meetingActionButton meetingDetailsButton">Details</button>';
+    // //item.innerHTML += '<button type="action" id="' + shareID + '" class="meetingActionButton meetingShareButton">Share</button>';
+    //item.innerHTML += '<button type="action" id="' + editID + '" class="meetingActionButton meetingEditButton">Edit</button>';
+    //item.innerHTML += '<button type="action" id="' + removeID + '" class="meetingActionButton meetingRemoveButton">Remove</button>';
+
+    if(state === 'active') {
+        item.innerHTML += '<div title="Join this meeting" id="' + joinID + '" class="meetingActionButton meeting-join-button"></div>';
+    }
+    
+    item.innerHTML += '<div title="Display meeting details" id="' + detailsID + '" class="meetingActionButton meeting-details-button"></div>';
+    item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button"></div>';
+    item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button"></div>';
 
     var callVanityLeader = xml.getElementsByTagName("access")[1].childNodes[1].textContent;
     var callVanityParticipant = xml.getElementsByTagName("access")[2].childNodes[1].textContent;
@@ -890,16 +904,22 @@ function displayMeeting(xml) {
     //     end: endDate.toDate()
     // };
     
-    item.addEventListener("click", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        displayConfirmJoin(vanity, subject);
-    });
+    
 
     list.appendChild(item);
 
-    var remove = document.querySelector("#" + removeID);
-    remove.addEventListener("click", function(event) {
+    if(state === 'active') {
+        var joinBtn = document.querySelector("#" + joinID);
+        joinBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            displayConfirmJoin(vanity, subject);
+        });    
+    }
+    
+
+    var removeBtn = document.querySelector("#" + removeID);
+    removeBtn.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
         console.log("Display confirm");
@@ -915,8 +935,8 @@ function displayMeeting(xml) {
     //     shareMeeting(invitation);
     // });
 
-    var edit = document.querySelector("#" + editID);
-    edit.addEventListener("click", function(event) {
+    var editBtn = document.querySelector("#" + editID);
+    editBtn.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
         // Edit existing meeting
@@ -924,8 +944,8 @@ function displayMeeting(xml) {
 
     });
 
-    var details = document.querySelector("#" + detailsID);
-    details.addEventListener("click", function(event) {
+    var detailsBtn = document.querySelector("#" + detailsID);
+    detailsBtn.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
         document.querySelector('.firstLine').innerHTML = 'Here is the URL for joining this meeting';
@@ -960,6 +980,24 @@ function displayMeeting(xml) {
         else {
             document.querySelector('.password').innerHTML = '';
         }
+
+        var strCall = "Conference Call Information";
+        var hasANumber = false;
+
+        if(conferenceCall) {
+
+            for (var name in conferenceCall) {
+                var number = conferenceCall[name];
+                strCall += '<br>' + name + '<br>' + number;
+                hasANumber = true;
+            }
+        }
+
+        if(!hasANumber) {
+            strCall += "<br>No information";
+        }
+
+        document.querySelector('.call').innerHTML = strCall;
 
         clearButton.onclick = function(event) {
             event.preventDefault();
@@ -1055,7 +1093,21 @@ function erasePreviousUserData() {
                     for (var i=0, l=timezonesList.length; i < l;i++) {
                         timezones.push(timezonesList[i].innerHTML);
                     }
-                    
+
+                    var phone = settings.getElementsByTagName("phone");
+
+                    console.log("Phone", phone);
+
+                    if(phone) {
+                        for (var j=0, len = phone.length; j < len; j++) {
+                            var phoneName = phone[j].getAttribute('type');
+                            var phoneNumber = phone[j].childNodes[0].nodeValue;
+                            conferenceCall[phoneName] = phoneNumber;
+                        }
+                    }
+
+                    console.log("CALL", conferenceCall);
+
                     // Get the list of Meetings
                     return(getListofMeetings())
                     .then(function(jsonResponse) {
