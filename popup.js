@@ -7,13 +7,23 @@
  */
 
 /**
- * Version 1.3
- * - FEATURE: TODO: Add audio link (Number to call)
- * - FEATURE: TODO: Set password rules
+ * TODO
+ * - FEATURE: Set password rules
+ * - FEATURE: ICS Export
+ */
+
+/**
+ *
+ * Version 1.3.0
+ * - REFACTORING: New Window management: Lift window is no more hidden when focus is lost. It's a real window that can be minized and kept open as a native window
+ *
+ * Version 1.2.2
+ * - FEATURE: Add audio link to details (Number to call)
  * 
  * Version 1.2.1:
  * - FIX: Issue with Webinar and Training profile that should not have a callback link
- * - FEATURE: TODO: ADD OTC/PC icons
+ * - REFACTORING: Switch to OTC/PC icons for meeting action
+ * - REFACTORING: Add a new button to join the meeting when it's active 
  *
  * Version 1.2:
  * - FEATURE: Allow to select the timezone 
@@ -1076,6 +1086,9 @@ function erasePreviousUserData() {
             login_param && login_param.length > 0 &&
             password_param && password_param.length > 0) {
 
+            //Remove all previous cookies
+            //deletePreviouslyUsedCookies();
+
             // Remove default no result view
             hideEmptyArea();
             // Display Spinner
@@ -1096,8 +1109,6 @@ function erasePreviousUserData() {
 
                     var phone = settings.getElementsByTagName("phone");
 
-                    console.log("Phone", phone);
-
                     if(phone) {
                         for (var j=0, len = phone.length; j < len; j++) {
                             var phoneName = phone[j].getAttribute('type');
@@ -1105,8 +1116,6 @@ function erasePreviousUserData() {
                             conferenceCall[phoneName] = phoneNumber;
                         }
                     }
-
-                    console.log("CALL", conferenceCall);
 
                     // Get the list of Meetings
                     return(getListofMeetings())

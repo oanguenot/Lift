@@ -1,6 +1,5 @@
 html {
 	overflow: hidden;
-	min-height: 540px;
 }
 
 @font-face
@@ -35,8 +34,7 @@ body {
 	font-family: "Roboto",sans-serif;
 	background-color: #fff;
 	font-size:90%;
-	width: 350px;
-	min-height: 500px;
+	width: 100%;
 	overflow: hidden;
 	margin: 0;
 }
@@ -134,7 +132,6 @@ select option {
 .background {
 	background-color: #fff; /* #25190E */;
 	padding-top: 20px;
-	height: 490px;
 }
 
 .logo {
@@ -186,18 +183,16 @@ select option {
 
 .left {
 	position: relative;
-	width: 175px;
+	width: 50%;
 	height: 40px;
 	font-size: 12px;
 	font-weight: 100;
 }
 
-
-
 .right {
 	position: absolute;
-	width: 175px;
-	left: 175px;
+	width: 50%;
+	left: 50%;
 	height: 40px;
 	font-size: 12px;
 	font-weight: 100;
@@ -206,12 +201,12 @@ select option {
 
 .endDateLabel {
 	position: absolute;
-	left: 190px;
+	left: 54%;
 	top: 334px;
 }
 
 .timezoneType {
-	width: 330px;
+	width: 94%;
 	color: #fff;
 	font-weight: 100;
 	padding-left: 10px;
@@ -221,21 +216,21 @@ select option {
 
 .recurrenceLabel {
 	position: absolute;
-	left: 190px;
+	left: 54%;
 	top: 186px;
 }
 
 .durationLabel {
 	position: absolute;
-	left: 190px;
+	left: 54%;
 	top: 406px;
 }
 
 .endDateInput {
 	position: absolute;
 	position: absolute;
-left: 190px;
-width: 138px;
+left: 54%;
+width: 37%;
 color: #fff;
 font-weight: 100;
 padding-left: 10px;
@@ -264,13 +259,13 @@ border-radius: 5px;
 
 .titleInput {
 	padding-left: 10px;
-margin-left: 10px;
-margin-bottom: 20px;
-width: 138px;
-color: #fff;
-font-weight: 100;
-border: 2px solid #666A6F;
-border-radius: 5px;
+	margin-left: 10px;
+	margin-bottom: 20px;
+	width: 42%;
+	color: #fff;
+	font-weight: 100;
+	border: 2px solid #666A6F;
+	border-radius: 5px;
 }
 
 .titleInput:hover {
@@ -279,37 +274,37 @@ background-color: #72539E;
 }
 
 .recurrenceType {
-	width: 150px;
-	/* height: 25px; */
-	color: #fff;
-	font-weight: 100;
-	padding-left: 10px;
-	position: absolute;
-	left: 190px;
-	top: 202px;
+	width: 43%;
+/* height: 25px; */
+color: #fff;
+font-weight: 100;
+padding-left: 10px;
+position: absolute;
+left: 54%;
+top: 202px;
 }
 
 .profileTitle {
 	width: 150px;
 	position: absolute;
-	left: 190px;
+	left: 54%;
 	top: 111px;	
 }
 
 .profileType {
-width: 150px;
+	width: 43%;
 	/* height: 25px; */
 	color: #fff;
 	font-weight: 100;
 	padding-left: 10px;
 	position: absolute;
-	left: 190px;
+	left: 54%;
 	top: 127px;
 }
 
 
 .conferenceType {
-width: 150px;
+width: 46%;
 color: #fff;
 font-weight: 100;
 padding-left: 10px;
@@ -323,7 +318,7 @@ margin-bottom: 20px;
 }
 
 .dateInput {
-	width: 138px;
+	width: 37%;
 color: #fff;
 font-weight: 100;
 padding-left: 10px;
@@ -339,7 +334,7 @@ background-color: #72539E;
 }
 
 .passwordInput {
-	width: 140px;
+	width: 40%;
 padding-left: 10px;
 margin-left: 10px;
 color: #fff;
@@ -386,7 +381,7 @@ background-color: #72539E;
 }
 
 .startTimeInput {
-width: 75px;
+width: 20%;
 padding-left: 10px;
 display: block;
 color: #fff;
@@ -403,9 +398,9 @@ background-color: #72539E;
 }
 
 .durationInput {
-	width: 75px;
+	width: 20%;
 position: absolute;
-left: 190px;
+left: 54%;
 height: 27px;
 top: 422px;
 padding-left: 10px;
@@ -594,7 +589,6 @@ background-color: #72539E;
 .meetings {
 	position: relative;
 	list-style: none;
-	height: 490px;
 	width: 100%;
 	margin: 0;
 	-webkit-padding-start: 0px;
@@ -855,14 +849,16 @@ color: #155F7E;
 
 .copyright {
 	font-family: "Roboto",sans-serif;
-font-weight: 100;
-color: #efefef;
-text-align: center;
-width: 100%;
-font-size: 11px;
-height: 20px;
-line-height: 20px;
-background-color: #4E5256; /*#262D40*/
+	font-weight: 100;
+	color: #efefef;
+	text-align: center;
+	width: 100%;
+	font-size: 11px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #4E5256;
+	position: fixed;
+	bottom: 0;
 }
 
 .fixed {

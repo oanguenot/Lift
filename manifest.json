@@ -8,8 +8,10 @@
   "permissions": ["cookies", "http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
   "browser_action": {
     "default_title": "",
-    "default_icon": "lift_128.png",
-    "default_popup": "popup.html"
+    "default_icon": "lift_128.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
   },
   "web_accessible_resources": ["lift_48.png"]
 }

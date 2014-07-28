@@ -32,7 +32,7 @@ module.exports = function(grunt) {
            
             dist: {
                 src: [
-                    //'cookies.js', 
+                    'cookies.js', 
                     'ajax.js',
                     'config.js',
                     'popup.js'
