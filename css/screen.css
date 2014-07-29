@@ -357,7 +357,11 @@ background-color: #72539E;
 }
 
 .firstLine {
-	margin-top: 30px;
+	margin-top: 20px;
+}
+
+.clearCookies {
+	text-align: center;
 }
 
 .participant {
@@ -447,7 +451,25 @@ background-color: #72539E;
 	outline: none; 
 }
 
-.loginButton:hover, .cancelSettingButton:hover {
+.centerButton {
+	border: 1px solid #4E5256;
+	background-color: #4E5256;
+	color: #ffffff;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: center;
+	cursor: pointer;
+	padding: 0 20px 0 20px;
+	min-height: 30px;
+	line-height: 30px;
+	display: inline-block;
+	outline: none;
+	margin-top: 20px;
+	left: 90px;
+	position: relative;
+}
+
+.loginButton:hover, .cancelSettingButton:hover, .centerButton:hover {
 	background-color: #72539E;
 	border: 1px solid #72539E;
 }
@@ -587,13 +609,14 @@ background-color: #72539E;
 }
 
 .meetings {
-	position: relative;
-	list-style: none;
-	width: 100%;
-	margin: 0;
-	-webkit-padding-start: 0px;
-	overflow-y: scroll;
-	overflow-x: hidden;
+	position: absolute;
+list-style: none;
+width: 100%;
+height: calc(100% - 130px);
+margin: 0;
+-webkit-padding-start: 0px;
+overflow-y: scroll;
+overflow-x: hidden;
 }
 
 li.buddies-item {
@@ -803,18 +826,37 @@ text-overflow: ellipsis;
 	background-image: url('../img/bt-small-details-press.png');
 }
 
+.aboutButton {
+	position: absolute;
+	cursor: pointer;
+	width: 36px;
+	height: 36px;
+	right: 8px;
+	top: 8px;
+	background-image: url('../img/information-active.png');
+	background-size: cover;	
+}
+
+.aboutButton:hover {
+	background-image: url('../img/information-mouseover.png');
+}
+
+.aboutButton:active {
+	background-image: url('../img/information-press.png');	
+}
+
 .spinner {
 	position: absolute;
 	top: 90px;
-	width: 350px;
-	height: 410px;
+	width: 100%;
+	height: calc(100% - 130px);
 }
 
 .empty {
 	position: absolute;
-	top: 100px;
-	width: 350px;
-	height: 400px;
+	top: 90px;
+	width: 100%;
+	height: calc(100% - 130px);
 }
 
 .emptyTitle {
@@ -822,28 +864,28 @@ position: relative;
 width: 100%;
 text-align: center;
 font-size: 18px;
-margin-top: 10px;
+top: 30%;
 font-weight: 400;
 color: #155F7E;
-/* font-family: "Roboto",sans-serif; */
 }
 
 .emptyMessage {
 	position: relative;
 width: 150px;
-margin: 10px auto 0 auto;
 text-align: center;
 font-size: 12px;
-/* margin-top: 10px; */
+top: 30%;
 font-weight: 100;
 color: #155F7E;
+margin: 0 auto;
 }
 
 .emptyLogo {
 	position: relative;
 	width: 80px;
 	height: 80px;
-	margin: 100px auto 0 auto;
+	top: 30%;
+	margin: 0 auto;
 	display: block;
 }
 

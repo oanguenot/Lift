@@ -61,7 +61,7 @@
 		</div>
 	</form>
 
-	<div id="openModal" class="modalDialog target">
+	<div id="openModal" class="modalDialog masked">
 		<div class='popupSettings'>
 			<h2>SETTINGS</h2>
 			<p>Please enter your OpenTouch credentials to use LIFT</p>
@@ -77,13 +77,13 @@
 		</div>
 	</div>
 
-	<div id='errorModal' class="modalDialog">
+	<div id='errorModal' class="modalDialog masked">
 		<div class='popup'>
 			<h2>ERROR</h2>
 			<p>This meeting can't be scheduled due to the following error:</p>
 			<p class='error'></p>
 			<p>Please check your parameters and try again !</p>
-			<button type="submit" id='closeButton' class="loginButton">Close</button>
+			<button type="submit" id='closeButton' class="centerButton">Close</button>
 		</div>
 	</div>
 
@@ -93,7 +93,7 @@
 			<p>Lift can't connect to the OpenTouch server.</p>
 			<p class='error'></p>
 			<p>Please check your parameters and try again !</p>
-			<button type="submit" id='closeLoginButton' class="loginButton">Close</button>
+			<button type="submit" id='closeLoginButton' class="centerButton">Close</button>
 		</div>
 	</div>
 
@@ -107,7 +107,7 @@
 		</div>
 	</div>
 
-	<div id='okModal' class="modalDialog">
+	<div id='okModal' class="modalDialog masked">
 		<div class='popupSettings'>
 			<h2>MEETING ACCESS</h2>
 			<p class='okP firstLine'>Here is the URL for joining this meeting</p>
@@ -117,13 +117,25 @@
 			<p class='okP password'></p>
 			<p class='okP call'></p>
 			<p class="'okP"></p>
-			<button type="action" id='clearButton' class="loginButton">Close</button>
+			<button type="action" id='clearButton' class="centerButton">Close</button>
+		</div>
+	</div>
+
+	<div id='aboutModal' class="modalDialog masked">
+		<div class='popupSettings'>
+			<h2>ABOUT</h2>
+			<p class='okP firstLine'>Copyright Alcatel-Lucent Enterprise. All rights reserved. Alcatel-Lucent Enterprise and the Alcatel-Lucent Enterprise logo are respectively registered trademarks and service marks of Alcatel-Lucent Enterprise.</p>
+			<p class='okP firstLine'>This application is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.</p>
+			<p class='okP firstLine'><a href='./media/OTC_eula.pdf' target='_blank'>Alcatel-Lucent Enterprise Software License Terms</a></p>
+			<p class='okP firstLine clearCookies'><a href='#'>Clear cookies and information stored</a></p>
+			<button type="action" id='aboutCloseButton' class="centerButton">Close</button>
 		</div>
 	</div>
 
 	<div id='list' class='displayed'>
 		<legend class='title'> OpenTouch LIFT</legend>
 		<img class='logo' src='./lift_48.png' width="32" height="32" />
+		<div title='About' class='aboutButton'></div>
 		<div class='options'>
 			<button type="action" id='createBtn' class="actionButton left">New Meeting</button>
 			<button type="action" id='settingBtn' class="actionButton right">Settings</button>
@@ -133,7 +145,7 @@
 		<div class='empty' id='empty'>
 			<img class='emptyLogo' width='80' height='80' src='./lift_128.png' />
 			<div class='emptyTitle'>No Meeting</div>
-			<div class='emptyMessage'>List of Meetings scheduled appears here</div>
+			<div class='emptyMessage'>List of scheduled meetings appears here</div>
 		</div>
 		<ul id='meetings' class='meetings scrollbars'>
 		</ul>

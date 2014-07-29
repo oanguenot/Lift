@@ -15,7 +15,10 @@
 /**
  *
  * Version 1.3.0
+ * - FEATURE: Display an About box with the Copyright and License terms
+ * - FEATURE: Add a link to be able to reset cookies and data stored
  * - REFACTORING: New Window management: Lift window is no more hidden when focus is lost. It's a real window that can be minized and kept open as a native window
+ * - REFACTORING: Rewrite all CSS in order to be responsive
  *
  * Version 1.2.2
  * - FEATURE: Add audio link to details (Number to call)
@@ -74,9 +77,9 @@
  * - FEATURE: First version
  */
 
-var login_param = "";       //localStorage["lift_login"]"";
-var password_param = "";    //localStorage["lift_password"];
-var host_param = "";        //localStorage["lift_host"];        
+var login_param = "";
+var password_param = "";
+var host_param = "";
 
 var timezone = "Europe/Paris";
 var timezones = [];
@@ -114,6 +117,11 @@ function init() {
     var createBtn = document.querySelector('#createBtn');
 
     var cancelBtn = document.querySelector('#cancelBtn');
+
+    var aboutButton = document.querySelector('.aboutButton');
+    var aboutCloseButton = document.querySelector('#aboutCloseButton');
+
+    var clearCookies = document.querySelector('.clearCookies');
 
     btn.onclick = function(event){
         event.preventDefault();
@@ -195,6 +203,35 @@ function init() {
         event.stopPropagation();
         displayConfig(onLoad, this);
 
+    };
+
+    aboutButton.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.querySelector('#aboutModal').classList.add('visible');
+        document.querySelector('#editor').classList.add('blur');
+    };
+
+    aboutCloseButton.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        document.querySelector('#aboutModal').classList.remove('visible');
+        document.querySelector('#editor').classList.remove('blur');
+    };
+
+    clearCookies.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Delete all cookies
+        deletePreviouslyUsedCookies().then(function() {
+            // Erase information
+            eraseFile().then(function() {
+                reload();
+            }, function() {
+                reload();
+            });    
+        });
     };
 
     document.querySelector(".dateInput").value = startMeeting.toJSON().substring(0,10);

@@ -58,6 +58,41 @@ function hideConfig() {
     editor.classList.remove('blur');
 }
 
+function reload() {
+    host_param = "";
+    login_param = "";
+    password_param = "";
+    window.location.reload(true);    
+}
+
+function eraseFile() {
+    // Return a new promise.
+    return new Promise(function(resolve, reject) {
+
+        window.webkitRequestFileSystem(window.PERSISTENT, 100*1024, function(fs){
+
+            // If file exists - Remote it
+            fs.root.getFile('lift.config', {create: false}, function(fileEntry) {
+
+                // Remove the file
+                fileEntry.remove(function() { 
+                    resolve();
+                }, function(e) {
+                    console.log("Error: Can't remove file", e);
+                    reject();
+                });
+                
+            }, function() {
+                console.log("Warning: File doesn't exist");
+                reject();
+            });
+        }, function(e) {
+            console.log("Error: Can't request file system", e);
+            reject();
+        });
+    });
+}
+
 function saveDataToFile(l, p, h) {
 
     // Return a new promise.
@@ -86,17 +121,17 @@ function saveDataToFile(l, p, h) {
                             resolve();
 
                         }, function(e) {
-                            console.log("Error_1", e);
+                            console.log("Error: Can't create a writer", e);
                             reject();
                         });
 
                     }, function(e) {
-                        console.log("Error_2", e);
+                        console.log("Error: Can't create a new file", e);
                         reject();
                     }); 
 
                 }, function(e) {
-                    console.log("Error_3", e);
+                    console.log("Error: Can't remove the file", e);
                     reject();
                 });
                 
@@ -113,17 +148,17 @@ function saveDataToFile(l, p, h) {
                         resolve();
 
                     }, function(e) {
-                        console.log("Error_4", e);
+                        console.log("Error: Can't create a writer", e);
                         reject();
                     });
 
                 }, function(e) {
-                    console.log("Error_4_1", e);
+                    console.log("Error: Can't create a new file", e);
                     reject();
                 });
             });
         }, function(e) {
-            console.log("Error_5", e);
+            console.log("Error: Can't request file system", e);
             reject();
         });
     });
@@ -155,19 +190,18 @@ function loadDataFromFile() {
                     reader.readAsText(file);
                     
                 }, function(e) {
-                    console.log("Error_6", e);
+                    console.log("Error: Can't get file entry", e);
                     reject(e);
                 });
 
             }, function(e) {
-                console.log("Error_7", e);
+                console.log("Error: Can't get file", e);
                 reject(e);
             });
         }, function(e) {
-            console.log("Error_8", e);
+            console.log("Error: Can't request file system", e);
             reject(e);
         });
-
     });
 }
 

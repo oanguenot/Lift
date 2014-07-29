@@ -17,6 +17,12 @@ chrome.browserAction.onClicked.addListener(function() {
 			isOpened = true;	
 		});	
 	}
+	else {
+		chrome.windows.update(windowID, {
+			focused: true,
+			drawAttention: true
+		});
+	}
 	
 });
 
