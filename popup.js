@@ -13,6 +13,8 @@
  */
 
 /**
+ * Version 1.3.1
+ * - FIX = Production issue
  *
  * Version 1.3.0
  * - FEATURE: Display an About box with the Copyright and License terms
