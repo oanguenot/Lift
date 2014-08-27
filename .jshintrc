@@ -8,6 +8,7 @@
   "unused": true,
   "devel": true,
   "loopfunc": true,
+  "evil": true,
   "globals": {
     "jQuery": true,
     "require": true,

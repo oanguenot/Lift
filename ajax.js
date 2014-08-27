@@ -3,6 +3,8 @@
  * Use Promise to deal with asynchrounous call
  */
 
+var socket = null;
+
 
 /**
  * Send an ajax request to ACS
@@ -318,6 +320,23 @@ function deleteMeeting(hostname, vanity) {
     });
 }
 
+function askForRosterInvites(hostname) {
+    //return new Promise(function(resolve, reject) {
+
+        log_info("AJAX", "Ask for rosters invites");
+
+        var url = "http://" + hostname + "/ics?action=get_roster_invites";
+        
+        _request(url).then(function(jsonResponse) {
+            log_debug("AJAX", "Received", jsonResponse);
+            //resolve(jsonResponse);
+        }, function(err) {
+            log_error("AJAX", "askForRosterInvites", err);
+            //reject();
+        });
+    //});
+}
+
 function _getDay(day) {
     switch (day) {
         case 1:
@@ -336,3 +355,115 @@ function _getDay(day) {
             return 'SAT';
     }
 }
+
+function openEventPipe(hostname) {
+
+    var timeoutID = -1;
+
+    var rosters = [];
+
+    log_info("AJAX", "Try to open the Event Pipe");
+
+    return new Promise(function(resolve, reject) {
+
+        var url = "http://" + hostname + "/ics?action=open_server_interface&mode=simple&api_scope=s";
+
+        url += "&_nocachex=" + Math.floor(Math.random()*2147483647);
+
+        socket = new XMLHttpRequest();
+        
+        var parts = url.split('?');
+        socket.open("POST", parts[0], true);
+
+        var response_index = 0;
+
+        //var that = this;
+
+        socket.onreadystatechange = function () {
+
+            // status produces a javascript error in IE when readyState != 4.
+            var success = this.readyState !== 4 || Math.floor(this.status/100) === 2;
+
+            // Parse a new data chunk
+            if (success && (this.readyState === 3 || this.readyState === 4)) {
+                var index = this.responseText.indexOf('\n', response_index);
+
+                while (index > 0) {
+                    var command = this.responseText.substr(response_index, index - response_index);
+
+                    if (command.length > 5) {
+                        // Split the command apart, so we don't eval executable code,
+                        // causing a cross-site scripting error.
+                        var paren = command.indexOf('(');
+                        var dot = command.indexOf('.');
+                        var e = command.substring(dot+1, paren);
+                        var params = '[' + command.substring(paren+1, command.length-2) + ']';
+                        //m_debug.gotEvent(e, command.length+1);
+                        log_debug("PIPE", "Event", e);
+                        //self[e].apply(self, eval(params));
+                        log_debug("PIPE", "Parameters", params);
+                        // Fire the event
+                        //that.fireEvent(e, eval(params));
+
+                        var data = eval(params);
+
+                        if(e === 'Initialize') {
+                            var ACSVersion = "Unknown";
+
+                            if(data && data.length > 0) {
+                                ACSVersion = data[0];
+                            }
+
+                            log_debug("PIPE", "Event pipe channel opened with ACS", ACSVersion);
+
+                            // Ask for roster invites
+                            askForRosterInvites(hostname);
+                            // resolve();
+                        }
+
+                        if(e === 'UpdateConference') {
+                            log_debug("PIPE", "Rosters received", data);
+
+                            rosters.push(data);
+
+                            // Start timer to detect end of rosters received
+                            if(timeoutID > -1) {
+                                clearTimeout(timeoutID);
+                            }
+                            timeoutID = setTimeout(function() {
+                                resolve(rosters);
+                            }, 300);
+                        }
+                    }
+                    response_index = index + 1;
+                    index = this.responseText.indexOf('\n', response_index);
+                }
+            }
+
+            // The connection was lost.
+            if (this.readyState === 4) {
+                log_warning("PIPE", "Connection lost to Event Pipe");
+                //if (!backgroundMode)
+                //  repair("socket_broken");
+            }
+        };
+
+        socket.onProgress = function(e) {
+            log_debug("PIPE", "Progress", e);
+        };
+
+        socket.onError = function(e) {
+            log_error("PIPE", "openEventPipe", e);    
+            reject();
+        };
+
+        socket.send(parts[1]);
+    });
+}
+
+function closeEventPipe() {
+    socket.abort();
+    socket = null;
+}
+
+

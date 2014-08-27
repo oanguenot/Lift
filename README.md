@@ -14,6 +14,9 @@ Use your OpenTouch credentials
 
 # HISTORY
 
+## Version 1.4.0
+ - FEATURE: Display invitation meetings (thru event pipe)
+
 ## Version 1.3.2
  - FIX: Remove scrollbars when no need
  - FIX: Tests if global parameters exists before trying to use them

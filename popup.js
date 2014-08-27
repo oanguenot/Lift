@@ -621,20 +621,88 @@ function displayMeetings(response) {
             showEmptyArea();        
         }
     }
+}
 
+function displayRostersMeetings(rosters) {
+    log_info("POPUP", "Add rosters meetings to List");
+
+    // var meeting = null,
+    //     meetingToDisplay = null;
+
+    if(rosters) {
+        for(var i=0, len = rosters.length; i < len; i++) {
+
+            var meeting = rosters[i];
+
+            var data = meeting[1];
+
+            var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
+
+            log_debug("POPUP", "Display invitation", xml);
+
+            displayMeeting(xml);
+
+            // var typeConf = xml.getAttribute("type");
+            // var subject = "Unknown";
+            // if(xml.getElementsByTagName("subject")[0]) {
+            //     subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
+            // }
+
+
+            // console.log("subject", subject, typeConf);
+
+            //var meeting = {
+            //     vanity: '',
+            //     title: subject || 'Unknown',
+            //     type: typeConf, 
+            //     recurrence: recurrenceType || 'none',
+            //     start: meetingStartDate,
+            //     end: meetingEndDate,
+            //     scheduledEndTime: endDate.toDate(),
+            //     scheduledStartTime: startDate.toDate(),
+            //     hour: hour,
+            //     minute: minute,
+            //     duration: duration,
+            //     timezone: timezone,
+            //     password: password,
+            //     profile: profile
+            // };
+
+            // var meetingToDisplay = {
+            //     state: state,
+            //     subject: subject,
+            //     stateDisplayed: stateDisplayed,
+            //     typeConf: typeConf,
+            //     startTime: startTimeString,
+            //     endTime: endTimeString,
+            //     timezone: timezone,
+            //     days: days,
+            //     startDate: startDateString,
+            //     startDateNext: startDateStringNext,
+            //     vanity: vanity,
+            //     callVanityParticipant: callVanityParticipant,
+            //     callVanityLeader: callVanityLeader,
+            //     password: password,
+            //     participantURL: participantURL
+            // };
+
+            // displayMeetingInDom(meetingToDisplay, meeting);
+
+        }
+    }
 }
 
 function displayMeeting(xml) {
 
     log_debug("POPUP", "Display a meeting", xml);
 
-    var list = document.querySelector("#meetings");
     var typeConf = xml.getAttribute("type");
+
     var subject = "Unnamed";
     if(xml.getElementsByTagName("subject")[0]) {
         subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
     }
-    
+
     //var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
     var day = xml.getElementsByTagName('time')[0].getElementsByTagName('day')[0].textContent;
     var month = xml.getElementsByTagName('time')[0].getElementsByTagName('month')[0].textContent;
@@ -661,7 +729,7 @@ function displayMeeting(xml) {
     var call = 'false';
     if(xml.getElementsByTagName('options')[0].getElementsByTagName('audio_only').length > 0) {
         call = xml.getElementsByTagName('options')[0].getElementsByTagName('audio_only')[0].textContent;
-    }    
+    }   
 
     if(webinar === 'true') {
         profile = 'webinar';
@@ -712,10 +780,11 @@ function displayMeeting(xml) {
     duration = parseInt(hour_end, 10) - parseInt(hour, 10);
 
     var timezone = xml.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
+
     var vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
 
-    var state = xml.getElementsByTagName("access")[1].getAttribute("state");
-    
+    var state = xml.getElementsByTagName("access")[1].getAttribute("state") || 'unknown';
+
     var profileDisplayed = profile;
     if (profileDisplayed === 'call') {
         profileDisplayed = 'Conference Call';
@@ -740,6 +809,7 @@ function displayMeeting(xml) {
     endDate.add(parseInt(hour_end, 10), 'h').add(parseInt(minute_end, 10), 'm');
     
     var startDateString = startDate.format("dddd, MMMM Do");
+
     var startDateStringNext = "";
     if(hasRecurrence) {
         switch (recurrenceType) {
@@ -753,11 +823,6 @@ function displayMeeting(xml) {
                 break;
         }
     }
-    
-    var item = document.createElement("li");
-    item.className =  "buddies-item";
-    item.innerHTML += '<div class=" meeting-state meeting-' + state + '" />';
-    item.innerHTML += '<span class="meetingTitle">' + subject + '</span>';
 
     var documents = xml.getElementsByTagName('document');
     if (documents && documents.length > 0) {
@@ -768,33 +833,30 @@ function displayMeeting(xml) {
         }
     }
 
-    item.innerHTML += '<span class="meetingState">' + stateDisplayed + '</span>';
+    var startTimeString = "",
+        endTimeString = "",
+        scheduledEndTime = "";
+
+    var now = moment();
+    var days = -1;
 
     if(typeConf === "scheduled") {
 
-        var startTimeString = startDate.format('HH:mm');
-        var endTimeString = hour_end + ":" + minute_end;
+        startTimeString = startDate.format('HH:mm');
+        endTimeString = hour_end + ":" + minute_end;
 
         if(hasRecurrence) {
-            var scheduledEndTime = null;
+            scheduledEndTime = null;
             scheduledEndTime = startDate.clone();
             duration = parseInt(xml.getElementsByTagName('recurrence')[0].getElementsByTagName('duration')[0].textContent, 10) / 3600 ;
             scheduledEndTime.add(duration, 'h');            
             endTimeString = scheduledEndTime.format('HH:mm');
         }
-
-        item.innerHTML += '<span class="meetingTime">' + startTimeString + " - " + endTimeString + '</span>';
-        item.innerHTML += '<span class="meetingTimezone">' + timezone + '</span>';
     }
     else {
 
         startDateString = "Each day";
         startDateStringNext = startDate.format("MMMM Do") + " to " + endDate.format("MMMM Do");
-
-        item.innerHTML += '<span class="meetingTime">Whole day</span>';
-        
-        var now = moment();
-        var days = -1;
 
         if(now.isAfter(startDate)) {
             if(now.isAfter(endDate)) {
@@ -807,55 +869,65 @@ function displayMeeting(xml) {
         else {
             days = endDate.utc().diff(startDate.utc(), 'days');
         }
-        
-        if (days > 30) {
-            item.innerHTML += '<span class="meetingTimezone">' + "> 1 month left" + '</span>';
-        }
-        else if (days > 1) {
-            item.innerHTML += '<span class="meetingTimezone">' + days + " days left" + '</span>';
-        }
-        else if (days === 1) {
-            item.innerHTML += '<span class="meetingTimezone">' + days + " day left" + '</span>';
-        }
-        else if (days === 0) {
-            item.innerHTML += '<span class="meetingTimezone">' + "Expires today" + '</span>';
-        }
-        else {
-            item.innerHTML += '<span class="meetingTimezone">' + "" + '</span>';
+    }
+
+    var access = xml.getElementsByTagName("access");
+    var role = "participant";
+
+    var callVanityLeader = '',
+        callVanityParticipant = '';
+
+    var vanityTag = '',
+        codeTag = '';    
+
+    if(access) {
+        for (var i = 0; i < access.length; i++) {
+            
+            var accessType = access[i].getAttribute('type');
+
+            vanityTag = access[i].getElementsByTagName("vanity");
+
+            codeTag = access[i].getElementsByTagName("code");
+
+            if(accessType === 'leader') {
+
+                if(vanityTag && vanityTag.length > 0) {
+                    role = "leader";
+                }
+
+                if(codeTag && codeTag.length > 0) {
+                    callVanityLeader = codeTag[0].textContent; 
+                }
+            }
+            else {
+                if(vanityTag && vanityTag.length > 0) {
+                    role = "participant";
+                }
+                if(codeTag && codeTag.length > 0) {
+                    callVanityParticipant = codeTag[0].textContent;    
+                }   
+            }
         }
     }
 
-    item.innerHTML += '<span class="meetingStartDate">'+ startDateString + '</span>';
-    item.innerHTML += '<span class="meetingStartDateNext">'+ startDateStringNext + '</span>';
-    
-    var removeID = "remove-" + vanity;
-    var editID = "edit-" + vanity;
-    var detailsID = "details-" + vanity;
-    var joinID = "join-" + vanity;
-    //var shareID = "share-" + vanity;
+    log_debug("POPUP", "Conference access", {
+        role: role,
+        leader: callVanityLeader,
+        participant: callVanityParticipant
+    });
 
-    // item.innerHTML += '<button type="action" id="' + detailsID + '" class="meetingActionButton meetingDetailsButton">Details</button>';
-    // //item.innerHTML += '<button type="action" id="' + shareID + '" class="meetingActionButton meetingShareButton">Share</button>';
-    //item.innerHTML += '<button type="action" id="' + editID + '" class="meetingActionButton meetingEditButton">Edit</button>';
-    //item.innerHTML += '<button type="action" id="' + removeID + '" class="meetingActionButton meetingRemoveButton">Remove</button>';
+    var path = "/call/";
 
-    if(state === 'active') {
-        item.innerHTML += '<div title="Join this meeting" id="' + joinID + '" class="meetingActionButton meeting-join-button"></div>';
+    if(xml.getElementsByTagName("join_url_root") && xml.getElementsByTagName("join_url_root").length > 0) {
+        path = xml.getElementsByTagName("join_url_root")[0].textContent;
     }
-    
-    item.innerHTML += '<div title="Display meeting details" id="' + detailsID + '" class="meetingActionButton meeting-details-button"></div>';
-    item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button"></div>';
-    item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button"></div>';
-
-    var callVanityLeader = xml.getElementsByTagName("access")[1].childNodes[1].textContent;
-    var callVanityParticipant = xml.getElementsByTagName("access")[2].childNodes[1].textContent;
-
-    var path = xml.getElementsByTagName("join_url_root")[0].textContent;
 
     var password = '';
 
-    if(xml.getElementsByTagName("documents")[0].getElementsByTagName('password') && xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0]) {
-        password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
+    if(xml.getElementsByTagName("documents") && xml.getElementsByTagName("documents").length > 0) {
+        if(xml.getElementsByTagName("documents")[0].getElementsByTagName('password') && xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0]) {
+            password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
+        }    
     }
 
     var participantURL= "https://" + host_param + path + callVanityParticipant;
@@ -877,46 +949,100 @@ function displayMeeting(xml) {
         profile: profile
     };
 
-    // var invitation = {
-    //     title: subject,
-    //     type: typeConf,
-    //     owner: from,
-    //     url: participantURL,
-    //     accessCode: callVanityParticipant,
-    //     startDetails: startDateString,
-    //     start: startDate.toDate(),
-    //     end: endDate.toDate()
-    // };
+    var meetingToDisplay = {
+        state: state,
+        subject: subject,
+        stateDisplayed: stateDisplayed,
+        typeConf: typeConf,
+        startTime: startTimeString,
+        endTime: endTimeString,
+        timezone: timezone,
+        days: days,
+        startDate: startDateString,
+        startDateNext: startDateStringNext,
+        vanity: vanity,
+        callVanityParticipant: callVanityParticipant,
+        callVanityLeader: callVanityLeader,
+        password: password,
+        participantURL: participantURL
+    };
+
+    displayMeetingInDom(meetingToDisplay, meeting);
+
+}
+
+function displayMeetingInDom(data, meeting) {
+
+    var list = document.querySelector("#meetings");
+
+    var removeID = "remove-" + data.vanity;
+    var editID = "edit-" + data.vanity;
+    var detailsID = "details-" + data.vanity;
+    var joinID = "join-" + data.vanity;
+
+    //Construct meeting item
+    var item = document.createElement("li");
+    item.className =  "buddies-item";
+    item.innerHTML += '<div class=" meeting-state meeting-' + data.state + '" />';
+    item.innerHTML += '<span class="meetingTitle">' + data.subject + '</span>';
+    item.innerHTML += '<span class="meetingState">' + data.stateDisplayed + '</span>';
+
+    if(data.typeConf === "scheduled") {
+
+        item.innerHTML += '<span class="meetingTime">' + data.startTime + " - " + data.endTime + '</span>';
+        item.innerHTML += '<span class="meetingTimezone">' + data.timezone + '</span>';
+    }
+    else {
+
+        item.innerHTML += '<span class="meetingTime">Whole day</span>';
+        
+        if (data.days > 30) {
+            item.innerHTML += '<span class="meetingTimezone">' + "> 1 month left" + '</span>';
+        }
+        else if (data.days > 1) {
+            item.innerHTML += '<span class="meetingTimezone">' + data.days + " days left" + '</span>';
+        }
+        else if (data.days === 1) {
+            item.innerHTML += '<span class="meetingTimezone">' + data.days + " day left" + '</span>';
+        }
+        else if (data.days === 0) {
+            item.innerHTML += '<span class="meetingTimezone">' + "Expires today" + '</span>';
+        }
+        else {
+            item.innerHTML += '<span class="meetingTimezone">' + "" + '</span>';
+        }
+    }
+
+    item.innerHTML += '<span class="meetingStartDate">'+ data.startDate + '</span>';
+    item.innerHTML += '<span class="meetingStartDateNext">'+ data.startDateNext + '</span>';
     
+    if(data.state === 'active') {
+        item.innerHTML += '<div title="Join this meeting" id="' + joinID + '" class="meetingActionButton meeting-join-button"></div>';
+    }
     
+    item.innerHTML += '<div title="Display meeting details" id="' + detailsID + '" class="meetingActionButton meeting-details-button"></div>';
+    item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button"></div>';
+    item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button"></div>';
 
     list.appendChild(item);
 
-    if(state === 'active') {
+    //Add meeting listener
+    if(data.state === 'active') {
         var joinBtn = document.querySelector("#" + joinID);
         joinBtn.addEventListener("click", function(event) {
             event.preventDefault();
             event.stopPropagation();
-            displayConfirmJoin(vanity, subject);
+            displayConfirmJoin(data.vanity, data.subject);
         });    
     }
-    
 
     var removeBtn = document.querySelector("#" + removeID);
     removeBtn.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        displayConfirmDelete(subject, host_param, vanity);
+        displayConfirmDelete(data.subject, host_param, data.vanity);
 
     });
-
-    // var share = document.querySelector('#' + shareID);
-    // share.addEventListener("click", function(event) {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     console.log("Invite");
-    //     shareMeeting(invitation);
-    // });
 
     var editBtn = document.querySelector("#" + editID);
     editBtn.addEventListener("click", function(event) {
@@ -924,7 +1050,6 @@ function displayMeeting(xml) {
         event.stopPropagation();
         // Edit existing meeting
         displayEditor(meeting);
-
     });
 
     var detailsBtn = document.querySelector("#" + detailsID);
@@ -938,10 +1063,10 @@ function displayMeeting(xml) {
 
         // Meeting URL (Participant URL)
         var b=document.createElement("a");
-        b.href = participantURL;
-        b.innerHTML = participantURL;
+        b.href = data.participantURL;
+        b.innerHTML = data.participantURL;
         b.onclick = function() {
-            window.open(participantURL,"_blank"); 
+            window.open(data.participantURL,"_blank"); 
         };
 
         var participantNode = document.querySelector('.participantURL');
@@ -951,14 +1076,14 @@ function displayMeeting(xml) {
         participantNode.appendChild( b );
 
         // Meeting Code (Participant)
-        document.querySelector('.participant').innerHTML = 'Access Code = ' + callVanityParticipant;
+        document.querySelector('.participant').innerHTML = 'Access Code = ' + data.callVanityParticipant;
 
         // Leader Code
-        document.querySelector('.leader').innerHTML = 'Leader Code = ' + callVanityLeader;
+        document.querySelector('.leader').innerHTML = 'Leader Code = ' + data.callVanityLeader;
 
         // Password
-        if(password) {
-            document.querySelector('.password').innerHTML = 'Meeting Password = ' + password;
+        if(data.password) {
+            document.querySelector('.password').innerHTML = 'Meeting Password = ' + data.password;
         }
         else {
             document.querySelector('.password').innerHTML = '';
@@ -991,7 +1116,6 @@ function displayMeeting(xml) {
             clearButton = null;
         };
     });
-    
 }
 
 function join(vanity) {
@@ -1137,8 +1261,24 @@ function connectionToACS() {
                         displayMeetings(jsonResponse);
                         // Enable create new meeting button
                         enableCreateNewMeetingButton();
-                        // Hide Spinner
-                        hideSpinner();
+
+                        // Open the event Pipe to receive rosters
+                        return(openEventPipe(host_param))
+                        .then(function(rosters) {
+
+                            // Display Rosters
+                            displayRostersMeetings(rosters);
+
+                            // Hide Spinner
+                            hideSpinner();
+                                
+                            // Close the Event pipe channel
+                            closeEventPipe();
+
+                        }, function() {
+
+                        });
+
                     }, function() {
                         displayErrorLogin();
                         
