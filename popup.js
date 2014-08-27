@@ -6,79 +6,6 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/**
- * TODO
- * - FEATURE: Set password rules
- * - FEATURE: ICS Export
- */
-
-/**
- * Version 1.3.1
- * - FIX = Production issue
- *
- * Version 1.3.0
- * - FEATURE: Display an About box with the Copyright and License terms
- * - FEATURE: Add a link to be able to reset cookies and data stored
- * - REFACTORING: New Window management: Lift window is no more hidden when focus is lost. It's a real window that can be minized and kept open as a native window
- * - REFACTORING: Rewrite all CSS in order to be responsive
- *
- * Version 1.2.2
- * - FEATURE: Add audio link to details (Number to call)
- * 
- * Version 1.2.1:
- * - FIX: Issue with Webinar and Training profile that should not have a callback link
- * - REFACTORING: Switch to OTC/PC icons for meeting action
- * - REFACTORING: Add a new button to join the meeting when it's active 
- *
- * Version 1.2:
- * - FEATURE: Allow to select the timezone 
- *
- * Version 1.1:
- * - FEATURE: Allow to select the meeting profile: Meeting, Webinar, Training, Conference Call
- * - FIX: Issue with meeting editor (end date not enabled when editing a scheduled with recurrence)
- *
- * Version 1.0.5:
- * - FIX: Issue with bad end time (scheduled)
- * - FEATURE: Leader Code
- * - FEATURE: Display the password in the Conference Details panel
- * - REFACTORING: Display Web Confirmation box instead of native one (should fix a bug on MAC)
- * 
- * Version 1.0.4:
- * - REFACTORING; Use File API instead of localstorage for storing the Login/Password
- * - FIX: Issue "expires today" label that is still displayed when meeting is eneded
- * - FIX: All lint issue
- * - REFACTORING: Provide minified and obfuscated version
- *
- * Version 1.0.3:
- * - REFACTORING: Use OTC clients graphical chart (font still roboto instead of clanOT)
- *
- * Version 1.0.2:
- * - FIX: issue (replace HTTP protocol with HTTPS for the URL)
- * 
- * Version 1.0 & 1.0.1:
- * - REFACTORING: First released version on the Chrome Store
- * - FIX: issue when re-scheduling a meeting (to have a new empty form without previous info)
- * - FEATURE: Add placeholder icon
- *
- * Version 0.9-0.4:
- * - REFACTORING: Merge the two extensions into a single one for listing, scheduling and modifying meetings
- * - REFACTORING: Do not use 'logoff' and 'removeCookies' because it deconnects OTC/Web from its session
- * ...
- * 
- * Version 0.3:
- * - REFACTORING: Read timezone from vcs?settings=global
- * - FIX: issue with notification. Only displayed if possible
- * - FIX: issue with start time (use toLocaleTimeString() function instead of to JSONString() function)
- * - FIX: issue with Date&Time not taken into account
- * - FIX: issue with bard parameters sent to vcs_conf_schedule API
- *
- * Version 0.2:
- * - REFACTORING: Version compliant to Chrome Extension
- *
- * Version 0.1:
- * - FEATURE: First version
- */
-
 var login_param = "";
 var password_param = "";
 var host_param = "";
@@ -102,7 +29,7 @@ var editExistingMeeting = null;
  */
 function init() {
 
-    console.log("--init");
+    log_info("POPUP", "Init");
 
     var btn = document.querySelector("#scheduleBtn");
     var startDate = document.querySelector('.dateInput');
@@ -246,7 +173,12 @@ function init() {
 
 function displayEditor(meeting) {
 
-    console.log("meeting", meeting);
+    if(meeting) {
+        log_debug("POPUP", "Edit existing meeting", meeting);    
+    }
+    else {
+        log_info("POPUP", "Create new meeting");
+    }
 
     var editor = document.querySelector('#editor');
     var meetings = document.querySelector('#list');
@@ -403,8 +335,6 @@ function updateGUI() {
  */
 function schedule() {
 
-    console.log("--schedule");
-
     var conf_title = document.querySelector(".titleInput").value;
     var conf_date = document.querySelector(".dateInput").value;
     var conf_time = document.querySelector(".startTimeInput").value;
@@ -445,6 +375,8 @@ function schedule() {
         profile: profileType
     };
 
+    log_debug("POPUP", "Schedule a meeting", meeting);
+
     scheduleMeeting(meeting).then(function(jsonResponse) {
         displayResult(jsonResponse, editExistingMeeting);
     }, function() {
@@ -463,6 +395,7 @@ function showEmptyArea() {
 }
 
 function clearMeetingsList() {
+    log_info("POPUP", "Clear meetings list");
     // Initialize or delete all conferences displayed in list
     var list = document.querySelector("#meetings");
     list.innerHTML = "";
@@ -500,6 +433,8 @@ function displayConfirmDelete(subject, host_param, vanity) {
         ok = null;
         cancel.onclick = null;
         cancel = null;
+
+        log_debug("POPUP", "Delete a meeting", vanity);
 
         // Display a spinner
         displaySpinner();
@@ -556,7 +491,7 @@ function displayConfirmJoin (vanity, subject) {
  */
 function displayResult(response, isModified) {
 
-    console.log("--displayResult", response);
+    log_debug("POPUP", "Display result details", response);
 
     var xml = response.data;
 
@@ -691,7 +626,7 @@ function displayMeetings(response) {
 
 function displayMeeting(xml) {
 
-    console.log(xml);
+    log_debug("POPUP", "Display a meeting", xml);
 
     var list = document.querySelector("#meetings");
     var typeConf = xml.getAttribute("type");
@@ -971,7 +906,6 @@ function displayMeeting(xml) {
     removeBtn.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log("Display confirm");
         displayConfirmDelete(subject, host_param, vanity);
 
     });
@@ -1100,6 +1034,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function onInitialize() {
+
+    log_info("POPUP", "Initialize...");
+
     // Initialize the extension
     init();
     // Load the extension
@@ -1108,10 +1045,12 @@ function onInitialize() {
 
 function onLoad() {
     //Signout from previous session
-    erasePreviousUserData();
+    connectionToACS();
 }
 
-function erasePreviousUserData() {
+function connectionToACS() {
+
+    log_info("POPUP", "Try to connect to ACS");
 
     showEmptyArea();
 
@@ -1139,21 +1078,56 @@ function erasePreviousUserData() {
                 return(getGlobalSettings())
                 .then(function(jsonResponse) {
                     var settings = jsonResponse.data;
-                    timezone = settings.getElementsByTagName("timezone")[0].childNodes[0].nodeValue;
 
-                    var timezonesList = settings.getElementsByTagName('timezones')[0].getElementsByTagName('name');
-                    for (var i=0, l=timezonesList.length; i < l;i++) {
-                        timezones.push(timezonesList[i].innerHTML);
-                    }
+                    if(settings) {
 
-                    var phone = settings.getElementsByTagName("phone");
+                        var timezoneElt = settings.getElementsByTagName("timezone");
 
-                    if(phone) {
-                        for (var j=0, len = phone.length; j < len; j++) {
-                            var phoneName = phone[j].getAttribute('type');
-                            var phoneNumber = phone[j].childNodes[0].nodeValue;
-                            conferenceCall[phoneName] = phoneNumber;
+                        if(timezoneElt && timezoneElt.length > 0) {
+                            timezone = timezoneElt[0].childNodes[0].nodeValue;
+                            log_debug("POPUP", "Server Timezone found", timezone);    
                         }
+                        else {
+                            log_warning("POPUP", "No server Timezone found, use default", timezone);
+                        }
+
+                        var timezonesListElt = settings.getElementsByTagName('timezones');
+
+                        if(timezonesListElt && timezonesListElt.length > 0) {
+                            var timezonesList = timezonesListElt[0].getElementsByTagName('name');
+
+                            for (var i=0, l=timezonesList.length; i < l;i++) {
+                                timezones.push(timezonesList[i].innerHTML);
+                            }
+
+                            log_debug("POPUP", "List of Timezones found", timezones);    
+                        }
+                        else {
+
+                            timezones.push(timezone);
+
+                            log_warning("POPUP", "No list of timezones provided, add only default timezone", timezones);
+                        }
+
+                        var phone = settings.getElementsByTagName("phone");
+
+                        if(phone && phone.length > 0) {
+                            
+                            log_debug("POPUP", "Conference Bridge information found", phone);
+
+                            for (var j=0, len = phone.length; j < len; j++) {
+                                var phoneName = phone[j].getAttribute('type');
+                                var phoneNumber = phone[j].childNodes[0].nodeValue;
+                                conferenceCall[phoneName] = phoneNumber;
+                                log_debug("POPUP", "Add Conference call information", {name: phoneName, number: phoneNumber});
+                            }
+                        }
+                        else {
+                            log_warning("POPUP", "No Conference bridge information found");
+                        }    
+                    }
+                    else {
+                        log_warning("POPUP", "No Global settings defined for that server");
                     }
 
                     // Get the list of Meetings

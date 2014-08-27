@@ -17,6 +17,8 @@ function _request(req) {
 
         req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
+        log_debug("AJAX", "Send", req);
+
         var http = new XMLHttpRequest();
 
         var parts = req.split('?');
@@ -47,7 +49,7 @@ function _request(req) {
                     resolve(msg);
                 }
                 else {
-                    console.log("--- Error", http);
+                    log_error("AJAX", "Receive", http);
                     reject([null]);
                 }
             } else {
@@ -98,25 +100,25 @@ function logoff() {
 function login(hostname, username, password) {
 
     return new Promise(function(resolve, reject) {
-
-        console.log("--login");
     
+        log_debug("AJAX", "Login with", username, hostname);
+
         //Login with user data
         var url = "http://" + host_param +"/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
 
         _request(url).then(function(jsonResponse) {
-            console.log("data", jsonResponse);
             if(jsonResponse && jsonResponse.data !== null) {
-                console.log("--logIn Error");
+                
+                log_warning("AJAX", "Login not good");
                 reject();
             }
             else {
-                console.log("--logIn Successfull", jsonResponse);
+                log_info("AJAX", "Login successfull");
                 resolve();
             }
             
         }, function(err) {
-            console.log("--logIn Error", err);
+            log_error("AJAX", "Login", err);
             reject();
         });
 
@@ -132,16 +134,17 @@ function getGlobalSettings() {
 
     return new Promise(function(resolve, reject) {
 
-        console.log("--getGlobalSettings");
+        log_info("AJAX", "Get global server settings");
 
         /* __FIX__ Get the timezone */
         var url = "http://" + host_param + "/cgi-bin/vcs?settings=global;phone;password&show_timezones=true";
 
         _request(url).then(function(jsonResponse) {
-            console.log("--getGlobalSettings Successfull", jsonResponse);
+
+            log_debug("AJAX", "Received", jsonResponse);
             resolve(jsonResponse);
         }, function(err) {
-            console.log("--getGlobalSettings Error", err);
+            log_error("AJAX", "getGlobalSettings", err);
             reject();
         });
     });
@@ -151,15 +154,15 @@ function getListofMeetings() {
 
     return new Promise(function(resolve, reject) {
 
-        console.log("--getListofMeetings");
+        log_info("AJAX", "Get the list of meetings");
 
         var url = "http://" + host_param + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true&call_data=true";
 
         _request(url).then(function(jsonResponse) {
-            console.log("--getListofMeetings Successfull");
+            log_debug("AJAX", "Received", jsonResponse);
             resolve(jsonResponse);
         }, function(err) {
-            console.log("--getListofMeetings Error", err);
+            log_error("AJAX", "getListofMeetings", err);
             reject();
         });
 
@@ -170,7 +173,7 @@ function scheduleMeeting(params) {
 
     return new Promise(function(resolve, reject) {
 
-        console.log("--scheduleConference", params);
+        log_debug("AJAX", "Schedule a new meeting", params);
 
         var day = _getDay(moment(params.start).day() + 1);
 
@@ -282,15 +285,13 @@ function scheduleMeeting(params) {
         }
 
         _request(url).then(function(jsonResponse) {
-            console.log("--scheduleConference Successfull");
+            log_debug("AJAX", "Received", jsonResponse);
             resolve(jsonResponse);
         }, function(err) {
-            console.log("--scheduleConference Error", err);
+            log_error("AJAX", "scheduleMeeting", err);
             reject();
         });
-
     });
-
 }
 
 /**
@@ -301,22 +302,19 @@ function scheduleMeeting(params) {
 
 function deleteMeeting(hostname, vanity) {
 
-    console.log("hostname, vanity", hostname, vanity);
-    
     return new Promise(function(resolve, reject) {
 
-        console.log("--deleteMeeting");
+        log_debug("AJAX", "Delete meeting", hostname, vanity);
 
         var url = "http://" + hostname + "/cgi-bin/vcs_conf_delete?delete_vanity=" + vanity + "&all_vanities=true&hide_temp_confs=true&show_conf_passwords=true";
         
         _request(url).then(function(jsonResponse) {
-            console.log("--deleteMeeting Successfull");
+            log_debug("AJAX", "Received", jsonResponse);
             resolve(jsonResponse);
         }, function(err) {
-            console.log("--deleteMeeting Error", err);
+            log_error("AJAX", "deleteMeeting", err);
             reject();
         });
-
     });
 }
 

@@ -615,7 +615,7 @@ width: 100%;
 height: calc(100% - 130px);
 margin: 0;
 -webkit-padding-start: 0px;
-overflow-y: scroll;
+overflow-y: auto;
 overflow-x: hidden;
 }
 

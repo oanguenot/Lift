@@ -14,7 +14,7 @@ module.exports = function(grunt) {
                     jshintrc: '.jshintrc'
                 },
                 src: [
-                    //'*.js',
+                    './background.js',
                     './dist/lift.js',
                     './vendor/ics/js',
                     './GruntFile.js',
@@ -32,6 +32,7 @@ module.exports = function(grunt) {
            
             dist: {
                 src: [
+                    'log.js',
                     'cookies.js', 
                     'ajax.js',
                     'config.js',
@@ -44,11 +45,11 @@ module.exports = function(grunt) {
         watch: {
             src: {
                 files: '*.js',
-                tasks: ['concat', 'uglify', 'usebanner', 'jshint']
+                tasks: ['build']
             }, 
             naos: {
                 files: './vendor/*.js',
-                tasks: ['concat', 'uglify', 'usebanner', 'jshint']
+                tasks: ['build']
             },
             test: {
                 files: 'test/**/*.js',
@@ -92,9 +93,28 @@ module.exports = function(grunt) {
                     threshold: 10
                 }
             }
+        },
+
+        compress: {
+            production: {
+                options: {
+                    archive: 'zip/<%= cfg.name %>-v<%= cfg.version %>.zip'
+                },
+                files: [
+                    {src:['fonts/*.*']},                                // Fonts
+                    {src:['css/*.css']},                                // CSS
+                    {src:['dist/lift-map.js', 'dist/lift-min.js']},     // Plugins source
+                    {src:['img/*.*']},                                  // Images
+                    {src:['media/*.*']},                                // Terms and conditions
+                    {src:['vendor/*.*']},                               // FOSS
+                    {src:['background.js']},                            // Background part of the plugins
+                    {src:['LICENSE']},                                  // License
+                    {src:['lift.png', 'lift_128.png', 'lift_48.png']},  // Plugin icons
+                    {src:['manifest.json']},                            // Plugin manifest file
+                    {src:['popup.html']}                                // Plugin HTML file
+                ]
+            }
         }
-
-
     });
 
     //### Load Grunt plugins
@@ -107,6 +127,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');     // Code source uglification
     grunt.loadNpmTasks('grunt-contrib-qunit');      // For Qunit/SinonJS tests
     grunt.loadNpmTasks('grunt-blanket-qunit');      // For Code coverage
+    grunt.loadNpmTasks('grunt-contrib-compress');   // Zip compiled sources
 
     //### Load custom tasks
     grunt.loadTasks("./grunt");
@@ -116,8 +137,10 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['watch']);
 
     //Execute all tasks for building the Sonotone.js library
-    grunt.registerTask('build', ['concat', 'uglify', 'usebanner', 'jshint']);
+    grunt.registerTask('build', ['concat', 'uglify', 'usebanner', 'jshint', 'compress']);
 
     grunt.registerTask('test', ['blanket_qunit']);
+
+    grunt.registerTask('zip', ['compress']);
 
  };

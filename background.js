@@ -1,18 +1,15 @@
-var left = 0;
-var top = 0;
-
-var width = 350;
-var height = 620;
-
-var isOpened = false;
-
-var windowID = '';
+var win_left = 350,
+	win_top = 100,
+	win_width = 350,
+	win_height = 620,
+	isOpened = false,
+	windowID = '';
 
 chrome.browserAction.onClicked.addListener(function() {
    
 	if(!isOpened) {
 
-		chrome.windows.create({'url': 'popup.html', 'type': 'panel', 'width': width, 'height': height, top: 100, left: 350}, function(window) {
+		chrome.windows.create({'url': 'popup.html', 'type': 'panel', 'width': win_width, 'height': win_height, 'top': win_top, 'left': win_left}, function(window) {
 			windowID = window.id;
 			isOpened = true;	
 		});	

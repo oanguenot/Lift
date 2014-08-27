@@ -76,24 +76,29 @@ function eraseFile() {
 
                 // Remove the file
                 fileEntry.remove(function() { 
+
+                    log_info("CONFIG", "User configuration deleted");
+
                     resolve();
                 }, function(e) {
-                    console.log("Error: Can't remove file", e);
+                    log_error("CONFIG", "Error: Can't remove file", e);
                     reject();
                 });
                 
             }, function() {
-                console.log("Warning: File doesn't exist");
+                log_error("CONFIG", "Warning: File doesn't exist");
                 reject();
             });
         }, function(e) {
-            console.log("Error: Can't request file system", e);
+            log_error("CONFIG", "Error: Can't request file system", e);
             reject();
         });
     });
 }
 
 function saveDataToFile(l, p, h) {
+
+    log_debug("CONFIG", "Save user configuration", {login: l, password: '****', host: h});
 
     // Return a new promise.
     return new Promise(function(resolve, reject) {
@@ -118,26 +123,31 @@ function saveDataToFile(l, p, h) {
 
                             fileWriter.write(blob);
 
+                            log_info("CONFIG", "User configuration successfully saved");
+
                             resolve();
 
                         }, function(e) {
-                            console.log("Error: Can't create a writer", e);
+                            log_error("CONFIG", "Error: Can't create a writer", e);
                             reject();
                         });
 
                     }, function(e) {
-                        console.log("Error: Can't create a new file", e);
+                        log_error("CONFIG", "Error: Can't create a new file", e);
                         reject();
                     }); 
 
                 }, function(e) {
-                    console.log("Error: Can't remove the file", e);
+                    log_error("CONFIG", "Error: Can't remove the file", e);
                     reject();
                 });
                 
             }, function() {
                 // File doesn't exist - Create and save a new one
                 fs.root.getFile('lift.config', {create: true}, function(fileEntry) {
+                    
+                    log_info("CONFIG", "No previous user configuration, create new");
+
                     // Create the writer
                     fileEntry.createWriter(function(fileWriter) {
 
@@ -145,26 +155,30 @@ function saveDataToFile(l, p, h) {
 
                         fileWriter.write(blob);
 
+                        log_info("CONFIG", "User configuration successfully saved");
+
                         resolve();
 
                     }, function(e) {
-                        console.log("Error: Can't create a writer", e);
+                        log_error("CONFIG", "Error: Can't create a writer", e);
                         reject();
                     });
 
                 }, function(e) {
-                    console.log("Error: Can't create a new file", e);
+                    log_error("CONFIG", "Error: Can't create a new file", e);
                     reject();
                 });
             });
         }, function(e) {
-            console.log("Error: Can't request file system", e);
+            log_error("CONFIG", "Error: Can't request file system", e);
             reject();
         });
     });
 }
 
 function loadDataFromFile() {
+
+    log_info("CONFIG", "Load user data...");
 
     // Return a new promise.
     return new Promise(function(resolve, reject) {
@@ -176,7 +190,9 @@ function loadDataFromFile() {
                 fileEntry.file(function(file) {
                     var reader = new FileReader();
 
-                    reader.onloadend = function() { 
+                    reader.onloadend = function() {
+
+                        log_info("CONFIG", "User configuration found!"); 
 
                         var data = this.result.split('&|&');
 
@@ -190,16 +206,16 @@ function loadDataFromFile() {
                     reader.readAsText(file);
                     
                 }, function(e) {
-                    console.log("Error: Can't get file entry", e);
+                    log_error("CONFIG", "Error: Can't get file entry", e);
                     reject(e);
                 });
 
             }, function(e) {
-                console.log("Error: Can't get file", e);
+                log_error("CONFIG", "Error: Can't get file", e);
                 reject(e);
             });
         }, function(e) {
-            console.log("Error: Can't request file system", e);
+            log_error("CONFIG", "Error: Can't request file system", e);
             reject(e);
         });
     });

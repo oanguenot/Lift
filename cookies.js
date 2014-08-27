@@ -85,8 +85,11 @@ function deletePreviouslyUsedCookies() {
     // Return a new promise.
     return new Promise(function(resolve, reject) {
 
+        log_info("COOKIES", "Try to delete all used cookies...");
+
         try {
-            console.log("--deletePreviouslyUsedCookies");
+            
+            //log_debug("COOKIES", "Delete all created cookies");
             //eraseCookie("s_fid");
             //eraseCookie("AlcUserId");
             //eraseCookie("OTUCSSO");
@@ -101,42 +104,39 @@ function deletePreviouslyUsedCookies() {
             //eraseCookie("ed_usernum");
 
             
-            console.log("HOST_PARAM", host_param);
+            log_debug("COOKIES", "On host", host_param);
 
             var domain = host_param.substring(host_param.indexOf('.') +1);
-            console.log("--deletePreviouslyUsedCookies - Domain:", domain);
+            log_debug("COOKIES", "For domain", domain);
 
             chrome.cookies.getAll({domain: domain}, function(cookies) {
                 var cookieNb = cookies.length;
                 var cookieDeleted = 0;
 
-                console.log("--deletePreviouslyUsedCookies - Cookies found:", cookieNb, cookies);
+                log_debug("COOKIES", "Found", {nbCookies: cookieNb, cookies: cookies});
 
                 if(cookieNb > 0) {
                     for(var i=0; i<cookies.length;i++) {
-                        console.log("--deletePreviouslyUsedCookies - Delete:", cookies[i].name);
+                        log_debug("COOKIES", "Delete...", cookies[i].name);
                         chrome.cookies.remove({url: "http://" + host_param + cookies[i].path, name: cookies[i].name}, function(details) {
-                            console.log("--deletePreviouslyUsedCookies - Deleted:", details.name);
+                            log_debug("COOKIES", "Deleted", details.name);
                             cookieDeleted++;
                             if(cookieDeleted === cookieNb) {
-                                console.log("--deletePreviouslyUsedCookies Successfull - All cookie deleted");
+                                log_info("COOKIES", "All cookie have been successfully deleted");
                                 resolve();
                             }
                         });
                     }
                 }
                 else {
-                    console.log("--deletePreviouslyUsedCookies Successfull - No cookie deleted");
+                    log_warning("COOKIES", "No cookie found, so nothing to delete");
                     resolve();
                 }
                 
             });
-            
-
-            resolve();
         }
         catch(error) {
-            console.log("--deletePreviouslyUsedCookies Error", error);
+            log_error("COOKIES", "deletePreviouslyUsedCookies", error);
             reject(error);
         }
     });     
@@ -146,6 +146,6 @@ function deletePreviouslyUsedCookies() {
  * Listener on cookies change
  */
 
-chrome.cookies.onChanged.addListener(function(info) {
-    console.log("onChanged", info);
-});
+// chrome.cookies.onChanged.addListener(function(info) {
+//     console.log("onChanged", info);
+// });
