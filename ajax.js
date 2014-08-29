@@ -362,7 +362,7 @@ function openEventPipe(hostname) {
 
     var rosters = [];
 
-    log_info("AJAX", "Try to open the Event Pipe");
+    log_info("AJAX", "Try to open the Event Pipe...");
 
     return new Promise(function(resolve, reject) {
 
@@ -462,6 +462,7 @@ function openEventPipe(hostname) {
 }
 
 function closeEventPipe() {
+    log_info("AJAX", "Try to close the Event Pipe...");
     socket.abort();
     socket = null;
 }

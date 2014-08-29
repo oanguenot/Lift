@@ -728,6 +728,20 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
+.meetingOwner {
+	font-family: "Roboto",sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	color: #AAA7B5;
+	position: absolute;
+	top: 75px;
+	left: 16px;
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .buddies-item:hover > .meetingState {
 	color: #c2a1e2;
 }
@@ -751,6 +765,18 @@ text-overflow: ellipsis;
 	background-image: url('../img/bt-small-delete-press.png');
 }
 
+.meeting-remove-button-disabled {
+	position: absolute;
+	cursor: pointer;
+	height: 30px;
+	width: 30px;
+	right: 8px;
+	top: 82px;
+	background-size: cover;
+	pointer-events:none;
+	background-image: url('../img/bt-small-delete-inactive.png');	
+}
+
 .meeting-edit-button {
 	position: absolute;
 	cursor: pointer;
@@ -758,6 +784,7 @@ text-overflow: ellipsis;
 	height: 30px;
 	right: 45px;
 	top: 82px;
+	cursor: default;
 	background-image: url('../img/bt-edit-active.png');
 	background-size: cover;
 }
@@ -768,6 +795,19 @@ text-overflow: ellipsis;
 
 .meeting-edit-button:active {
 	background-image: url('../img/bt-edit-press.png');
+}
+
+.meeting-edit-button-disabled {
+	position: absolute;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	right: 45px;
+	top: 82px;
+	background-size: cover;
+	pointer-events:none;
+	cursor: default;
+	background-image: url('../img/bt-edit-inactive.png');
 }
 
 .meetingShareButton {

@@ -640,59 +640,12 @@ function displayRostersMeetings(rosters) {
 
             log_debug("POPUP", "Display invitation", xml);
 
-            displayMeeting(xml);
-
-            // var typeConf = xml.getAttribute("type");
-            // var subject = "Unknown";
-            // if(xml.getElementsByTagName("subject")[0]) {
-            //     subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
-            // }
-
-
-            // console.log("subject", subject, typeConf);
-
-            //var meeting = {
-            //     vanity: '',
-            //     title: subject || 'Unknown',
-            //     type: typeConf, 
-            //     recurrence: recurrenceType || 'none',
-            //     start: meetingStartDate,
-            //     end: meetingEndDate,
-            //     scheduledEndTime: endDate.toDate(),
-            //     scheduledStartTime: startDate.toDate(),
-            //     hour: hour,
-            //     minute: minute,
-            //     duration: duration,
-            //     timezone: timezone,
-            //     password: password,
-            //     profile: profile
-            // };
-
-            // var meetingToDisplay = {
-            //     state: state,
-            //     subject: subject,
-            //     stateDisplayed: stateDisplayed,
-            //     typeConf: typeConf,
-            //     startTime: startTimeString,
-            //     endTime: endTimeString,
-            //     timezone: timezone,
-            //     days: days,
-            //     startDate: startDateString,
-            //     startDateNext: startDateStringNext,
-            //     vanity: vanity,
-            //     callVanityParticipant: callVanityParticipant,
-            //     callVanityLeader: callVanityLeader,
-            //     password: password,
-            //     participantURL: participantURL
-            // };
-
-            // displayMeetingInDom(meetingToDisplay, meeting);
-
+            displayMeeting(xml, true);
         }
     }
 }
 
-function displayMeeting(xml) {
+function displayMeeting(xml, isAnInvite) {
 
     log_debug("POPUP", "Display a meeting", xml);
 
@@ -703,7 +656,11 @@ function displayMeeting(xml) {
         subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
     }
 
-    //var from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;
+    var from = '';
+    if(xml.getElementsByTagName('owner')) {
+        from = xml.getElementsByTagName("owner")[0].childNodes[0].nodeValue;    
+    }
+    
     var day = xml.getElementsByTagName('time')[0].getElementsByTagName('day')[0].textContent;
     var month = xml.getElementsByTagName('time')[0].getElementsByTagName('month')[0].textContent;
     var year = xml.getElementsByTagName('time')[0].getElementsByTagName('year')[0].textContent;
@@ -950,6 +907,8 @@ function displayMeeting(xml) {
     };
 
     var meetingToDisplay = {
+        owner: from,
+        isAnInvite: isAnInvite,
         state: state,
         subject: subject,
         stateDisplayed: stateDisplayed,
@@ -973,6 +932,8 @@ function displayMeeting(xml) {
 
 function displayMeetingInDom(data, meeting) {
 
+    log_info("POPUP", "Display meeting in DOM");
+
     var list = document.querySelector("#meetings");
 
     var removeID = "remove-" + data.vanity;
@@ -986,6 +947,10 @@ function displayMeetingInDom(data, meeting) {
     item.innerHTML += '<div class=" meeting-state meeting-' + data.state + '" />';
     item.innerHTML += '<span class="meetingTitle">' + data.subject + '</span>';
     item.innerHTML += '<span class="meetingState">' + data.stateDisplayed + '</span>';
+
+    if(data.isAnInvite) {
+        item.innerHTML += '<span class="meetingOwner">' + data.owner + '</span>';        
+    }
 
     if(data.typeConf === "scheduled") {
 
@@ -1021,8 +986,16 @@ function displayMeetingInDom(data, meeting) {
     }
     
     item.innerHTML += '<div title="Display meeting details" id="' + detailsID + '" class="meetingActionButton meeting-details-button"></div>';
-    item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button"></div>';
-    item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button"></div>';
+
+    if(data.isAnInvite) {
+        item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button-disabled"></div>';
+        item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button-disabled"></div>';
+    }
+    else {
+        item.innerHTML += '<div title="Edit Meeting settings" id="' + editID + '" class="meetingActionButton meeting-edit-button"></div>';
+        item.innerHTML += '<div title="Remove this meeting" id="' + removeID + '" class="meetingActionButton meeting-remove-button"></div>';
+    }
+    
 
     list.appendChild(item);
 
@@ -1036,21 +1009,22 @@ function displayMeetingInDom(data, meeting) {
         });    
     }
 
-    var removeBtn = document.querySelector("#" + removeID);
-    removeBtn.addEventListener("click", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        displayConfirmDelete(data.subject, host_param, data.vanity);
+    if(!data.isAnInvite) {
+        var removeBtn = document.querySelector("#" + removeID);
+        removeBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            displayConfirmDelete(data.subject, host_param, data.vanity);
+        });
 
-    });
-
-    var editBtn = document.querySelector("#" + editID);
-    editBtn.addEventListener("click", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        // Edit existing meeting
-        displayEditor(meeting);
-    });
+        var editBtn = document.querySelector("#" + editID);
+        editBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            // Edit existing meeting
+            displayEditor(meeting);
+        });    
+    }
 
     var detailsBtn = document.querySelector("#" + detailsID);
     detailsBtn.addEventListener("click", function(event) {
@@ -1239,11 +1213,28 @@ function connectionToACS() {
                             
                             log_debug("POPUP", "Conference Bridge information found", phone);
 
+                            var phoneName = '',
+                                phoneNumber = '';
+
                             for (var j=0, len = phone.length; j < len; j++) {
-                                var phoneName = phone[j].getAttribute('type');
-                                var phoneNumber = phone[j].childNodes[0].nodeValue;
-                                conferenceCall[phoneName] = phoneNumber;
-                                log_debug("POPUP", "Add Conference call information", {name: phoneName, number: phoneNumber});
+                                phoneName = phone[j].getAttribute('type');
+                                if(phone[j].childNodes && phone[j].childNodes.length > 0) {
+                                    phoneNumber = phone[j].childNodes[0].nodeValue;
+                                }
+                                
+                                if(phoneName && phoneName.length > 0 && phoneNumber && phoneNumber.length > 0) {
+                                    
+                                    if(!(phoneName in conferenceCall)) {
+                                        conferenceCall[phoneName] = phoneNumber;
+                                        log_debug("POPUP", "Add Conference call information", {name: phoneName, number: phoneNumber});    
+                                    }
+                                    else {
+                                        log_info("POPUP", "Conference call already exists");
+                                    }
+                                }
+                                else {
+                                    log_warning("POPUP", "Conference call information read not used", {name: phoneName, number: phoneNumber});
+                                }
                             }
                         }
                         else {
