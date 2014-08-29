@@ -551,8 +551,10 @@ function displayResult(response, isModified) {
                             xml.getElementsByTagName("join_url_root")[0].childNodes[0].nodeValue + 
                             callVanityParticipant;
 
+                var leaderCode = callVanityLeader.length > 0 ? callVanityLeader : 'No information';
+
                 // Update leader information
-                document.querySelector('.leader').innerHTML = 'Leader Code = ' + callVanityLeader;
+                document.querySelector('.leader').innerHTML = 'Leader Code = ' + leaderCode;
                 
                 
                 // Update Participant information
@@ -916,6 +918,7 @@ function displayMeeting(xml, isAnInvite) {
         profile: profile
     };
 
+    // In case of invite, try to found the right identifier of the meeting's owner
     if(isAnInvite && from in contacts) {
         from = contacts[from].firstname + ' ' + contacts[from].lastname;
     }
@@ -940,18 +943,19 @@ function displayMeeting(xml, isAnInvite) {
         participantURL: participantURL
     };
 
-    // if(isAnInvite) {
-    //     getMeetingInfo(vanity).then(function() {
-    //         displayMeetingInDom(meetingToDisplay, meeting);        
-    //     }, function() {
+    if(isAnInvite) {
+        getMeetingInfo(vanity).then(function(state) {
+            meetingToDisplay.state = state;
+            displayMeetingInDom(meetingToDisplay, meeting);        
+        }, function() {
 
-    //     });
-    // }
-    // else {
-    //     displayMeetingInDom(meetingToDisplay, meeting);
-    // }
+        });
+    }
+    else {
+        displayMeetingInDom(meetingToDisplay, meeting);
+    }
 
-    displayMeetingInDom(meetingToDisplay, meeting);
+    //displayMeetingInDom(meetingToDisplay, meeting);
 
 }
 
@@ -969,7 +973,8 @@ function displayMeetingInDom(data, meeting) {
     //Construct meeting item
     var item = document.createElement("li");
     item.className =  "buddies-item";
-    item.innerHTML += '<div class=" meeting-state meeting-' + data.state + '" />';
+    item.innerHTML += '<div class="meeting-state meeting-' + data.state + '" />';    
+    
     item.innerHTML += '<span class="meetingTitle">' + data.subject + '</span>';
 
     if(data.isAnInvite) {
@@ -1009,9 +1014,7 @@ function displayMeetingInDom(data, meeting) {
     item.innerHTML += '<span class="meetingStartDate">'+ data.startDate + '</span>';
     item.innerHTML += '<span class="meetingStartDateNext">'+ data.startDateNext + '</span>';
     
-    if(data.state === 'active') {
-        item.innerHTML += '<div title="Join this meeting" id="' + joinID + '" class="meetingActionButton meeting-join-button"></div>';
-    }
+    item.innerHTML += '<div title="Join this meeting" id="' + joinID + '" class="meetingActionButton meeting-join-button"></div>';
     
     item.innerHTML += '<div title="Display meeting details" id="' + detailsID + '" class="meetingActionButton meeting-details-button"></div>';
 
@@ -1028,14 +1031,12 @@ function displayMeetingInDom(data, meeting) {
     list.appendChild(item);
 
     //Add meeting listener
-    if(data.state === 'active') {
-        var joinBtn = document.querySelector("#" + joinID);
-        joinBtn.addEventListener("click", function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            displayConfirmJoin(data.vanity, data.subject);
-        });    
-    }
+    var joinBtn = document.querySelector("#" + joinID);
+    joinBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        displayConfirmJoin(data.vanity, data.subject);
+    });    
 
     if(!data.isAnInvite) {
         var removeBtn = document.querySelector("#" + removeID);
@@ -1080,8 +1081,10 @@ function displayMeetingInDom(data, meeting) {
         // Meeting Code (Participant)
         document.querySelector('.participant').innerHTML = 'Access Code = ' + data.callVanityParticipant;
 
+        var leaderCode = data.callVanityLeader.length > 0 ? data.callVanityLeader : 'No information';
+
         // Leader Code
-        document.querySelector('.leader').innerHTML = 'Leader Code = ' + data.callVanityLeader;
+        document.querySelector('.leader').innerHTML = 'Leader Code = ' + leaderCode;
 
         // Password
         if(data.password) {

@@ -966,6 +966,18 @@ margin: 0 auto;
 	background-color: #9d61db;
 }
 
+.meeting-invite {
+	background-color: #F1C212;	
+}
+
+.meeting-unknown {
+	background-color: #F0F0EF;
+}
+
+.buddies-item:hover > .meeting-unknown {
+	background-color: #9d61db;
+}
+
 .meeting-state {
 	position: absolute;
 	top: 0;

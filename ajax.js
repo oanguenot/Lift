@@ -173,6 +173,40 @@ function getListofMeetings() {
     });
 }
 
+function getMeetingInfo(vanity) {
+
+    return new Promise(function(resolve, reject) {
+
+        log_info("AJAX", "Get meeting information", vanity);
+
+        var url = "http://" + host_param + "/cgi-bin/vcs?vanity=" + vanity;
+
+        _request(url).then(function(jsonResponse) {
+            log_debug("AJAX", "Received", jsonResponse);
+
+            var xml = jsonResponse.data;
+
+            var state = 'unknown';
+            if(xml.getElementsByTagName("access") && xml.getElementsByTagName("access").length > 0) {
+                
+                var states = xml.getElementsByTagName("access");
+                for(var i = 0; i< states.length; i++) {
+                    state = states[i].getAttribute("state");
+                }
+                
+                if(state.length === 0) {
+                    state = 'unknown';
+                }
+            }
+            resolve(state);
+        }, function(err) {
+            log_error("AJAX", "getMeetingInfo", err);
+            reject();
+        });
+
+    });
+}
+
 function scheduleMeeting(params) {
 
     return new Promise(function(resolve, reject) {
