@@ -50,7 +50,7 @@ function init() {
     var aboutButton = document.querySelector('.aboutButton');
     var aboutCloseButton = document.querySelector('#aboutCloseButton');
 
-    var clearCookies = document.querySelector('.clearCookies');
+    var clearCookies = document.querySelector('.cookiesLink');
     var termsLink  = document.querySelector('.termsLink');
 
     btn.onclick = function(event){
@@ -158,6 +158,9 @@ function init() {
     };
 
     clearCookies.onclick = function(event) {
+
+        log_info("POPUP", "Clear cookies and data saved");
+
         event.preventDefault();
         event.stopPropagation();
 
