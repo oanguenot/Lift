@@ -421,6 +421,7 @@ function displayConfirmDelete(subject, host_param, vanity) {
     
     document.querySelector('.titleConfirm').innerHTML = "Remove a Meeting...";
     document.querySelector('.detailsConfirm').innerHTML = "Are you sure you want to remove this Meeting '" + subject + "' ?";
+    document.querySelector('#okConfirm').innerHTML = "Remove";
 
     document.querySelector('#confirmDialog').classList.add('visible');
     document.querySelector('#list').classList.add('blur');
@@ -472,6 +473,7 @@ function displayConfirmDelete(subject, host_param, vanity) {
 function displayConfirmJoin (vanity, subject) {
     document.querySelector('.titleConfirm').innerHTML = "Join a Meeting...";
     document.querySelector('.detailsConfirm').innerHTML = "Are you sure you want to join this Meeting '" + subject + "' ?";
+    document.querySelector('#okConfirm').innerHTML = "Join";
 
     document.querySelector('#confirmDialog').classList.add('visible');
     document.querySelector('#list').classList.add('blur');
@@ -596,23 +598,23 @@ function displayResult(response, isModified) {
                 document.querySelector('#editor').classList.remove('blur');
                 hideMeetingEditor();
                 displaySpinner();
-                // Get the list of Meetings
-                getListofMeetings()
-                .then(function(jsonResponse) {
-                    // Display meetings
-                    displayMeetings(jsonResponse);
-                    // Hide Spinner
-                    hideSpinner();
-                }, function() {
 
-                });
+                var meetingCreated = null;
+                if(xml.getElementsByTagName("conference") && xml.getElementsByTagName("conference").length > 0) {
+                    meetingCreated = xml.getElementsByTagName("conference")[0];
+
+                    if(meetingCreated) {
+                        displayMeeting(meetingCreated);
+                    }
+                }
+                
                 clearButton.onclick = null;
                 clearButton = null;
+
+                // Hide Spinner
+                hideSpinner();
             };
-
-            
         }
-
     }
     else {
         console.log("Conference can\'t be scheduled. Check your parameters and try again!");
