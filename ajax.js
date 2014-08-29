@@ -399,6 +399,7 @@ function openEventPipe(hostname) {
                         var e = command.substring(dot+1, paren);
                         //var params = '[' + command.substring(paren+1, command.length-2) + ']';
                         var params = command.substring(paren+1, command.length-2);
+
                         //m_debug.gotEvent(e, command.length+1);
                         log_debug("PIPE", "Event", e);
                         //self[e].apply(self, eval(params));
@@ -407,7 +408,13 @@ function openEventPipe(hostname) {
                         //that.fireEvent(e, eval(params));
 
                         // var data = eval(params);
-                        var data = params.split(',');
+                        var data = params.split(', ');
+                        for(var i = 0; i < data.length; i++) {
+                            if(data[i].length > 2) {
+
+                                data[i] = data[i].substring(1, data[i].length-1);
+                            }
+                        }
                         log_debug("PIPE", "Parameters", data);
 
                         if(e === 'Initialize') {

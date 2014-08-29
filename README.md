@@ -9,8 +9,6 @@ Use your OpenTouch credentials
 # TODO
  - FEATURE: Set password rules
  - FEATURE: ICS Export
- - FEATURE: Get the meetings where the user is invited
- - FIX: TODO: Fix multiple spinners
 
 # HISTORY
 

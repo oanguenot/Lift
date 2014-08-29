@@ -641,19 +641,14 @@ function displayMeetings(response) {
 function displayRostersMeetings(rosters) {
     log_info("POPUP", "Add rosters meetings to List");
 
-    // var meeting = null,
-    //     meetingToDisplay = null;
-
     if(rosters) {
         for(var i=0, len = rosters.length; i < len; i++) {
 
             var meeting = rosters[i];
 
-            var data = meeting[1];
+            var data = meeting[1].replace(/"/g, '\'').replace(/\\/g, '');
 
             var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
-
-            log_debug("POPUP", "Display invitation", xml);
 
             displayMeeting(xml, true);
         }
