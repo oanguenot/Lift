@@ -109,31 +109,32 @@ function deletePreviouslyUsedCookies() {
             var domain = host_param.substring(host_param.indexOf('.') +1);
             log_debug("COOKIES", "For domain", domain);
 
-            chrome.cookies.getAll({domain: domain}, function(cookies) {
-                var cookieNb = cookies.length;
-                var cookieDeleted = 0;
+            // chrome.cookies.getAll({domain: domain}, function(cookies) {
+            //     var cookieNb = cookies.length;
+            //     var cookieDeleted = 0;
 
-                log_debug("COOKIES", "Found", {nbCookies: cookieNb, cookies: cookies});
+            //     log_debug("COOKIES", "Found", {nbCookies: cookieNb, cookies: cookies});
 
-                if(cookieNb > 0) {
-                    for(var i=0; i<cookies.length;i++) {
-                        log_debug("COOKIES", "Delete...", cookies[i].name);
-                        chrome.cookies.remove({url: "http://" + host_param + cookies[i].path, name: cookies[i].name}, function(details) {
-                            log_debug("COOKIES", "Deleted", details.name);
-                            cookieDeleted++;
-                            if(cookieDeleted === cookieNb) {
-                                log_info("COOKIES", "All cookie have been successfully deleted");
-                                resolve();
-                            }
-                        });
-                    }
-                }
-                else {
-                    log_warning("COOKIES", "No cookie found, so nothing to delete");
-                    resolve();
-                }
+            //     if(cookieNb > 0) {
+            //         for(var i=0; i<cookies.length;i++) {
+            //             log_debug("COOKIES", "Delete...", cookies[i].name);
+            //             chrome.cookies.remove({url: "http://" + host_param + cookies[i].path, name: cookies[i].name}, function(details) {
+            //                 log_debug("COOKIES", "Deleted", details.name);
+            //                 cookieDeleted++;
+            //                 if(cookieDeleted === cookieNb) {
+            //                     log_info("COOKIES", "All cookie have been successfully deleted");
+            //                     resolve();
+            //                 }
+            //             });
+            //         }
+            //     }
+            //     else {
+            //         log_warning("COOKIES", "No cookie found, so nothing to delete");
+            //         resolve();
+            //     }
                 
-            });
+            // });
+            resolve();
         }
         catch(error) {
             log_error("COOKIES", "deletePreviouslyUsedCookies", error);

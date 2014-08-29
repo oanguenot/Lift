@@ -62,7 +62,6 @@ function reload() {
     host_param = "";
     login_param = "";
     password_param = "";
-    window.location.reload(true);    
 }
 
 function eraseFile() {

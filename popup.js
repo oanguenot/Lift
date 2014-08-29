@@ -51,6 +51,7 @@ function init() {
     var aboutCloseButton = document.querySelector('#aboutCloseButton');
 
     var clearCookies = document.querySelector('.clearCookies');
+    var termsLink  = document.querySelector('.termsLink');
 
     btn.onclick = function(event){
         event.preventDefault();
@@ -148,6 +149,14 @@ function init() {
         document.querySelector('#editor').classList.remove('blur');
     };
 
+    termsLink.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var params = {'id': 'terms', 'outerBounds': { 'width': 500, 'height': 600, 'top': 100, 'left': 300}};
+        chrome.app.window.create('terms.html', params);
+    };
+
     clearCookies.onclick = function(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -157,8 +166,14 @@ function init() {
             // Erase information
             eraseFile().then(function() {
                 reload();
+                document.querySelector('#aboutModal').classList.remove('visible');
+                document.querySelector('#editor').classList.remove('blur');
+                onLoad();  
             }, function() {
                 reload();
+                document.querySelector('#aboutModal').classList.remove('visible');
+                document.querySelector('#editor').classList.remove('blur');
+                onLoad();
             });    
         });
     };
@@ -1151,6 +1166,8 @@ function connectionToACS() {
     log_info("POPUP", "Try to connect to ACS");
 
     showEmptyArea();
+
+    clearMeetingsList();
 
     //Read data from file
     loadDataFromFile().then(function(data) {

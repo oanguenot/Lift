@@ -16,6 +16,7 @@ Use your OpenTouch credentials
 
 ## Version 1.4.0
  - FEATURE: Display invitation meetings (thru event pipe)
+ - REFACTORING: Change to a Chrome packaged app
 
 ## Version 1.3.2
  - FIX: Remove scrollbars when no need

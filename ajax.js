@@ -397,15 +397,18 @@ function openEventPipe(hostname) {
                         var paren = command.indexOf('(');
                         var dot = command.indexOf('.');
                         var e = command.substring(dot+1, paren);
-                        var params = '[' + command.substring(paren+1, command.length-2) + ']';
+                        //var params = '[' + command.substring(paren+1, command.length-2) + ']';
+                        var params = command.substring(paren+1, command.length-2);
                         //m_debug.gotEvent(e, command.length+1);
                         log_debug("PIPE", "Event", e);
                         //self[e].apply(self, eval(params));
-                        log_debug("PIPE", "Parameters", params);
+                        
                         // Fire the event
                         //that.fireEvent(e, eval(params));
 
-                        var data = eval(params);
+                        // var data = eval(params);
+                        var data = params.split(',');
+                        log_debug("PIPE", "Parameters", data);
 
                         if(e === 'Initialize') {
                             var ACSVersion = "Unknown";
@@ -418,7 +421,12 @@ function openEventPipe(hostname) {
 
                             // Ask for roster invites
                             askForRosterInvites(hostname);
-                            // resolve();
+
+                            // Wait no more than 500ms before ending the event pipe.
+                            // If an updateConference event is received, restart the timer to be sure to receive others updateConference events if exists
+                            timeoutID = setTimeout(function(){
+                                resolve(rosters);
+                            }, 500);
                         }
 
                         if(e === 'UpdateConference') {
