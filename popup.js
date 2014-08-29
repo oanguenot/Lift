@@ -454,12 +454,16 @@ function displayConfirmDelete(subject, host_param, vanity) {
         // Display a spinner
         displaySpinner();
         // Remove this meeting
-        deleteMeeting(host_param, vanity).then(function(jsonResponse) {
-            // Display meetings
-            displayMeetings(jsonResponse);
+        deleteMeeting(host_param, vanity).then(function() {
+        
+            //Find the good one into the ul list and delete it
+            var meetingLi = document.querySelector('.v-' + vanity);
+            if(meetingLi) {
+                meetingLi.parentNode.removeChild(meetingLi);
+            }
+
             // Hide Spinner
             hideSpinner();
-        }, function() {
 
         });
     };
@@ -972,7 +976,7 @@ function displayMeetingInDom(data, meeting) {
 
     //Construct meeting item
     var item = document.createElement("li");
-    item.className =  "buddies-item";
+    item.className =  "buddies-item " + 'v-' + data.vanity;
     item.innerHTML += '<div class="meeting-state meeting-' + data.state + '" />';    
     
     item.innerHTML += '<span class="meetingTitle">' + data.subject + '</span>';
@@ -1283,6 +1287,7 @@ function connectionToACS() {
                     .then(function(jsonResponse) {
                         // Display meetings
                         displayMeetings(jsonResponse);
+                        
                         // Enable create new meeting button
                         enableCreateNewMeetingButton();
 

@@ -407,6 +407,8 @@ function openEventPipe(hostname) {
         url += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
         socket = new XMLHttpRequest();
+
+        log_debug("AJAX", "Send", url);
         
         var parts = url.split('?');
         socket.open("POST", parts[0], true);
