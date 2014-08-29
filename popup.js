@@ -916,6 +916,10 @@ function displayMeeting(xml, isAnInvite) {
         profile: profile
     };
 
+    if(isAnInvite && from in contacts) {
+        from = contacts[from].firstname + ' ' + contacts[from].lastname;
+    }
+
     var meetingToDisplay = {
         owner: from,
         isAnInvite: isAnInvite,
@@ -935,6 +939,17 @@ function displayMeeting(xml, isAnInvite) {
         password: password,
         participantURL: participantURL
     };
+
+    // if(isAnInvite) {
+    //     getMeetingInfo(vanity).then(function() {
+    //         displayMeetingInDom(meetingToDisplay, meeting);        
+    //     }, function() {
+
+    //     });
+    // }
+    // else {
+    //     displayMeetingInDom(meetingToDisplay, meeting);
+    // }
 
     displayMeetingInDom(meetingToDisplay, meeting);
 
@@ -956,11 +971,14 @@ function displayMeetingInDom(data, meeting) {
     item.className =  "buddies-item";
     item.innerHTML += '<div class=" meeting-state meeting-' + data.state + '" />';
     item.innerHTML += '<span class="meetingTitle">' + data.subject + '</span>';
-    item.innerHTML += '<span class="meetingState">' + data.stateDisplayed + '</span>';
 
     if(data.isAnInvite) {
-        item.innerHTML += '<span class="meetingOwner">' + data.owner + '</span>';        
+        item.innerHTML += '<span class="meetingState"><small>Invite from </small>' + data.owner + '</span>';    
     }
+    else {
+        item.innerHTML += '<span class="meetingState">' + data.stateDisplayed + '</span>';
+    }
+    
 
     if(data.typeConf === "scheduled") {
 

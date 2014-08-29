@@ -5,6 +5,8 @@
 
 var socket = null;
 
+var contacts = {};
+
 
 /**
  * Send an ajax request to ACS
@@ -448,6 +450,30 @@ function openEventPipe(hostname) {
                             timeoutID = setTimeout(function() {
                                 resolve(rosters);
                             }, 300);
+                        }
+
+                        if(e === 'UpdateBuddyData') {
+                            if(data.length >9) {
+                                var email = data[0],
+                                    firstname = '',
+                                    lastname = '';
+
+                                var field = data[3].split('=');
+                                if(field && field.length === 2 && field[0] === 'firstName') {
+                                    firstname =  field[1];
+
+                                }
+                                field = data[9].split('=');
+                                if(field && field.length === 2 && field[0] === 'name') {
+                                    lastname =  field[1];
+                                }
+
+                                if(!(email in contacts) && lastname.length > 0 && firstname.length > 0) {
+                                    contacts[email] = {id: email, firstname: firstname, lastname: lastname};
+                                    log_debug("PIPE", "Add new contact", contacts[email]);
+                                }
+
+                            }
                         }
                     }
                     response_index = index + 1;
