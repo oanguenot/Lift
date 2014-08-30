@@ -21,11 +21,11 @@ function _request(req) {
 
         req += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
-        log_debug("AJAX", "Send", req);
-
         var http = new XMLHttpRequest();
 
         var parts = req.split('?');
+
+        log_debug("AJAX", "Send request to ACS", parts[0]);
 
         http.open("POST", parts[0], true);
         http.setRequestHeader("Cache-Control", "no-cache");

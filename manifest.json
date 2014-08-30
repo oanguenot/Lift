@@ -3,22 +3,12 @@
   "short_name": "Lift",
   "version": "1.4.0",
   "manifest_version": 2,
-  "description": "OpenTouch Lift is a Google Chrome packaged app that allows to schedule meetings for Alcatel-Lucent OpenTouch server and to show meetings invites",
+  "description": "OpenTouch Lift is a Google Chrome packaged app for scheduling meetings for the Alcatel-Lucent OpenTouch server",
   "icons": { "128": "lift_128.png", "48": "lift_48.png" },
-  // "permissions": ["cookies", "http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
   "permissions": ["http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
-  // "browser_action": {
-  //   "default_title": "",
-  //   "default_icon": "lift_128.png"
-  // },
-  // "background": {
-  //   "scripts": ["background.js"]
-  // },
   "app": {
     "background": {
       "scripts": ["background.js"]  
     }
   }
-  // "web_accessible_resources": ["lift_48.png"]
-  // "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

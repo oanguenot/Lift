@@ -782,10 +782,10 @@ function displayMeeting(xml, isAnInvite) {
     var meetingStartDate = startDate.format('YYYY-MM-DD');
     startDate.add(parseInt(hour, 10), 'h').add(parseInt(minute, 10), 'm');
 
-    var endDate = moment(year_end + '-' + month_end + '-' + day_end);
+    var endDate = moment(year_end + '-' + month_end + '-' + day_end, "YYYY-MM-DD");
     var meetingEndDate = endDate.format('YYYY-MM-DD');
     endDate.add(parseInt(hour_end, 10), 'h').add(parseInt(minute_end, 10), 'm');
-    
+
     var startDateString = startDate.format("dddd, MMMM Do");
 
     var startDateStringNext = "";

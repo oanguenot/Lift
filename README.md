@@ -16,6 +16,7 @@ Use your OpenTouch credentials
  - FEATURE: Display invitation meetings (thru event pipe)
  - REFACTORING: Change to a Chrome packaged app
  - REFACTORING: Don't use JavaScript eval() function to parse ACS Event Pipe data
+ - FOSS: Update Moment.js to 2.8.2
 
 ## Version 1.3.2
  - FIX: Remove scrollbars when no need
