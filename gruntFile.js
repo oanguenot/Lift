@@ -55,6 +55,14 @@ module.exports = function(grunt) {
                 files: 'test/**/*.js',
                 tasks: ['test']
             }
+            // html: {
+            //     file: './*.html',
+            //     tasks: ['build']
+            // },
+            // css: {
+            //     file: './css/**/*.css',
+            //     tasks: ['build']
+            // }
         },
 
         usebanner: {
@@ -111,7 +119,9 @@ module.exports = function(grunt) {
                     {src:['LICENSE']},                                  // License
                     {src:['lift.png', 'lift_128.png', 'lift_48.png']},  // Plugin icons
                     {src:['manifest.json']},                            // Plugin manifest file
-                    {src:['popup.html']}                                // Plugin HTML file
+                    {src:['popup.html']},                               // Plugin HTML file
+                    {src:['terms.html']},                               // Terms file
+                                                    
                 ]
             }
         }
