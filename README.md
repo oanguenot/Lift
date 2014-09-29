@@ -12,6 +12,12 @@ Use your OpenTouch credentials
 
 # HISTORY
 
+## Version 1.4.2
+ - FIX: Remove double scrollbars in terms windows on Windows
+
+## Version 1.4.1
+ - FIX: Production Issue
+
 ## Version 1.4.0
  - FEATURE: Display invitation meetings (thru event pipe)
  - REFACTORING: Change to a Chrome packaged app
