@@ -33,6 +33,7 @@
     "chrome": true,
     "moment": true,
     "ics": true,
-    "Spinner": true
+    "Spinner": true,
+    "ConfigView": true
   }
 }

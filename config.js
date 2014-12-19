@@ -1,50 +1,56 @@
 function displayConfig(callback, context) {
-    var login= document.querySelector('#openModal');
-    login.classList.add('visible');
 
-    var editor= document.querySelector('#list');
-    editor.classList.add('blur');
+    var config = new ConfigView({el: '#options-elt'});
+    //config.render();
 
-    var loginField = document.querySelector('#login');
-    var passwordField = document.querySelector('#password');
-    var otField = document.querySelector('#ot');
+    //console.log("config", config, ConfigView);
 
-    //Read data from file
-    loadDataFromFile().then(function(data) {
+    // var login= document.querySelector('#openModal');
+    // login.classList.add('visible');
 
-        loginField.value = data.login || "";
-        passwordField.value = data.password || "";
-        otField.value = data.host || "";
-    }, function() {
-        loginField.value = "";
-        passwordField.value = "";
-        otField.value = "";
-    });
+    // var editor= document.querySelector('#list');
+    // editor.classList.add('blur');
 
-    var cancelSettingBtn = document.querySelector('.cancelSettingButton');
+    // var loginField = document.querySelector('#login');
+    // var passwordField = document.querySelector('#password');
+    // var otField = document.querySelector('#ot');
 
-    cancelSettingBtn.onclick = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        hideConfig();
-    };
+    // //Read data from file
+    // loadDataFromFile().then(function(data) {
 
-    var loginButton = document.querySelector('.loginButton');
+    //     loginField.value = data.login || "";
+    //     passwordField.value = data.password || "";
+    //     otField.value = data.host || "";
+    // }, function() {
+    //     loginField.value = "";
+    //     passwordField.value = "";
+    //     otField.value = "";
+    // });
 
-    loginButton.onclick = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        login_param = loginField.value;
-        password_param = passwordField.value;
-        host_param = otField.value;
+    // var cancelSettingBtn = document.querySelector('.cancelSettingButton');
 
-        saveDataToFile(login_param, password_param, host_param).then(function() {
-            hideConfig();
-            callback.call(context); 
-        }, function() {
-            //LIFT can't be used
-        });
-    };
+    // cancelSettingBtn.onclick = function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     hideConfig();
+    // };
+
+    // var loginButton = document.querySelector('.loginButton');
+
+    // loginButton.onclick = function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     login_param = loginField.value;
+    //     password_param = passwordField.value;
+    //     host_param = otField.value;
+
+    //     saveDataToFile(login_param, password_param, host_param).then(function() {
+    //         hideConfig();
+    //         callback.call(context); 
+    //     }, function() {
+    //         //LIFT can't be used
+    //     });
+    // };
 }
 
 function hideConfig() {
