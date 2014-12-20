@@ -1,0 +1,17 @@
+{
+	"settings": {
+	    "title": "PARAMETRES",
+	    "subtitle": "Veuillez entrer vos informations personnelles pour utiliser OpenTouch Meetings Manager",
+	    "login": "Accompte",
+	    "password": "Mot de passe",
+	    "server": "Server Interne OpenTouch",
+	    "cancel": "Annuler",
+	    "save": "Sauvegarder"
+	},
+	"main": {
+		"meeting": "Nouvelle réunion",
+		"settings": "Paramètres",
+		"no-meeting": "Aucune réunion",
+		"list": "La liste des réunions planifiées s'affiche ici"
+	}
+}

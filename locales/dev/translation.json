@@ -1,0 +1,17 @@
+{
+	"settings": {
+	    "title": "SETTINGS",
+	    "subtitle": "Please enter your credentials to use OpenTouch Meetings Manager",
+	    "login": "Login",
+	    "password": "Password",
+	    "server": "Internal OpenTouch server",
+	    "cancel": "Cancel",
+	    "save": "Save"
+	},
+	"main": {
+		"meeting": "New Meeting",
+		"settings": "Settings",
+		"no-meeting": "No Meeting",
+		"list": "List of scheduled meetings appears here"
+	}
+}
