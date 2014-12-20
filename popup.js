@@ -17,12 +17,14 @@ var meetingsList = null;
 
 var editExistingMeeting = null;
 
+var mainView = null;
+
 /**
  * Initialize
  */
 function init() {
 
-    log_info("POPUP", "Init");
+    log_info('Initialize', 'Application Started...');
 
     var btn = document.querySelector("#scheduleBtn");
     var startDate = document.querySelector('.dateInput');
@@ -34,7 +36,6 @@ function init() {
     var closeButton = document.querySelector('#closeButton');
     
     var closeLoginButton = document.querySelector('#closeLoginButton');
-    var settingBtn = document.querySelector('#settingBtn');
 
     var createBtn = document.querySelector('#createBtn');
 
@@ -97,11 +98,11 @@ function init() {
         editor.classList.remove('blur');
     };
 
-    createBtn.onclick = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        displayEditor();
-    };
+    // createBtn.onclick = function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     displayEditor();
+    // };
 
     cancelBtn.onclick = function(event) {
         event.preventDefault();
@@ -121,19 +122,12 @@ function init() {
         list.classList.remove('blur');
     };
 
-    settingBtn.onclick = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        displayConfig(onLoad, this);
-
-    };
-
-    aboutButton.onclick = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        document.querySelector('#aboutModal').classList.add('visible');
-        document.querySelector('#editor').classList.add('blur');
-    };
+    // aboutButton.onclick = function(event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     document.querySelector('#aboutModal').classList.add('visible');
+    //     document.querySelector('#editor').classList.add('blur');
+    // };
 
     aboutCloseButton.onclick = function(event) {
         event.preventDefault();
@@ -396,21 +390,21 @@ function schedule() {
 }
 
 function hideEmptyArea() {
-    var empty = document.querySelector('#empty');
-    empty.classList.add('masked');
+    // var empty = document.querySelector('#empty');
+    // empty.classList.add('masked');
 }
 
 function showEmptyArea() {
-    var empty = document.querySelector('#empty');
-    empty.classList.remove('masked');
+    // var empty = document.querySelector('#empty');
+    // empty.classList.remove('masked');
 }
 
 function clearMeetingsList() {
-    log_info("POPUP", "Clear meetings list");
-    // Initialize or delete all conferences displayed in list
-    var list = document.querySelector("#meetings");
-    list.innerHTML = "";
-    meetingsList = {};
+    // log_info("POPUP", "Clear meetings list");
+    // // Initialize or delete all conferences displayed in list
+    // var list = document.querySelector("#meetings");
+    // list.innerHTML = "";
+    // meetingsList = {};
 }
 
 function displayConfirmDelete(subject, host_param, vanity) {
@@ -1168,14 +1162,40 @@ function onInitialize() {
 
     log_info("POPUP", "Initialize...");
 
-    // Initialize the extension
-    init();
-    // Load the extension
-    onLoad();
+    var lang = navigator.language || navigator.userLanguage || 'en-US';
+
+    log_debug('POPUP', 'Detected language', lang);
+
+    //Moment settings
+    moment.locale(lang, {week: {dow: 1, doy: 4}});
+
+    //Language initialization
+    i18n.init({ lng: lang}, function() {
+        log_info('POPUP', 'I18n initialized');
+
+        log_info('POPUP', 'Display main view');
+        Backbone.Mediator.subscribe('main-settings', function() {
+            displayConfig(onLoad, this);
+        });
+
+        Backbone.Mediator.subscribe('main-about', function() {
+
+        });
+
+        // Display Main screen
+        mainView = new MainView();
+        $('#main-elt').append(mainView.render().el);
+
+        // Initialize the extension
+        init();
+
+        // Load the extension
+        onLoad();
+    });
 }
 
 function onLoad() {
-    //Signout from previous session
+    //Connect to ACS
     connectionToACS();
 }
 
@@ -1327,11 +1347,11 @@ function connectionToACS() {
 }
 
 function enableCreateNewMeetingButton() {
-    document.querySelector('#createBtn').disabled = false;
+    // document.querySelector('#createBtn').disabled = false;
 }
 
 function disableCreateNewMeetingButton() {
-    document.querySelector('#createBtn').disabled = true;
+    // document.querySelector('#createBtn').disabled = true;
 }
 
 function displayErrorLogin() {

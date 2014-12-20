@@ -36,7 +36,9 @@ module.exports = function(grunt) {
                     'cookies.js', 
                     'ajax.js',
                     'config.js',
-                    'popup.js'
+                    'popup.js',
+                    'views/mainView.js',
+                    'views/configView.js'
                 ],
                 dest: 'dist/lift.js',
             },

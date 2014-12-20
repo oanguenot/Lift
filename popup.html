@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   	<meta charset="utf-8">
-  	<title>OpenTouch Meeting Manager: Schedule a meeting</title>
+  	<title>OpenTouch Meetings Manager: Schedule a meeting</title>
   	<meta id="mobile" name="apple-mobile-web-app-capable" content="yes">
   	<meta name="viewport" content="user-scalable=no,width=device-width, initial-scale=1.0">
 	<link href="./css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -12,15 +12,16 @@
 	<script src="./vendor/moment.js"></script>
 	<script src="./vendor/underscore.js"></script>
 	<script src="./vendor/backbone.js"></script>
+	<script src="./vendor/backbone-mediator.js"></script>
 	<script src="./vendor/mustache.js"></script>
-
-	<script src='./views/configView.js'></script>
+	<script src="./vendor/i18next.js"></script>
 
 	<script src="dist/lift.js"></script>
+
 </head>
 <body>
 	<form id='editor' class='masked'>
-	 	<legend class='title'> OpenTouch Meeting Manager</legend>
+	 	<legend class='title'> OpenTouch Meetings Manager</legend>
 		<img class='logo' src='./lift_48.png' width="32" height="32" />
 		<div class='options'>
 			<button type="action" id='cancelBtn' class="actionButton right">Cancel</button>
@@ -67,6 +68,21 @@
 
 	<div id='options-elt'></div>
 
+	<script type="text/template" id="settingsTpl">
+	  	<div class='popupSettings'>
+			<h2 data-i18n="settings.title"></h2>
+			<p data-i18n="settings.subtitle"></p>
+			<legend class='popupLegend' data-i18n="settings.login"></legend>
+		 	<input type="text" name="titleRegister" class="registerInput" id='login' required placeholder="&#61447;   e.g. jsmith" autofocus>
+		 	<legend class='popupLegend' data-i18n="settings.password"></legend>
+		 	<input type="password" name="passwordRegister" class="registerInput" id='password' required placeholder="&#61475;   e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" >
+		 	<legend class='popupLegend' data-i18n="settings.server"></legend>
+		 	<input type="text" name="ot" class="registerInput" id='ot' required placeholder="&#61634;   e.g. vm-155.alcatel-lucent.com" >
+		 	<button type="action" class="cancelSettingButton" data-i18n="settings.cancel"></button>
+		 	<button type="action" class="loginButton" data-i18n="settings.save"></button>
+		</div>
+	</script>
+
 	<div id='errorModal' class="modalDialog masked">
 		<div class='popup'>
 			<h2>ERROR</h2>
@@ -111,7 +127,9 @@
 		</div>
 	</div>
 
-	<div id='aboutModal' class="modalDialog masked">
+	<div id="about-elt"></div>
+
+	<script type="text/template" id="mainTpl">
 		<div class='popupSettings'>
 			<h2>ABOUT</h2>
 			<p class='okP firstLine copyrightText'>Copyright Alcatel-Lucent Enterprise. All rights reserved. Alcatel-Lucent Enterprise and the Alcatel-Lucent Enterprise logo are respectively registered trademarks and service marks of Alcatel-Lucent Enterprise.</p>
@@ -120,27 +138,29 @@
 			<p class='okP firstLine clearCookies'><a href='#' class='cookiesLink'>Clear cookies and information stored</a></p>
 			<button type="action" id='aboutCloseButton' class="centerButton">Close</button>
 		</div>
-	</div>
+	</script>
 
-	<div id='list' class='displayed'>
-		<legend class='title'> OpenTouch Meeting Manager</legend>
-		<img class='logo' src='./lift_48.png' width="32" height="32" />
-		<div title='About' class='aboutButton'></div>
-		<div class='options'>
-			<button type="action" id='createBtn' class="actionButton left">New Meeting</button>
-			<button type="action" id='settingBtn' class="actionButton right">Settings</button>
+	<div id='main-elt'></div>
+
+	<script type="text/template" id="mainTpl">
+		<div class='mainScreen'>
+			<legend class='title'> OpenTouch Meetings Manager</legend>
+			<img class='logo' src='./lift_48.png' width="32" height="32" />
+			<div title='About' class='aboutButton'></div>
+			<div class='options'>
+				<button type="action" id='createBtn' class="actionButton left" data-i18n="main.meeting"></button>
+				<button type="action" id='settingBtn' class="actionButton right" data-i18n="main.settings"></button>
+			</div>
+			<div class='spinner' id='spinner'></div>
+			<div class='empty' id='empty'>
+				<img class='emptyLogo' width='80' height='80' src='./lift_128.png' />
+				<div class='emptyTitle' data-i18n="main.no-meeting"></div>
+				<div class='emptyMessage' data-i18n="main.list"></div>
+			</div>
+			<ul id='meetings' class='meetings scrollbars'></ul>
+			<div class='copyright'>&copy;Alcatel-Lucent Enterprise - 2014</div>
 		</div>
-		<div class='spinner' id='spinner'>
-		</div>
-		<div class='empty' id='empty'>
-			<img class='emptyLogo' width='80' height='80' src='./lift_128.png' />
-			<div class='emptyTitle'>No Meeting</div>
-			<div class='emptyMessage'>List of scheduled meetings appears here</div>
-		</div>
-		<ul id='meetings' class='meetings scrollbars'>
-		</ul>
-		<div class='copyright'>&copy;Alcatel-Lucent Enterprise - 2014</div>
-	</div>
+	</script>
 
 </body>
 </html>
