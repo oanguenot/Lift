@@ -18,14 +18,8 @@ define('views/mainView', ['text!views/templates/main.html'], function(template) 
         },
 
         render: function() {
-            //var template = $('#mainTpl').html();
-            //Mustache.parse(template);   // optional, speeds up future uses
-            //var rendered = Mustache.render(template);
-
             this.$el.html(template);
-
             this.$('.mainScreen').i18n();
-
             return this;
         },
 
@@ -52,6 +46,14 @@ define('views/mainView', ['text!views/templates/main.html'], function(template) 
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('main-settings', null);
+        },
+
+        blur: function() {
+            $(this.el).addClass('blur');
+        },
+
+        unblur: function() {
+            $(this.el).removeClass('blur'); 
         }
 
     });

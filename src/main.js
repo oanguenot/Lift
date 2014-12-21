@@ -8,7 +8,7 @@ require.config({
 });
 
 
-require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView'], function(log, acs, credentials, MainView) {
+require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView'], function(log, acs, credentials, MainView, ErrorView, ConfigView) {
 
 	var mainView = null;
 
@@ -18,19 +18,37 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
 
 	var lang = navigator.language || navigator.userLanguage || 'en-US';
 
-    log.debug('POPUP', 'Detected language', lang);
+    log.debug('MAIN', 'Detected language', lang);
 
     //Moment settings
     moment.locale(lang, {week: {dow: 1, doy: 4}});
 
+    function displayErrorLoginPopup()  {
+        
+        var view = new ErrorView();
+
+        Backbone.Mediator.subscribe('error-close', function() {
+            view.close();
+            mainView.unblur();
+        });
+
+        mainView.blur();
+
+        $('#error-elt').append(view.render().el);
+    }
+
+    function displayConfig() {
+
+    }
+
     //Language initialization
     i18n.init({ lng: lang}, function() {
-        log.info('POPUP', 'I18n initialized');
+        log.info('MAIN', 'I18n initialized');
 
         
         // Display main view
         Backbone.Mediator.subscribe('main-settings', function() {
-            displayConfig(onLoad, this);
+            displayConfig();
         });
 
         Backbone.Mediator.subscribe('main-about', function() {
@@ -43,7 +61,7 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
         // Try to log to the ACS server
         credentials.load(function(user_param) {
             user = user_param;
-            log.debug("Main", "User found", user);
+            log.debug("MAIN", "User found", user);
 
             if(user.host.length > 0 && user.login.length > 0 && user.password.length > 0) {
                 acs.loginToACS(user.host, user.login, user.password, function() {
@@ -53,10 +71,10 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
                 });
             }
             else {
-                Backbone.Mediator.publish('error:popup');    
+                displayErrorLoginPopup();    
             }
         }, function() {
-            Backbone.Mediator.publish('error:popup');
+            displayErrorLoginPopup();
         }, this);
 
     });
