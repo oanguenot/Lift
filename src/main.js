@@ -8,11 +8,11 @@ require.config({
 });
 
 
-require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView'], function(log, acs, credentials, MainView, ErrorView, ConfigView) {
+require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView', 'models/user'], function(log, acs, credentials, MainView, ErrorView, ConfigView, UserModel) {
 
 	var mainView = null;
 
-    var user = null;
+    var user = new UserModel();
 
 	log.info('MAIN', "Application start");
 
@@ -38,7 +38,11 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
     }
 
     function displayConfig() {
+        var view = new ConfigView();
 
+        mainView.blur();
+
+        $('#config-elt').append(view.render().el);
     }
 
     //Language initialization
@@ -58,24 +62,8 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
         mainView = new MainView();
         $('#main-elt').append(mainView.render().el);
 
-        // Try to log to the ACS server
-        credentials.load(function(user_param) {
-            user = user_param;
-            log.debug("MAIN", "User found", user);
-
-            if(user.host.length > 0 && user.login.length > 0 && user.password.length > 0) {
-                acs.loginToACS(user.host, user.login, user.password, function() {
-
-                }, function() {
-
-                });
-            }
-            else {
-                displayErrorLoginPopup();    
-            }
-        }, function() {
-            displayErrorLoginPopup();
-        }, this);
+        user.signin();
+       
 
     });
 

@@ -46,6 +46,6 @@ define('modules/log', [], function() {
         error: function(title, msg, arg) {
             trace('ERROR', title, msg, arg);
         }
-    }
+    };
 
 });

@@ -14,10 +14,10 @@ module.exports = function(grunt) {
                     jshintrc: '.jshintrc'
                 },
                 src: [
-                    './background.js',
-                    './dist/lift.js',
-                    './vendor/ics/js',
+                    './src/modules/*.js',
+                    './src/views/*.js',
                     './GruntFile.js',
+                    './main.js',
                     './package.json'
                 ]
             },
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
 
         watch: {
             src: {
-                files: '*.js',
+                files: 'src/**/*.js',
                 tasks: ['build']
             }, 
             naos: {
