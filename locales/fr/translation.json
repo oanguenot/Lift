@@ -13,5 +13,11 @@
 		"settings": "Paramètres",
 		"no-meeting": "Aucune réunion",
 		"list": "La liste des réunions planifiées s'affiche ici"
+	},
+	"error": {
+		"title": "ERREUR",
+	    "subtitle": "OpenTouch Meeting Manager n'arrive pas à se connecter au serveur",
+	    "subtitle-next": "Veuillez vérifier vos paramètres de connexion et essayer de nouveau !",
+		"close": "Fermer"
 	}
 }

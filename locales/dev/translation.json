@@ -13,5 +13,11 @@
 		"settings": "Settings",
 		"no-meeting": "No Meeting",
 		"list": "List of scheduled meetings appears here"
+	},
+	"error": {
+		"title": "ERROR",
+	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
+	    "subtitle-next": "Please check your parameters and try again !",
+		"close": "Close"
 	}
 }
