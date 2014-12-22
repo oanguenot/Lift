@@ -2,7 +2,7 @@ define('views/errorView', ['text!views/templates/error.html'], function(template
 
     return Backbone.View.extend({
 
-        itemName: 'div',
+        tagName: 'div',
 
         className: 'modalDialog visible',
 

@@ -2,7 +2,7 @@
 
 var MainView = Backbone.View.extend({
 
-    itemName: 'div',
+    tagName: 'div',
 
     className: 'modalDialog visible',
 

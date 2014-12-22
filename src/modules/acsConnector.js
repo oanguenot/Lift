@@ -88,6 +88,43 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         });
     };
 
+    var getGlobalSettings = function getGlobalSettings() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Get global server settings");
+
+            /* __FIX__ Get the timezone */
+            var url = protocol + host + "/cgi-bin/vcs?settings=global;phone;password&show_timezones=true";
+
+            request(url).then(function(jsonResponse) {
+                log.debug("ACSConnector", "Settings Received", jsonResponse);
+                resolve(jsonResponse);
+            }, function(err) {
+                log.error("ACSConnector", "getGlobalSettings", err);
+                reject();
+            });
+        });
+    };
+
+    var getListOfMeetings = function getListOfMeetings() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Get the list of meetings");
+
+            var url = protocol + host + "/cgi-bin/vcs?all_vanities=true&hide_temp_confs=true&show_conf_passwords=true&call_data=true";
+
+            request(url).then(function(jsonResponse) {
+                log.debug("ACSConnector", "Meetings Received", jsonResponse);
+                resolve(jsonResponse);
+            }, function(err) {
+                log.error("ACSConnector", "getListOfMeetings", err);
+                reject();
+            });
+        });
+    };
+
     return {
 
         /**
@@ -100,6 +137,30 @@ define('modules/acsConnector', ['modules/log'], function(log) {
 
             login(host, username, password).then(function(){
                 callback.call(context);
+            }, function() {
+                errCallback.call(context);
+            });
+        },
+
+        /**
+         * Retrieve global settings (timezone and conference call)
+         */
+
+        getGlobalSettings: function(callback, errCallback, context) {
+            getGlobalSettings().then(function(params){
+                callback.call(context, params);
+            }, function() {
+                errCallback.call(context);
+            });
+        },
+
+        /**
+         * Retrieve list conferences scheduled by the user himself
+         */
+
+        getMeetings: function(callback, errCallback, context) {
+             getListOfMeetings().then(function(params){
+                callback.call(context, params);
             }, function() {
                 errCallback.call(context);
             });

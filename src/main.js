@@ -8,11 +8,13 @@ require.config({
 });
 
 
-require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView', 'models/user'], function(log, acs, credentials, MainView, ErrorView, ConfigView, UserModel) {
+require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView', 'models/user', 'models/settings', 'models/conferences'], function(log, acs, credentials, MainView, ErrorView, ConfigView, UserModel, SettingsModel, ConferencesCollection) {
 
 	var mainView = null;
 
-    var user = new UserModel();
+    var user = new UserModel(),
+        settings = new SettingsModel(),
+        conferences = new ConferencesCollection();
 
 	log.info('MAIN', "Application start");
 
@@ -68,11 +70,15 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
             displayErrorLoginPopup();
         });
         
-        mainView = new MainView();
+        mainView = new MainView({collection: conferences});
+        //mainView.setConferences(conferences);
         $('#main-elt').append(mainView.render().el);
 
-        user.on('change', function(model) {
-            console.log("New Model", model);
+        user.on('change:isConnected', function(model) {
+            if(user.isConnected()) {
+                settings.getGlobals();
+                conferences.list();
+            }
         });
 
         user.signin();

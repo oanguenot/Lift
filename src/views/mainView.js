@@ -1,14 +1,15 @@
-define('views/mainView', ['text!views/templates/main.html'], function(template) {
+define('views/mainView', ['text!views/templates/main.html', 'views/conferenceView'], function(template, ConferenceView) {
 
     return Backbone.View.extend({
 
-        itemName: 'div',
+        tagName: 'div',
 
         className: 'displayed',
 
         id: 'list',
 
         initialize: function(){
+            this.listenTo(this.collection, 'add', this.onAddConference);
         },
 
         events: {
@@ -54,6 +55,21 @@ define('views/mainView', ['text!views/templates/main.html'], function(template) 
 
         unblur: function() {
             $(this.el).removeClass('blur'); 
+        },
+
+        hideEmptyArea: function() {
+            this.$('#empty').addClass('masked');
+        },
+
+        showEmptyArea: function() {
+            this.$('#empty').removeClass('masked');
+        },
+
+        onAddConference: function(model) {
+            this.hideEmptyArea();
+
+            var view = new ConferenceView({model: model});
+            this.$('.meetings').append(view.render().el);
         }
 
     });

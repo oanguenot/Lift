@@ -3,7 +3,7 @@ define('views/configView', ['text!views/templates/config.html'], function(templa
 
     return Backbone.View.extend({
 
-        itemName: 'div',
+        tagName: 'div',
 
         className: 'modalDialog visible',
 

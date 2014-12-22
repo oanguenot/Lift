@@ -619,7 +619,7 @@ overflow-y: auto;
 overflow-x: hidden;
 }
 
-li.buddies-item {
+li.conference-item {
 position: relative;
 height: 120px;
 width: 100%;
@@ -627,7 +627,7 @@ background-color: #fff;
 border-bottom: 1px solid #efefef;
 }
 
-li.buddies-item:hover {
+li.conference-item:hover {
 	background-color:  #9d61db; /*#F0F0EF #DBE0E4*/
 }
 
@@ -645,7 +645,7 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
-.buddies-item:hover > .meetingTitle {
+.conference-item:hover > .meetingTitle {
 	color: #ffffff;
 }
 
@@ -660,7 +660,7 @@ left: 14px;
 }
 
 
-.buddies-item:hover > .meetingStartDate {
+.conference-item:hover > .meetingStartDate {
 	color: #ffffff;
 }
 
@@ -675,7 +675,7 @@ left: 14px;
 width: 225px;
 }
 
-.buddies-item:hover > .meetingStartDateNext {
+.conference-item:hover > .meetingStartDateNext {
 	color: #c2a1e2;
 }
 
@@ -693,7 +693,7 @@ padding: 1px 4px 1px 4px;
 border-radius: 4px;
 }
 
-.buddies-item:hover > .meetingTime {
+.conference-item:hover > .meetingTime {
 	background-color: #c2a1e2;
 	color: #ffffff;
 }
@@ -710,7 +710,7 @@ width: 100px;
 text-align: right;
 }
 
-.buddies-item:hover > .meetingTimezone {
+.conference-item:hover > .meetingTimezone {
 	color: #eeeeee;
 }
 
@@ -728,7 +728,7 @@ overflow: hidden;
 text-overflow: ellipsis;
 }
 
-.buddies-item:hover > .meetingState {
+.conference-item:hover > .meetingState {
 	color: #c2a1e2;
 }
 
@@ -938,7 +938,7 @@ margin: 0 auto;
 	background-color: #F0F0EF;
 }
 
-.buddies-item:hover > .meeting-not_begun {
+.conference-item:hover > .meeting-not_begun {
 	background-color: #9d61db;
 }
 
@@ -946,7 +946,7 @@ margin: 0 auto;
 	background-color: #F0F0EF;
 }
 
-.buddies-item:hover > .meeting-ended {
+.conference-item:hover > .meeting-ended {
 	background-color: #9d61db;
 }
 
@@ -954,7 +954,7 @@ margin: 0 auto;
 	background-color: #F0F0EF; /*rgba(105, 105, 105, 0.25);*/
 }
 
-.buddies-item:hover > .meeting-inactive {
+.conference-item:hover > .meeting-inactive {
 	background-color: #9d61db;
 }
 
@@ -962,7 +962,7 @@ margin: 0 auto;
 	background-color: #9d61db; /*#F1C212;*/
 }
 
-.buddies-item:hover > .meeting-active {
+.conference-item:hover > .meeting-active {
 	background-color: #9d61db;
 }
 
@@ -974,7 +974,7 @@ margin: 0 auto;
 	background-color: #F0F0EF;
 }
 
-.buddies-item:hover > .meeting-unknown {
+.conference-item:hover > .meeting-unknown {
 	background-color: #9d61db;
 }
 
