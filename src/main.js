@@ -58,6 +58,10 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
         Backbone.Mediator.subscribe('main-about', function() {
 
         });
+
+        Backbone.Mediator.subscribe('error-display', function() {
+            displayErrorLoginPopup();
+        });
         
         mainView = new MainView();
         $('#main-elt').append(mainView.render().el);

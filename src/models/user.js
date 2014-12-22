@@ -28,10 +28,11 @@ define('models/user', ['modules/credentials', 'modules/acsConnector'], function(
 	                });
 	            }
 	            else {
-	                //displayErrorLoginPopup();    
+	                //displayErrorLoginPopup(); 
+	                Backbone.Mediator.publish('error-display');  
 	            }
 	        }, function() {
-	            //displayErrorLoginPopup();
+	            Backbone.Mediator.publish('error-display');
 	        }, this);
     	}
     });
