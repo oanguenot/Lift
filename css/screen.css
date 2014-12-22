@@ -435,7 +435,7 @@ background-color: #72539E;
 	border-bottom: 1px solid #999;
 }
 
-.loginButton, .cancelSettingButton {
+.saveBtn, .cancelBtn {
  	border: 1px solid #4E5256;
 	background-color: #4E5256;
 	color: #ffffff;
@@ -469,12 +469,12 @@ background-color: #72539E;
 	position: relative;
 }
 
-.loginButton:hover, .cancelSettingButton:hover, .centerButton:hover {
+.saveBtn:hover, .cancelBtn:hover, .centerButton:hover {
 	background-color: #72539E;
 	border: 1px solid #72539E;
 }
 
-.loginButton:disabled, #createBtn:disabled {
+.saveBtn:disabled, #createBtn:disabled {
 	background-color: #D1D5D8;
 	border: 1px solid #D1D5D8;
 	cursor:default;

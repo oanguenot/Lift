@@ -13,29 +13,22 @@ define('views/configView', ['text!views/templates/config.html'], function(templa
         },
 
         events: {
-            'click .cancelSettingButton' : 'onCancelSignin',
-            'click .loginButton': 'onSignin'
+            'click .cancelBtn' : 'onCancel',
+            'click .saveBtn': 'onSave'
         },
 
         render: function() {
+
             this.$el.html(template);
             this.$('.popupSettings').i18n();
+            this.displayInfo();
             return this;
         },
 
         displayInfo: function() {
-            var that = this;
-
-            //Read data from file
-            loadDataFromFile().then(function(data) {
-                that.$('#login').val(data.login || "");
-                that.$('#password').val(data.password || "");
-                that.$('#ot').val(data.host || "");
-            }, function() {
-                that.$('#login').val("");
-                that.$('#password').val("");
-                that.$('#ot').val("");
-            });
+            this.$('#login').val(this.model.get('login') || "");
+            this.$('#password').val(this.model.get('password') || "");
+            this.$('#ot').val(this.model.get('host') || "");
         },
 
         close: function() {
@@ -45,25 +38,23 @@ define('views/configView', ['text!views/templates/config.html'], function(templa
             this.off();
         },
 
-        onCancelSignin: function(e) {
+        onCancel: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('settings-cancel', null);
+            Backbone.Mediator.publish('settings-close', null);
         },
 
-        onSignin: function(e) {
+        onSave: function(e) {
             e.preventDefault();
             e.stopPropagation();  
 
-            var signin = {
-                login: this.$('#login').val(),
+            this.model.update({
+                login:  this.$('#login').val(),
                 password: this.$('#password').val(),
-                internal_server: this.$('#ot').val()
-            };
+                host: this.$('#ot').val()
+            });
 
-            saveDataToFile(signin.login, signin.password, signin.internal_server);
-
-            Backbone.Mediator.pulish('settings-signin', signin);
+            Backbone.Mediator.publish('settings-close', null);
         }
     });
 });

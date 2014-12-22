@@ -1,4 +1,4 @@
-define('models/user', ['modules/credentials', 'modules/acsConnector'], function(credentials, acs) {
+define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/log'], function(credentials, acs, log) {
 
     return Backbone.Model.extend({
 
@@ -12,7 +12,7 @@ define('models/user', ['modules/credentials', 'modules/acsConnector'], function(
     	signin: function() {
     		credentials.load(function(user) {
             
-	            log.debug("MAIN", "User found", user);
+	            log.debug("USER", "User found", user);
 
 	            this.set({
 	            	'login': user.login,
@@ -25,7 +25,8 @@ define('models/user', ['modules/credentials', 'modules/acsConnector'], function(
 	                	this.set({'isConnected': true});
 	                }, function() {
 	                	this.set({'isConnected': false});
-	                });
+	                	Backbone.Mediator.publish('error-display');	
+	                }, this);
 	            }
 	            else {
 	                //displayErrorLoginPopup(); 
@@ -34,6 +35,20 @@ define('models/user', ['modules/credentials', 'modules/acsConnector'], function(
 	        }, function() {
 	            Backbone.Mediator.publish('error-display');
 	        }, this);
+    	},
+
+    	update: function(newUserInfo) {
+    		this.set(newUserInfo);
+
+    		this.save();
+    	},
+
+    	save: function() {
+    		credentials.save(this.get('login'), this.get('password'), this.get('host'), function() {
+    			log.info("USER", "User data saved");
+    		}, function() {
+
+    		}, this);
     	}
     });
 });

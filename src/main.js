@@ -38,7 +38,12 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
     }
 
     function displayConfig() {
-        var view = new ConfigView();
+        var view = new ConfigView({model: user});
+
+        Backbone.Mediator.subscribe('settings-close', function() {
+            view.close();
+            mainView.unblur();
+        });
 
         mainView.blur();
 
@@ -65,6 +70,10 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
         
         mainView = new MainView();
         $('#main-elt').append(mainView.render().el);
+
+        user.on('change', function(model) {
+            console.log("New Model", model);
+        });
 
         user.signin();
        
