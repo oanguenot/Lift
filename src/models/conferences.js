@@ -31,7 +31,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                             //Conference Type
                             json.type = xml.getAttribute("type");
                             //Conference subject
-                            json.subject = "Unnamed";
+                            json.subject = i18n.t("conference.unnamed");
                             if(xml.getElementsByTagName("subject")[0]) {
                                 json.subject = xml.getElementsByTagName("subject")[0].childNodes[0].nodeValue;
                             }
@@ -137,12 +137,12 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                             if(json.hasRecurrence) {
                                 switch (json.recurrenceType) {
                                     case "weekly":
-                                        json.startDateString = "Each " + json.startDate.format("dddd");
-                                        json.startDateStringNext = json.startDate.format("MMMM Do") + " to " + json.endDate.format("MMMM Do");
+                                        json.startDateString = i18n.t("conference.each") + " " + json.startDate.format("dddd");
+                                        json.startDateStringNext = json.startDate.format("MMMM Do") + " - " + json.endDate.format("MMMM Do");
                                         break;
                                     case "daily":
-                                        json.startDateString = "Each week day";
-                                        json.startDateStringNext = json.startDate.format("MMMM Do") + " to " + json.endDate.format("MMMM Do");
+                                        json.startDateString = i18n.t("conference.eachweekday");
+                                        json.startDateStringNext = json.startDate.format("MMMM Do") + " - " + json.endDate.format("MMMM Do");
                                         break;
                                 }
                             }
@@ -169,8 +169,8 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                             }
                             else {
 
-                                json.startDateString = "Each day";
-                                json.startDateStringNext = json.startDate.format("MMMM Do") + " to " + json.endDate.format("MMMM Do");
+                                json.startDateString = i18n.t("conference.eachday");
+                                json.startDateStringNext = json.startDate.format("ll") + " - " + json.endDate.format("ll");
 
                                 if(now.isAfter(json.startDate)) {
                                     if(now.isAfter(json.endDate)) {
@@ -192,21 +192,18 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                             json.vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
 
                             // Conference state
-                            json.state = xml.getElementsByTagName("access")[1].getAttribute("state") || 'unknown';
+                            json.state = xml.getElementsByTagName("access")[1].getAttribute("state") || i18n.t('conference.unknown');
 
-                            json.profileDisplayed = json.profile;
-                            if (json.profileDisplayed === 'call') {
-                                json.profileDisplayed = 'Conference Call';
-                            }
+                            json.profileDisplayed = i18n.t('conference.' + json.profile);
 
                             json.stateDisplayed = capitaliseFirstLetter(json.profileDisplayed) + ' / ' + capitaliseFirstLetter(json.state);
 
                             var documents = xml.getElementsByTagName('document');
                             if (documents && documents.length > 0) {
                                 if(documents.length === 1) {
-                                    json.stateDisplayed += ' / 1 file';
+                                    json.stateDisplayed += ' / 1 ' + i18n.t('conference.file');
                                 } else {
-                                    json.stateDisplayed += ' - ' + documents.length + ' files';
+                                    json.stateDisplayed += ' - ' + documents.length + ' ' + i18n.t('conference.files');
                                 }
                             }
 

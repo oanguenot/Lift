@@ -19,5 +19,28 @@
 	    "subtitle": "OpenTouch Meeting Manager n'arrive pas à se connecter au serveur",
 	    "subtitle-next": "Veuillez vérifier vos paramètres de connexion et essayer de nouveau !",
 		"close": "Fermer"
+	},
+	"conference": {
+		"unnamed": "Sans nom",
+		"meeting": "Réunion",
+		"webinar": "Webinar",
+		"training": "Training",
+		"call": "Réunion téléphonique",
+		"each": "Chaque",
+		"eachday": "Chaque jour",
+		"eachweekday": "En semaine",
+		"wholeday": "Toute la journée",
+		"onemonth": "> à un mois",
+		"daysleft": "jours restant",
+		"dayleft": "jour restant",
+		"expire": "Expire aujourd'hui",
+		"invite": "Invitation de",
+		"unknown": "Inconnu",
+		"file": "fichier",
+		"files": "fichiers",
+		"join": "Joindre cette réunion",
+		"details": "Afficher les détails de cette réunion",
+		"edit": "Modifier cette réunion",
+		"remove": "Supprimer cette réunion"
 	}
 }

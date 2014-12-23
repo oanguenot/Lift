@@ -633,16 +633,16 @@ li.conference-item:hover {
 
 .meetingTitle {
 	font-family: "Roboto-light",sans-serif;
-font-weight: 300;
-font-size: 14px;
-color: #434757;
-position: absolute;
-top: 45px;
-left: 14px;
-width: 300px;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+	font-weight: 300;
+	font-size: 14px;
+	color: #434757;
+	position: absolute;
+	top: 45px;
+	left: 14px;
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .conference-item:hover > .meetingTitle {
@@ -764,7 +764,6 @@ text-overflow: ellipsis;
 	height: 30px;
 	right: 45px;
 	top: 82px;
-	cursor: default;
 	background-image: url('../img/bt-edit-active.png');
 	background-size: cover;
 }

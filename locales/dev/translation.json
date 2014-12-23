@@ -19,5 +19,28 @@
 	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
 	    "subtitle-next": "Please check your parameters and try again !",
 		"close": "Close"
+	},
+	"conference": {
+		"unnamed": "Unnamed",
+		"meeting": "Meeting",
+		"webinar": "Webinar",
+		"training": "Training",
+		"call": "Conference Call",
+		"each": "Each",
+		"eachday": "Each day",
+		"eachweekday": "Each week day",
+		"wholeday": "Whole day",
+		"onemonth": "> 1 month left",
+		"daysleft": "days left",
+		"dayleft": "day left",
+		"expire": "Expires today",
+		"invite": "Invite from",
+		"unknown": "Unknown",
+		"file": "file",
+		"files": "files",
+		"join": "Join this meeting",
+		"details": "Display meeting's details",
+		"edit": "Edit meeting's settings",
+		"remove": "Remove this meeting"
 	}
 }

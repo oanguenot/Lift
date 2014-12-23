@@ -18,41 +18,45 @@ define('views/conferenceView', ['text!views/templates/conference.html'], functio
 
         render: function() {
             this.$el.html(template);
-            //this.$('.mainScreen').i18n();
+            this.$('.conference-elt').i18n();
 
             this.$el.addClass('v-' + this.model.get('vanity'));
 
             this.$('.meeting-state').addClass('meeting-' + this.model.get('state'));
             this.$('.meetingTitle').text(this.model.get('subject'));
             if(this.model.get('isAnInvite')) {
-                this.$('.meetingState').html('<small>Invite from </small>' + this.model.get('owner'));
+                this.$('.meetingState').html('<small>' + i18n.t('conference.invite') + " " + '</small>' + this.model.get('owner'));
             }
             else {
                 this.$('.meetingState').text(this.model.get('stateDisplayed'));
             }
 
             if(this.model.get('typeConf') === "scheduled") {
-                this.$('.meetingTime').text(this.model.get('startTime') + " - " + this.model.get('endTime'));
+                this.$('.meetingTime').text(this.model.get('startTimeString') + " - " + this.model.get('endTimeString'));
                 this.$('.meetingTimezone').text(this.model.get('timezone'));
             }
             else {
-                this.$('.meetingTime').text('Whole day');
+                this.$('.meetingTime').text(i18n.t('conference.wholeday'));
                 if (this.model.get('days') > 30) {
-                    this.$('.meetingTimezone').text('> 1 month left');
+                    this.$('.meetingTimezone').text(i18n.t('conference.onemonth'));
                 }
                 else if (this.model.get('days') > 1) {
-                    this.$('.meetingTimezone').text(this.model.get('days') + " days left");
+                    this.$('.meetingTimezone').text(this.model.get('days') + " " + i18n.t('conference.daysleft'));
                 }
                 else if (this.model.get('days') === 1) {
-                    this.$('.meetingTimezone').text(this.model.get('days') + " day left");
+                    this.$('.meetingTimezone').text(this.model.get('days') + " " + i18n.t('conference.dayleft'));
                 }
                 else if (this.model.get('days') === 0) {
-                    this.$('.meetingTimezone').text("Expires today");
+                    this.$('.meetingTimezone').text(i18n.t("conference.expire"));
                 }
                 else {
                     this.$('.meetingTimezone').text("");
                 }
             }
+
+            this.$('.meetingStartDate').text(this.model.get('startDateString'));
+            this.$('.meetingStartDateNext').text(this.model.get('startDateStringNext'));
+   
 
             this.$('.meeting-join-button').attr("id","join-" + this.model.get('vanity'));
             this.$('.meeting-details-button').attr("id", "details-" + this.model.get('vanity'));
@@ -64,6 +68,10 @@ define('views/conferenceView', ['text!views/templates/conference.html'], functio
                 this.$('.meeting-remove-button').addClass('.meeting-remove-button-disabled');
             }
 
+            this.$('.meeting-join-button').attr('title', i18n.t('conference.join'));
+            this.$('.meeting-edit-button').attr('title', i18n.t('conference.edit'));
+            this.$('.meeting-remove-button').attr('title', i18n.t('conference.remove'));
+            this.$('.meeting-details-button').attr('title', i18n.t('conference.details'));
 
             return this;
         },
@@ -75,20 +83,28 @@ define('views/conferenceView', ['text!views/templates/conference.html'], functio
             this.off();
         },
 
-        onRemove: function() {
-
+        onRemove: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('conference-remove', this.model);
         },
 
-        onEdit: function() {
-
+        onEdit: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('conference-edit', this.model);
         },
 
-        onDetails: function() {
-
+        onDetails: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('conference-details', this.model);
         },
 
-        onJoin: function() {
-            
+        onJoin: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('conference-join', this.model);
         }
     });
 });
