@@ -42,5 +42,10 @@
 		"details": "Afficher les détails de cette réunion",
 		"edit": "Modifier cette réunion",
 		"remove": "Supprimer cette réunion"
+	},
+	"join": {
+		"title": "Joindre cette réunion...",
+		"details": "Etes-vous sur de vouloir joindre la réunion",
+		"join": "Joindre"
 	}
 }

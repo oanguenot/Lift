@@ -8,7 +8,7 @@ require.config({
 });
 
 
-require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/mainView', 'views/errorView', 'views/configView', 'models/user', 'models/settings', 'models/conferences'], function(log, acs, credentials, MainView, ErrorView, ConfigView, UserModel, SettingsModel, ConferencesCollection) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, UserModel, SettingsModel, ConferencesCollection) {
 
 	var mainView = null;
 
@@ -42,7 +42,7 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
     function displayConfig() {
         var view = new ConfigView({model: user});
 
-        Backbone.Mediator.subscribe('settings-close', function() {
+        Backbone.Mediator.subscribeOnce('settings-close', function() {
             view.close();
             mainView.unblur();
         });
@@ -50,6 +50,26 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
         mainView.blur();
 
         $('#config-elt').append(view.render().el);
+    }
+
+    function displayJoinPopup(model) {
+        var view = new JoinView({model: model});
+
+        Backbone.Mediator.subscribeOnce('join-close', function() {
+            view.close();
+            mainView.unblur();
+        });
+
+        Backbone.Mediator.subscribeOnce('join-ok', function() {
+            view.close();
+            mainView.unblur();
+
+            user.join(model.get('vanity'));
+        });
+
+        mainView.blur();
+
+        $('#popup-elt').append(view.render().el);
     }
 
     //Language initialization
@@ -68,6 +88,11 @@ require(['modules/log', 'modules/acsConnector', 'modules/credentials', 'views/ma
 
         Backbone.Mediator.subscribe('error-display', function() {
             displayErrorLoginPopup();
+        });
+
+        Backbone.Mediator.subscribe('conference-join', function(model) {
+            console.log("MODEL", model);
+            displayJoinPopup(model);
         });
         
         mainView = new MainView({collection: conferences});

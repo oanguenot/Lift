@@ -42,5 +42,11 @@
 		"details": "Display meeting's details",
 		"edit": "Edit meeting's settings",
 		"remove": "Remove this meeting"
+	},
+	"join": {
+		"title": "Join a Meeting...",
+		"details": "Are you sure you want to join this Meeting",
+		"join": "Join",
+		"cancel": "Cancel"
 	}
 }

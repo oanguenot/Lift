@@ -19,6 +19,7 @@ define('views/joinView', ['text!views/templates/join.html'], function(template) 
         render: function() {
             this.$el.html(template);
             this.$('.join').i18n();
+            this.$('.detailsConfirm').text(i18n.t('join.details') + " '" + this.model.get('subject') + "'");
             return this;
         },
 
@@ -35,7 +36,7 @@ define('views/joinView', ['text!views/templates/join.html'], function(template) 
             Backbone.Mediator.publish('join-close', null);
         },
 
-        onOk: function(e) {
+        onOK: function(e) {
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('join-ok', null);

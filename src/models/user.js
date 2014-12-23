@@ -53,6 +53,10 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
             }, function() {
 
             }, this);
+        },
+
+        join: function(vanity) {
+            window.open("https://" + this.get('host') + "/call/" + vanity, "_blank");
         }
     });
 });
