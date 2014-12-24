@@ -1,0 +1,46 @@
+<form id='editor' class='editor'>
+ 	<legend class='title'> OpenTouch Meetings Manager</legend>
+	<img class='logo' src='./lift_48.png' width="32" height="32" />
+	
+	<div class='background'>
+	 	<legend class='firstTitle'>Name</legend>
+	 	<input type="text" name="title" class="titleInput" required placeholder="&#61508;   Enter a name" value="New Meeting" autofocus>	
+	 	<legend class='profileTitle'>Profile</legend>
+	 	<select class="profileType" required>
+			<option value="meeting">Meeting</option>
+			<option value="webinar">Webinar</option>
+			<option value='training'>Training</option>
+			<option value="call">Conference Call</option>
+		</select>
+	 	<legend class="firstTitle">Type</legend>
+		<select class="conferenceType" required>
+				<option value="scheduled">Scheduled</option>
+				<option value="reservationless">Reservationless</option>
+		</select>
+		<legend class='recurrenceLabel'>Recurrence</legend>
+		<select class="recurrenceType" required>
+			<option value="none">One time event</option>
+			<option value="daily">Every week day</option>
+			<option value="weekly">Every week</option>
+		</select>
+		<legend class='firstTitle'>Timezone</legend>
+		<select class="timezoneType" required>
+		</select>
+		<legend class="firstTitle">Start Date</legend>
+		<input type="date" name="date" class="dateInput" required >
+		<legend class='endDateLabel'>End Date</legend>
+		<input type="date" name="enddate" class="endDateInput" required disabled>
+		<legend class="firstTitle">Hour (locale)</legend>
+		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
+		<legend class='durationLabel'>Duration (hours)</legend>
+		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
+	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect the meeting with a password</span>
+	 	<input type="password" name="password" class="passwordInput" placeholder="&#61475;   e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
+	 	<span class='digit'> Digit only</span>
+	 	<div class='copyright fixed'>&copy;Alcatel-Lucent Enterprise - 2014</div> 	
+	</div>
+	<div class='options'>
+		<button type="action" id='scheduleBtn' class='actionButton right'>Schedule</button>
+		<button type="action" id='cancelBtn' class="actionButton left">Cancel</button>
+	</div>
+</form>

@@ -48,5 +48,15 @@
 		"details": "Are you sure you want to join this Meeting",
 		"join": "Join",
 		"cancel": "Cancel"
+	},
+	"details": {
+		"title": "MEETING ACCESS",
+		"subtitle": "Here is the URL for joining this meeting",
+		"code": "Access Code",
+		"leader": "Leader Code",
+		"noinfo": "No information",
+		"password": "Meeting Password",
+		"call": "Conference Call Information"
+
 	}
 }

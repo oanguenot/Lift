@@ -131,7 +131,7 @@ select option {
 
 .background {
 	background-color: #fff; /* #25190E */;
-	padding-top: 20px;
+	padding-top: 10px;
 }
 
 .logo {
@@ -202,7 +202,7 @@ select option {
 .endDateLabel {
 	position: absolute;
 	left: 54%;
-	top: 334px;
+	top: 284px;
 }
 
 .timezoneType {
@@ -212,18 +212,19 @@ select option {
 	padding-left: 10px;
 	margin-left: 10px;
 	margin-bottom: 20px;
+	border-radius: 5px;
 }
 
 .recurrenceLabel {
 	position: absolute;
 	left: 54%;
-	top: 186px;
+	top: 136px;
 }
 
 .durationLabel {
 	position: absolute;
 	left: 54%;
-	top: 406px;
+	top: 356px;
 }
 
 .endDateInput {
@@ -240,7 +241,7 @@ border-radius: 5px;
 
 .meetingPassword {
 	position: relative;
-	top: -7px;
+	top: -10px;
 	color: #4E5256;;
 	font-weight: 500;
 	font-size: 12px;
@@ -281,14 +282,15 @@ font-weight: 100;
 padding-left: 10px;
 position: absolute;
 left: 54%;
-top: 202px;
+top: 152px;
+border-radius: 5px;
 }
 
 .profileTitle {
 	width: 150px;
 	position: absolute;
 	left: 54%;
-	top: 111px;	
+	top: 61px;	
 }
 
 .profileType {
@@ -299,7 +301,8 @@ top: 202px;
 	padding-left: 10px;
 	position: absolute;
 	left: 54%;
-	top: 127px;
+	top: 77px;
+	border-radius: 5px;
 }
 
 
@@ -310,6 +313,7 @@ font-weight: 100;
 padding-left: 10px;
 margin-left: 10px;
 margin-bottom: 20px;
+border-radius: 5px;
 }
 
 .conferenceType:hover {
@@ -406,7 +410,7 @@ background-color: #72539E;
 position: absolute;
 left: 54%;
 height: 27px;
-top: 422px;
+top: 372px;
 padding-left: 10px;
 color: #fff;
 font-weight: 100;
@@ -876,19 +880,19 @@ position: relative;
 width: 100%;
 text-align: center;
 font-size: 18px;
-top: 30%;
+top: 32%;
 font-weight: 400;
 color: #4E5256;
 }
 
 .emptyMessage {
-	position: relative;
+position: relative;
 width: 150px;
 text-align: center;
-font-size: 12px;
-top: 30%;
+font-size: 11px;
+top: 32%;
 font-weight: 100;
-color: #4E5256;
+color: #C0C0C0;
 margin: 0 auto;
 }
 

@@ -8,7 +8,7 @@ require.config({
 });
 
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, UserModel, SettingsModel, ConferencesCollection) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, UserModel, SettingsModel, ConferencesCollection) {
 
 	var mainView = null;
 
@@ -72,6 +72,28 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         $('#popup-elt').append(view.render().el);
     }
 
+    function displayEditor() {
+        var view = new EditorView();
+
+         Backbone.Mediator.subscribeOnce('editor-close', function() {
+            view.close();
+            displayMainView();
+        });
+
+        mainView.close();
+
+        $('#editor-elt').append(view.render().el);
+    }
+
+    function displayMainView() {
+        mainView = new MainView({collection: conferences});
+        $('#main-elt').append(mainView.render().el);
+    }
+
+    function displayDetailsPopup(model) {
+
+    }
+
     //Language initialization
     i18n.init({ lng: lang}, function() {
         log.info('MAIN', 'I18n initialized');
@@ -86,18 +108,23 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         });
 
+        Backbone.Mediator.subscribe('main-meeting', function() {
+            displayEditor();
+        });
+
         Backbone.Mediator.subscribe('error-display', function() {
             displayErrorLoginPopup();
         });
 
         Backbone.Mediator.subscribe('conference-join', function(model) {
-            console.log("MODEL", model);
             displayJoinPopup(model);
         });
+
+        Backbone.Mediator.subscribe('conference-details', function(model) {
+            displayDetailsPopup(model);
+        });
         
-        mainView = new MainView({collection: conferences});
-        //mainView.setConferences(conferences);
-        $('#main-elt').append(mainView.render().el);
+        displayMainView();
 
         user.on('change:isConnected', function(model) {
             if(user.isConnected()) {
