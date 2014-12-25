@@ -12,7 +12,7 @@ define('views/aboutView', ['text!views/templates/about.html'], function(template
 
         events: {
             'click #closeBtn' : 'onClose',
-            'click .termsLink': 'onTerms',
+            'click .termsLink': 'onTerms'
         },
 
         render: function() {
@@ -20,7 +20,10 @@ define('views/aboutView', ['text!views/templates/about.html'], function(template
             this.$el.html(template);
             this.$('.popupSettings').i18n();
 
+            var manifest = chrome.runtime.getManifest();
 
+            this.$('.aboutInfo').html(i18n.t('about.app-name') + '<br>' + manifest.version);
+            this.$('.acsInfo').html('ACS<br>' + this.model.getACSVersion());
 
             return this;
         },

@@ -97,7 +97,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     function displayAboutWindow() {
       
-        var view = new AboutView();
+        var view = new AboutView({model: settings});
 
         Backbone.Mediator.subscribeOnce('about-close', function() {
             view.close();

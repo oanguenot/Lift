@@ -4,17 +4,24 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
 
         defaults: {
             timezones: null,
-            conferenceCall: null
+            conferenceCall: null,
+            acsVersion: null
+        },
+
+        getACSVersion: function() {
+            return this.get('acsVersion');
         },
 
         getGlobals: function() {
             acs.getGlobalSettings(function(jsonResponse) {
 
-                var timezone, timezones = [], conferenceCall = {};
+                var timezone, timezones = [], conferenceCall = {}, acsVersion = '';
 
                 var settings = jsonResponse.data;
 
                 if(settings) {
+
+                    acsVersion = settings.documentElement.getAttribute("build");
 
                     var timezoneElt = settings.getElementsByTagName("timezone");
 
@@ -78,10 +85,14 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                         log.warning("SETTINGS", "No Conference bridge information found");
                     }
 
-                    this.model.set({
+
+                    this.set({
                         timezones: timezones,
-                        conferenceCall: conferenceCall
+                        conferenceCall: conferenceCall,
+                        acsVersion: acsVersion
                     });
+
+                    log.debug("SETTINGS", "Settings stored", this);
 
                 }
                 else {
