@@ -5,7 +5,7 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
         defaults: {
             timezones: null,
             conferenceCall: null,
-            acsVersion: null
+            acsVersion: '-'
         },
 
         getACSVersion: function() {
@@ -13,6 +13,9 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
         },
 
         getGlobals: function() {
+
+            Backbone.Mediator.publish('spinner-on');
+
             acs.getGlobalSettings(function(jsonResponse) {
 
                 var timezone, timezones = [], conferenceCall = {}, acsVersion = '';
@@ -99,9 +102,12 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                     log.warning("SETTINGS", "No Global settings defined for that server");
                 }
 
+                Backbone.Mediator.publish('spinner-off');
+
 
             }, function() {
                 log.error("SETTINGS", "Error retrieving global settings");
+                Backbone.Mediator.publish('spinner-off');
             }, this);
         }
     });

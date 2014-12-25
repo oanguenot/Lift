@@ -11,6 +11,8 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
         list: function() {
 
+            Backbone.Mediator.publish('spinner-on');
+
             acs.getMeetings(function(jsonResponse) {
 
                 var xmlResponse = jsonResponse.data;
@@ -276,11 +278,14 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                         }   
                     }
                 }
+
+                Backbone.Mediator.publish('spinner-off');
+
             }, function() {
+
+                Backbone.Mediator.publish('spinner-off');
 
             }, this);
         }
-
-
     });
 });

@@ -22,8 +22,8 @@ define('views/aboutView', ['text!views/templates/about.html'], function(template
 
             var manifest = chrome.runtime.getManifest();
 
-            this.$('.aboutInfo').html(i18n.t('about.app-name') + '<br>' + manifest.version);
-            this.$('.acsInfo').html('ACS<br>' + this.model.getACSVersion());
+            this.$('.aboutInfo').html(i18n.t('about.version') + ' ' + manifest.version);
+            this.$('.acsInfo').html(i18n.t('about.version') + ' ' + this.model.getACSVersion() + ' (ACS)');
 
             return this;
         },

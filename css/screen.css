@@ -151,6 +151,13 @@ select option {
 
 .options {
 	height: 40px;
+	position: absolute;
+	bottom: 40px;
+	width: 100%;
+}
+
+.options-main {
+	height: 40px;
 }
 
 .actionButton {
@@ -420,6 +427,11 @@ border-radius: 5px;
 
 .aboutInfo, .acsInfo {
 	text-align: center;
+}
+
+.acsInfo {
+	color: #9E9E9E;
+	margin-top: 3px;
 }
 
 .durationInput:hover {

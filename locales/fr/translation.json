@@ -46,6 +46,25 @@
 	"join": {
 		"title": "Joindre cette réunion...",
 		"details": "Etes-vous sur de vouloir joindre la réunion",
-		"join": "Joindre"
+		"join": "Joindre",
+		"cancel": "Annuler"
+	},
+	"details": {
+		"title": "ACCES A LA REUNION",
+		"subtitle": "Voici le lien pour accéder à la réunion",
+		"code": "Code d'acces",
+		"leader": "Code animateur",
+		"noinfo": "Aucune information",
+		"password": "Mot de passe de la réunion",
+		"call": "Information du pont de conférence audio"
+	},
+	"about": {
+		"title": "A PROPOS",
+		"copyright-begin": "Copyright Alcatel-Lucent Enterprise. All rights reserved. Alcatel-Lucent Enterprise and the Alcatel-Lucent Enterprise logo are respectively registered trademarks and service marks of Alcatel-Lucent Enterprise.",
+		"copyright-end": "This application is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.",
+		"terms": "License et termes d'utilisation des logiciels Alcatel-Lucent Enterprise",
+		"app-name": "OpenTouch Meetings Manager",
+		"unknown": "Inconnu",
+		"version": "Version"
 	}
 }
