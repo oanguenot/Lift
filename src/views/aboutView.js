@@ -1,57 +1,47 @@
-/* ---------------------------------- About View ---------------------------------------- */
 
-var MainView = Backbone.View.extend({
+define('views/aboutView', ['text!views/templates/about.html'], function(template) {
 
-    tagName: 'div',
+    return Backbone.View.extend({
 
-    className: 'modalDialog visible',
+        tagName: 'div',
 
-    id: 'aboutModal',
+        className: 'modalDialog visible',
 
-    initialize: function(){
-    },
+        initialize: function(){
+        },
 
-    events: {
-        'click .aboutButton' : 'onAbout',
-        'click #createBtn': 'onCreate',
-        'click #settingBtn': 'onSettings',
-    },
+        events: {
+            'click #closeBtn' : 'onClose',
+            'click .termsLink': 'onTerms',
+        },
 
-    render: function() {
-        var template = $('#mainTpl').html();
-        Mustache.parse(template);   // optional, speeds up future uses
-        var rendered = Mustache.render(template);
+        render: function() {
 
-        this.$el.html(rendered);
+            this.$el.html(template);
+            this.$('.popupSettings').i18n();
 
-        this.$('.mainScreen').i18n();
 
-        return this;
-    },
 
-    close: function() {
-        this.remove();
-        this.undelegateEvents();
-        this.unbind();
-        this.off();
-    },
+            return this;
+        },
 
-    onAbout: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        Backbone.Mediator.publish('main-about', null);
-    },
+        close: function() {
+            this.remove();
+            this.undelegateEvents();
+            this.unbind();
+            this.off();
+        },
 
-    onCreate: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        Backbone.Mediator.publish('main-meeting', null);
-    },
+        onClose: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('about-close', null);
+        },
 
-    onSettings: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        Backbone.Mediator.publish('main-settings', null);
-    }
-
+        onTerms: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('about-terms', null);
+        }
+    });
 });

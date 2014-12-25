@@ -2,13 +2,14 @@
 require.config({
     baseUrl: "/src",
     paths : {
-    	"text": '../vendor/text'
+    	"text": '../vendor/text',
+        "json": '../vendor/json'
     },
     waitSeconds: 5
 });
 
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, UserModel, SettingsModel, ConferencesCollection) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, UserModel, SettingsModel, ConferencesCollection) {
 
 	var mainView = null;
 
@@ -94,6 +95,21 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     }
 
+    function displayAboutWindow() {
+      
+        var view = new AboutView();
+
+        Backbone.Mediator.subscribeOnce('about-close', function() {
+            view.close();
+            mainView.unblur();
+        });
+
+        mainView.blur();
+
+        $('#popup-elt').append(view.render().el);
+
+    }
+
     //Language initialization
     i18n.init({ lng: lang}, function() {
         log.info('MAIN', 'I18n initialized');
@@ -105,7 +121,11 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         });
 
         Backbone.Mediator.subscribe('main-about', function() {
+            displayAboutWindow();
+        });
 
+        Backbone.Mediator.subscribe('editor-about', function() {
+            displayAboutWindow();
         });
 
         Backbone.Mediator.subscribe('main-meeting', function() {
@@ -123,6 +143,11 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         Backbone.Mediator.subscribe('conference-details', function(model) {
             displayDetailsPopup(model);
         });
+
+        Backbone.Mediator.subscribe('about-terms', function() {
+            var params = {'id': 'terms', 'outerBounds': { 'width': 500, 'height': 600, 'top': 100, 'left': 300}};
+            chrome.app.window.create('terms.html', params);
+        }),
         
         displayMainView();
 

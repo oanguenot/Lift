@@ -12,6 +12,7 @@ define('views/editorView', ['text!views/templates/editor.html'], function(templa
         events: {
             'click #cancelBtn': 'onCancel',
             'click #scheduleBtn': 'onSchedule',
+            'click .aboutButton': "onAbout"
         },
 
         render: function() {
@@ -37,6 +38,12 @@ define('views/editorView', ['text!views/templates/editor.html'], function(templa
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('editor-schedule', null);
+        },
+
+        onAbout: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('editor-about', null);
         }
     });
 
