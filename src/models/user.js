@@ -44,15 +44,26 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
         update: function(newUserInfo) {
             this.set(newUserInfo);
 
-            this.save();
-        },
-
-        save: function() {
             credentials.save(this.get('login'), this.get('password'), this.get('host'), function() {
                 log.info("USER", "User data saved");
+
+                if(this.get('isConnected')) {
+                    acs.logoffFromACS(function() {
+                        log.info("USER", "Signout ok, try to log...");
+                        this.signin();
+                    }, function() {
+                        log.info("USER", "Signout error, try to log...");
+                        this.signin();
+                    }, this);   
+                }
+                else {
+                    this.signin();
+                }
+
             }, function() {
 
             }, this);
+
         },
 
         join: function(vanity) {

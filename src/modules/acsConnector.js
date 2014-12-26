@@ -125,6 +125,26 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         });
     };
 
+    var signout = function signout() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Signout");
+
+            // Logout previous user - if any
+            var url = protocol + host + "/ics?action=signout";
+
+            request(url).then(function(jsonResponse) {
+                log.debug("ACSConnector", "Signout successfull", jsonResponse);
+                resolve();
+            }, function(err) {
+                log.error("ACSConnector", "Signout error", err);
+                reject();
+            });
+            //resolve();
+        });
+    };
+
     return {
 
         /**
@@ -141,6 +161,19 @@ define('modules/acsConnector', ['modules/log'], function(log) {
                 errCallback.call(context);
             });
         },
+
+        /**
+         * Log off the logged in user from ACS
+         */
+        logoffFromACS: function(callback, errCallback, context) {
+            log.info("ACSConnector", "Try to signout...");
+
+            signout().then(function(){
+                callback.call(context);
+            }, function() {
+                errCallback.call(context);
+            });
+        },  
 
         /**
          * Retrieve global settings (timezone and conference call)

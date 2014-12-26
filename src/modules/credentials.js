@@ -137,7 +137,7 @@ define('modules/credentials', ['modules/log'], function(log) {
 
         save: function(login, password, host, callback, errCallback, context) {
             saveDataToFile(login, password, host).then(function() {
-                callback.Call(context);
+                callback.call(context);
             }, function() {
                 errCallback.call(context);
             });

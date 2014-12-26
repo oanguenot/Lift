@@ -88,6 +88,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     function displayMainView() {
         mainView = new MainView({collection: conferences});
+        mainView.setUserModel(user);
         $('#main-elt').append(mainView.render().el);
     }
 

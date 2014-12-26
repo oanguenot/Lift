@@ -12,6 +12,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         nbSpinner: 0,
 
+        userModel: null,
+
+        conferencesView: [],
+
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
         },
@@ -38,6 +42,19 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.undelegateEvents();
             this.unbind();
             this.off();
+        },
+
+        setUserModel: function(model) {
+            this.userModel = model;
+            this.listenTo(this.userModel, 'change', this.onResetList);
+        },
+
+        onResetList: function() {
+            while(this.conferencesView.length > 0) {
+                var view = this.conferencesView.pop();
+                view.close();
+                view = null;
+            }
         },
 
         onAbout: function(e) {
@@ -79,6 +96,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
             var view = new ConferenceView({model: model});
             this.$('.meetings').append(view.render().el);
+            this.conferencesView.push(view);
         },
 
         displaySpinner: function() {
