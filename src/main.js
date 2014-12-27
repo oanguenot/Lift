@@ -118,7 +118,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     i18n.init({ lng: lang}, function() {
         log.info('MAIN', 'I18n initialized');
 
-        
         // Display main view
         Backbone.Mediator.subscribe('main-settings', function() {
             displayConfig();
@@ -130,6 +129,10 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         Backbone.Mediator.subscribe('editor-about', function() {
             displayAboutWindow();
+        });
+
+        Backbone.Mediator.subscribe('editor-schedule', function(meeting) {
+            conferences.schedule(meeting);
         });
 
         Backbone.Mediator.subscribe('main-meeting', function() {

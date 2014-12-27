@@ -14,10 +14,11 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         userModel: null,
 
-        conferencesView: [],
+        conferencesView: {},
 
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
+            this.listenTo(this.collection, 'remove', this.onRemoveConference);
         },
 
         events: {
@@ -28,12 +29,15 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         subscriptions: {
             'spinner-on': 'displaySpinner',
-            'spinner-off': 'hideSpinner'
+            'spinner-off': 'hideSpinner',
+            'conference-remove': 'onConferenceToRemove'
         },
 
         render: function() {
             this.$el.html(template);
             this.$('.mainScreen').i18n();
+
+            this.displayConferences();
             return this;
         },
 
@@ -50,10 +54,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         onResetList: function() {
-            while(this.conferencesView.length > 0) {
-                var view = this.conferencesView.pop();
-                view.close();
-                view = null;
+            for(var vanity in this.conferencesView) {
+                this.conferencesView[vanity].close();
+                this.conferencesView[vanity] = null;
+                delete this.conferencesView[vanity];
             }
         },
 
@@ -75,6 +79,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             Backbone.Mediator.publish('main-settings', null);
         },
 
+        onConferenceToRemove: function(model) {
+            this.collection.delete(model);
+        },
+
         blur: function() {
             $(this.el).addClass('blur');
         },
@@ -91,12 +99,24 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.$('#empty').removeClass('masked');
         },
 
+        displayConferences: function() {
+            this.collection.each(function(model) {
+                this.onAddConference(model);
+            }, this);
+        },
+
         onAddConference: function(model) {
             this.hideEmptyArea();
-
             var view = new ConferenceView({model: model});
             this.$('.meetings').append(view.render().el);
-            this.conferencesView.push(view);
+            this.conferencesView[model.get('vanity')] = view;
+        },
+
+        onRemoveConference: function(model) {
+            var vanity = model.get('vanity');
+            this.conferencesView[vanity].close();
+            this.conferencesView[vanity] = null;
+            delete this.conferencesView[vanity];
         },
 
         displaySpinner: function() {

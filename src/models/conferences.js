@@ -9,6 +9,30 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
     return Backbone.Collection.extend({
         model : ConferenceModel,
 
+        schedule: function(meeting) {
+            Backbone.Mediator.publish('spinner-on');
+
+            acs.scheduleMeeting(meeting, function() {
+                Backbone.Mediator.publish('spinner-off');
+                Backbone.Mediator.publish('editor-schedule-ok');
+            }, function() {
+                Backbone.Mediator.publish('spinner-off');
+                Backbone.Mediator.publish('editor-schedule-error');
+            }, this);
+        },
+
+        delete: function(model) {
+            Backbone.Mediator.publish('spinner-on');
+            acs.deleteMeeting(model.get('vanity'), function() {
+                Backbone.Mediator.publish('spinner-off');
+                //TODO remove from
+                this.remove(model); 
+            }, function() {
+                Backbone.Mediator.publish('spinner-off');
+                Backbone.Mediator.publish('conference-delete-error', vanity);
+            }, this);
+        },
+
         list: function() {
 
             Backbone.Mediator.publish('spinner-on');
