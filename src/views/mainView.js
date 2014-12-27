@@ -110,7 +110,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
                     corners: 0.9, // Corner roundness (0..1)
                     rotate: 0, // The rotation offset
                     direction: 1, // 1: clockwise, -1: counterclockwise
-                    color: '#000', // #rgb or #rrggbb or array of colors
+                    color: '#fff', // #rgb or #rrggbb or array of colors
                     speed: 1, // Rounds per second
                     trail: 50, // Afterglow percentage
                     shadow: false, // Whether to render a shadow
@@ -124,7 +124,12 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
                 var target = document.getElementById('spinner');
                 this.spinner = new Spinner(opts).spin(target);
+                
+                this.$('.copyright').html('');
+
             }
+
+
             
             this.nbSpinner++;
         },
@@ -135,6 +140,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             if(this.spinner && this.nbSpinner === 0) {
                 this.spinner.stop();
                 this.spinner = null; 
+                this.$('.copyright').html('&copy;Alcatel-Lucent Enterprise - 2014');
             }
         }
     });
