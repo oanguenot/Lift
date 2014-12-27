@@ -66,5 +66,27 @@
 		"app-name": "OpenTouch Meetings Manager",
 		"unknown": "Inconnu",
 		"version": "Version"
+	},
+	"editor": {
+		"name": "Nom",
+		"new": "Nouvelle réunion",
+		"name-holder": "Entrer un nom",
+		"profile": "Profil",
+		"type": "Type",
+		"scheduled": "Avec réservation",
+		"reservationless": "Sans réservation",
+		"recurrence": "Récurrence",
+		"onetime": "Réunion unique",
+		"daily": "Chaque jours ouvrés",
+		"weekly": "Chaque semaine",
+		"timezone": "Fuseau horaire",
+		"start": "Du",
+		"end": "Au",
+		"hour": "Commence à (Heure locale)",
+		"duration": "Durée (en heures)",
+		"password": "Protéger ma réunion avec un mot de passe",
+		"digit": "Numérique seulement",
+		"schedule": "Créer",
+		"cancel": "Annuler"
 	}
 }

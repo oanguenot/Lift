@@ -76,7 +76,9 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     function displayEditor() {
         var view = new EditorView();
 
-         Backbone.Mediator.subscribeOnce('editor-close', function() {
+        view.setSettings(settings);
+
+        Backbone.Mediator.subscribeOnce('editor-close', function() {
             view.close();
             displayMainView();
         });

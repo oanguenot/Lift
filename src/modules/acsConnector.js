@@ -1,6 +1,6 @@
 define('modules/acsConnector', ['modules/log'], function(log) {
 
-    var protocol = 'http://',
+    var protocol = 'https://',
         host = '';
 
     var request = function request(req) {

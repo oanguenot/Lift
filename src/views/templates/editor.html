@@ -3,44 +3,44 @@
 	<img class='logo' src='./lift_48.png' width="32" height="32" />
 	<div title='About' class='aboutButton'></div>
 	<div class='background'>
-	 	<legend class='firstTitle'>Name</legend>
+	 	<legend class='firstTitle' data-i18n="editor.name"></legend>
 	 	<input type="text" name="title" class="titleInput" required placeholder="&#61508;   Enter a name" value="New Meeting" autofocus>	
-	 	<legend class='profileTitle'>Profile</legend>
+	 	<legend class='profileTitle' data-i18n="editor.profile"></legend>
 	 	<select class="profileType" required>
-			<option value="meeting">Meeting</option>
-			<option value="webinar">Webinar</option>
-			<option value='training'>Training</option>
-			<option value="call">Conference Call</option>
+			<option value="meeting" data-i18n="conference.meeting"></option>
+			<option value="webinar" data-i18n="conference.webinar"></option>
+			<option value='training' data-i18n="conference.training"></option>
+			<option value="call" data-i18n="conference.call"></option>
 		</select>
-	 	<legend class="firstTitle">Type</legend>
+	 	<legend class="firstTitle" data-i18n="editor.type"></legend>
 		<select class="conferenceType" required>
-				<option value="scheduled">Scheduled</option>
-				<option value="reservationless">Reservationless</option>
+				<option value="scheduled" data-i18n="editor.scheduled"></option>
+				<option value="reservationless" data-i18n="editor.reservationless"></option>
 		</select>
-		<legend class='recurrenceLabel'>Recurrence</legend>
+		<legend class='recurrenceLabel' data-i18n="editor.recurrence"></legend>
 		<select class="recurrenceType" required>
-			<option value="none">One time event</option>
-			<option value="daily">Every week day</option>
-			<option value="weekly">Every week</option>
+			<option value="none" data-i18n="editor.onetime"></option>
+			<option value="daily" data-i18n="editor.daily"></option>
+			<option value="weekly" data-i18n="editor.weekly"></option>
 		</select>
-		<legend class='firstTitle'>Timezone</legend>
+		<legend class='firstTitle', data-i18n="editor.timezone"></legend>
 		<select class="timezoneType" required>
 		</select>
-		<legend class="firstTitle">Start Date</legend>
+		<legend class="firstTitle" data-i18n="editor.start"></legend>
 		<input type="date" name="date" class="dateInput" required >
-		<legend class='endDateLabel'>End Date</legend>
+		<legend class='endDateLabel' data-i18n="editor.end"></legend>
 		<input type="date" name="enddate" class="endDateInput" required disabled>
-		<legend class="firstTitle">Hour (locale)</legend>
+		<legend class="firstTitle" data-i18n="editor.hour"></legend>
 		<input id="start_time" type="time" class="startTimeInput" name="start_time" required >
-		<legend class='durationLabel'>Duration (hours)</legend>
+		<legend class='durationLabel' data-i18n="editor.duration"></legend>
 		<input id="duration" type="number" class="durationInput" name="duration" value="1" min="1" max="24" required>
-	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword'>Protect the meeting with a password</span>
+	 	<input type="checkbox" name="passwordCheck" id="checkbox_id" value="password" class='passwordCheck'><span class='meetingPassword' data-i18n="editor.password"></span>
 	 	<input type="password" name="password" class="passwordInput" placeholder="&#61475;   e.g. &#9679;&#9679;&#9679;&#9679;&#9679;" value="" required disabled>
-	 	<span class='digit'> Digit only</span>
+	 	<span class='digit' data-i18n="editor.digit"> </span>
 	 	<div class='copyright fixed'>&copy;Alcatel-Lucent Enterprise - 2014</div> 	
 	</div>
 	<div class='options'>
-		<button type="action" id='scheduleBtn' class='actionButton right'>Schedule</button>
-		<button type="action" id='cancelBtn' class="actionButton left">Cancel</button>
+		<button type="action" id='scheduleBtn' class='actionButton right' data-i18n="editor.schedule"></button>
+		<button type="action" id='cancelBtn' class="actionButton left" data-i18n="editor.cancel"></button>
 	</div>
 </form>

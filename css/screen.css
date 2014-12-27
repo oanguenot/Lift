@@ -238,7 +238,7 @@ select option {
 	position: absolute;
 	position: absolute;
 left: 54%;
-width: 37%;
+width: 39%;
 color: #fff;
 font-weight: 100;
 padding-left: 10px;
@@ -329,7 +329,7 @@ border-radius: 5px;
 }
 
 .dateInput {
-	width: 37%;
+	width: 42%;
 color: #fff;
 font-weight: 100;
 padding-left: 10px;

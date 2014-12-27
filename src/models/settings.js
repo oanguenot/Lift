@@ -4,6 +4,7 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
 
         defaults: {
             timezones: null,
+            defaultTimezone: null,
             conferenceCall: null,
             acsVersion: '-'
         },
@@ -91,6 +92,7 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
 
                     this.set({
                         timezones: timezones,
+                        defaultTimezone: timezone,
                         conferenceCall: conferenceCall,
                         acsVersion: acsVersion
                     });

@@ -66,5 +66,27 @@
 		"app-name": "OpenTouch Meetings Manager",
 		"unknown": "unknown",
 		"version": "Version"
+	},
+	"editor": {
+		"name": "Name",
+		"new": "New Meeting",
+		"name-holder": "Enter a name",
+		"profile": "Profile",
+		"type": "Type",
+		"scheduled": "Scheduled",
+		"reservationless": "Reservationless",
+		"recurrence": "Recurrence",
+		"onetime": "One time event",
+		"daily": "Every week day",
+		"weekly": "Every week",
+		"timezone": "Timezone",
+		"start": "From",
+		"end": "To",
+		"hour": "At (local time)",
+		"duration": "Duration (hours)",
+		"password": "Protect the meeting with a password",
+		"digit": "Digit only",
+		"schedule": "Schedule",
+		"cancel": "Cancel"
 	}
 }
