@@ -24,7 +24,7 @@ define('views/aboutView', ['text!views/templates/about.html', 'models/models'], 
 
             this.$('.aboutInfo').html(i18n.t('about.version') + ' ' + manifest.version);
             if(models.user().isConnected()) {
-            	this.$('.acsInfo').html(i18n.t('about.version') + ' ' + this.model.getACSVersion() + ' (ACS)');
+                this.$('.acsInfo').html(i18n.t('about.version') + ' ' + this.model.getACSVersion() + ' (ACS)');
             }
             return this;
         },

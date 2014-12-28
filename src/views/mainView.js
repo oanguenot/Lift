@@ -63,12 +63,12 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
             this.showEmptyArea();
 
-           	if(!models.user().isConnected()) {
-           		this.$('.errorMessage').removeClass('masked');
-           	}
-           	else {
-           		this.$('.errorMessage').addClass('masked');
-           	}
+            if(!models.user().isConnected()) {
+                this.$('.errorMessage').removeClass('masked');
+            }
+            else {
+                this.$('.errorMessage').addClass('masked');
+            }
         },
 
         onAbout: function(e) {

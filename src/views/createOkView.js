@@ -15,17 +15,18 @@ define('views/createOkView', ['text!views/templates/createOk.html', 'models/mode
 
         render: function() {
 
-        	var settings = models.settings();
+            var settings = models.settings();
 
-        	var participantURL = settings.get('protocol') + '//' + settings.get('domain') + this.model.get('path') + this.model.get('callVanityParticipant');
+            var participantURL = settings.get('protocol') + '//' + settings.get('domain') + this.model.get('path') + this.model.get('callVanityParticipant');
 
             this.$el.html(template);
             this.$('.createok').i18n();
+             this.$('.details-subject').text(i18n.t('details.subject') + ': ' + this.model.get('subject'));
             this.$('.participantURL').html(i18n.t('details.url') + ': ' + '<a href="' + participantURL + '" target="_blank">' + participantURL + '</a>');
             this.$('.participant').text(i18n.t('details.code') + ': ' + this.model.get('callVanityParticipant'));
             
             if(this.model.get('callVanityLeader').length > 0) {
-            	this.$('.leader').text(i18n.t('details.leader') + ': ' + this.model.get('callVanityLeader'));
+                this.$('.leader').text(i18n.t('details.leader') + ': ' + this.model.get('callVanityLeader'));
             }
             if(this.model.get('password')) {
                 this.$('.password').text(i18n.t('details.password') + ": " + this.model.get('password'));

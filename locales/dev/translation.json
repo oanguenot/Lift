@@ -52,13 +52,14 @@
 	},
 	"details": {
 		"title": "MEETING ACCESS",
-		"subtitle": "Here is the URL for joining this meeting",
+		"subtitle": "Here is the information for joining this meeting",
 		"code": "Access Code",
 		"leader": "Leader Code",
 		"noinfo": "No information",
 		"password": "Meeting Password",
 		"call": "Conference Call Information",
-		"url": "Url"
+		"url": "Url",
+		"subject": "Subject"
 	},
 	"about": {
 		"title": "ABOUT",
@@ -93,7 +94,6 @@
 	},
 	"createok": {
 		"title": "NEW MEETING CREATED",
-		"subtitle": "Your meeting has been successfully created!",
-		"subtitle-next": "Here is the information for joining it."
+		"subtitle": "Here are the information for joining the meeting"
 	}
 }

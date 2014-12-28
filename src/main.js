@@ -9,7 +9,7 @@ require.config({
 });
 
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, models) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, models) {
 
 	var mainView = null;
 
@@ -92,9 +92,17 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     }
 
     function displayDetailsPopup(model) {
+        var view = new DetailsView({model: model});
 
+        Backbone.Mediator.subscribeOnce('details-close', function() {
+            view.close();
+            mainView.unblur();
+        });
+
+        mainView.blur();
+
+        $('#popup-elt').append(view.render().el);
     }
-
 
     function displayAboutWindow() {
       

@@ -379,7 +379,6 @@ background-color: #72539E;
 
 .participant {
 	font-weight: 300;
-	margin-top: 30px;
 }
 
 .leader {
@@ -1017,17 +1016,22 @@ border-radius: 4px;
 }
 
 .copyrightText {
-	text-align: justify;
-	font-size: 10px;
+text-align: justify;
+font-size: 11px;
+font-style: italic;
 }
 
 .termsLink {
 	font-size:11px;
 }
 
-.createok {
+.createok, .details {
 	-webkit-user-select: text;
 	cursor: text;
+}
+
+.details-subject {
+	margin-top: 30px;
 }
 
 

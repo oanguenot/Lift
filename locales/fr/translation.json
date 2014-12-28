@@ -52,13 +52,14 @@
 	},
 	"details": {
 		"title": "ACCES A LA REUNION",
-		"subtitle": "Voici le lien pour accéder à la réunion",
+		"subtitle": "Voici les informations pour accéder à la réunion",
 		"code": "Code d'acces",
 		"leader": "Code animateur",
 		"noinfo": "Aucune information",
 		"password": "Mot de passe de la réunion",
 		"call": "Information du pont de conférence audio",
-		"url": "Lien"
+		"url": "Lien",
+		"subject": "Sujet"
 	},
 	"about": {
 		"title": "A PROPOS",
@@ -93,7 +94,6 @@
 	},
 	"createok": {
 		"title": "Nouvelle réunion créée",
-		"subtitle": "La réunion a été créée avec succes!",
-		"subtitle-next": "Voici les informations pour y accéder"
+		"subtitle": "Voici les informations pour accéder à la réunion"
 	}
 }

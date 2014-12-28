@@ -32,12 +32,12 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                     acsVersion = settings.documentElement.getAttribute("build");
 
                     if(settings.getElementsByTagName('domain')) {
-            			domain = settings.getElementsByTagName("domain")[0].childNodes[0].nodeValue;    
-        			}
+                        domain = settings.getElementsByTagName("domain")[0].childNodes[0].nodeValue;    
+                    }
 
-        			if(settings.getElementsByTagName('http_protocol')) {
-            			protocol = settings.getElementsByTagName("http_protocol")[0].childNodes[0].nodeValue;    
-        			}
+                    if(settings.getElementsByTagName('http_protocol')) {
+                        protocol = settings.getElementsByTagName("http_protocol")[0].childNodes[0].nodeValue;    
+                    }
 
                     var timezoneElt = settings.getElementsByTagName("timezone");
 
