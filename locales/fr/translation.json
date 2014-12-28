@@ -57,7 +57,8 @@
 		"leader": "Code animateur",
 		"noinfo": "Aucune information",
 		"password": "Mot de passe de la réunion",
-		"call": "Information du pont de conférence audio"
+		"call": "Information du pont de conférence audio",
+		"url": "Lien"
 	},
 	"about": {
 		"title": "A PROPOS",

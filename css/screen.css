@@ -1025,4 +1025,9 @@ border-radius: 4px;
 	font-size:11px;
 }
 
+.createok {
+	-webkit-user-select: text;
+	cursor: text;
+}
+
 

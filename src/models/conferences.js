@@ -8,6 +8,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
     var parseVCSConference = function parseVCSConference(xml) {
 
         var json = {};
+
         //Conference Type
         json.type = xml.getAttribute("type");
         //Conference subject
@@ -244,8 +245,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
             }    
         }
 
-        //json.participantURL= "https://" + host_param + path + callVanityParticipant; 
-         // In case of invite, try to found the right identifier of the meeting's owner
+        // In case of invite, try to found the right identifier of the meeting's owner
         /*if(isAnInvite && from in contacts) {
             from = contacts[from].firstname + ' ' + contacts[from].lastname;
         }*/
@@ -276,6 +276,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                 Backbone.Mediator.publish('spinner-off');
                 if(conference) {
                     Backbone.Mediator.publish('editor-schedule-ok', conference);
+                    this.add(conference);
                 }
                 else {
                     Backbone.Mediator.publish('editor-schedule-error');

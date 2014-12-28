@@ -6,7 +6,9 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
             timezones: null,
             defaultTimezone: null,
             conferenceCall: null,
-            acsVersion: '-'
+            acsVersion: '-',
+            protocol: 'https:',
+            domain: ''
         },
 
         getACSVersion: function() {
@@ -21,11 +23,21 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
 
                 var timezone, timezones = [], conferenceCall = {}, acsVersion = '';
 
+                var domain, protocol = 'https:';
+
                 var settings = jsonResponse.data;
 
                 if(settings) {
 
                     acsVersion = settings.documentElement.getAttribute("build");
+
+                    if(settings.getElementsByTagName('domain')) {
+            			domain = settings.getElementsByTagName("domain")[0].childNodes[0].nodeValue;    
+        			}
+
+        			if(settings.getElementsByTagName('http_protocol')) {
+            			protocol = settings.getElementsByTagName("http_protocol")[0].childNodes[0].nodeValue;    
+        			}
 
                     var timezoneElt = settings.getElementsByTagName("timezone");
 
@@ -94,7 +106,9 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                         timezones: timezones,
                         defaultTimezone: timezone,
                         conferenceCall: conferenceCall,
-                        acsVersion: acsVersion
+                        acsVersion: acsVersion,
+                        protocol: protocol,
+                        domain: domain
                     });
 
                     log.debug("SETTINGS", "Settings stored", this);

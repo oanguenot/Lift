@@ -57,7 +57,8 @@
 		"leader": "Leader Code",
 		"noinfo": "No information",
 		"password": "Meeting Password",
-		"call": "Conference Call Information"
+		"call": "Conference Call Information",
+		"url": "Url"
 	},
 	"about": {
 		"title": "ABOUT",

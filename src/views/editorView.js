@@ -8,8 +8,6 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         isModified: false,
 
-        createOkView: null,
-
         initialize: function(){
         },
 
@@ -130,7 +128,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
                 end: new Date(Date.parse(this.$(".endDateInput").val() + " 23:59")),
                 duration: this.$(".durationInput").val(),
                 recurrence: this.$('.recurrenceType').val(),
-                password: this.$(".passwordCheck").checked ? this.$('.passwordInput').val() : null,
+                password: this.$('.passwordCheck').prop('checked') ? this.$('.passwordInput').val() : null,
                 modify : this.isModified,
                 profile: this.$('.profileType').val()
             };
@@ -170,7 +168,14 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         onScheduleOk: function(model) {
             log.info("EDITOR", "Schedule ok", model);
-            createOkView = new CreateOkView()
+            var createOkView = new CreateOkView({model: model});
+
+            Backbone.Mediator.subscribeOnce('createok-close', function() {
+                createOkView.close();
+                Backbone.Mediator.publish('editor-close');
+            });
+
+            $('#popup-elt').append(createOkView.render().el);
         },
 
         onScheduleError: function() {
