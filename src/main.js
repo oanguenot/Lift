@@ -9,13 +9,13 @@ require.config({
 });
 
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'models/user', 'models/settings', 'models/conferences'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, UserModel, SettingsModel, ConferencesCollection) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, models) {
 
 	var mainView = null;
 
-    var user = new UserModel(),
-        settings = new SettingsModel(),
-        conferences = new ConferencesCollection();
+    var user = models.user(),
+        settings = models.settings(),
+        conferences = models.conferences();
 
 	log.info('MAIN', "Application start");
 
@@ -76,8 +76,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     function displayEditor() {
         var view = new EditorView();
 
-        view.setSettings(settings);
-
         Backbone.Mediator.subscribeOnce('editor-close', function() {
             view.close();
             displayMainView();
@@ -90,7 +88,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     function displayMainView() {
         mainView = new MainView({collection: conferences});
-        mainView.setUserModel(user);
         $('#main-elt').append(mainView.render().el);
     }
 

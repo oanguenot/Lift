@@ -1,4 +1,4 @@
-define('views/mainView', ['text!views/templates/main.html', 'views/conferenceView'], function(template, ConferenceView) {
+define('views/mainView', ['text!views/templates/main.html', 'views/conferenceView', 'models/models'], function(template, ConferenceView, models) {
 
     return Backbone.View.extend({
 
@@ -12,13 +12,12 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         nbSpinner: 0,
 
-        userModel: null,
-
         conferencesView: {},
 
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
+            this.listenTo(models.user(), 'change', this.onResetList);
         },
 
         events: {
@@ -50,7 +49,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         setUserModel: function(model) {
             this.userModel = model;
-            this.listenTo(this.userModel, 'change', this.onResetList);
+            
         },
 
         onResetList: function() {
@@ -59,6 +58,8 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
                 this.conferencesView[vanity] = null;
                 delete this.conferencesView[vanity];
             }
+
+            this.$('#createBtn').prop("disabled", !models.user().isConnected());
         },
 
         onAbout: function(e) {

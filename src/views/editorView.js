@@ -1,12 +1,10 @@
-define('views/editorView', ['text!views/templates/editor.html', 'modules/log'], function(template, log) {
+define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models'], function(template, log, models) {
 
     return Backbone.View.extend({
 
         tagName: 'div',
 
         className: 'displayed',
-
-        settings: null,
 
         isModified: false,
 
@@ -146,13 +144,11 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log'], 
             Backbone.Mediator.publish('editor-about', null);
         },
 
-        setSettings: function(settings) {
-            this.settings = settings;
-        },
-
         displayTimezones: function() {
-            var timezones = this.settings.get('timezones');
-            var defaultTimezone = this.settings.get('defaultTimezone');
+            var settings = models.settings();
+
+            var timezones = settings.get('timezones');
+            var defaultTimezone = settings.get('defaultTimezone');
 
             if(timezones) {
                 var selected = false;
