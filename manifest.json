@@ -1,9 +1,9 @@
 {
-  "name": "OpenTouch Lift",
-  "short_name": "Lift",
-  "version": "1.4.2",
+  "name": "OpenTouch Meetings Manager",
+  "short_name": "OTCMeetings",
+  "version": "1.5.0",
   "manifest_version": 2,
-  "description": "OpenTouch Lift is a Google Chrome packaged app for scheduling meetings for the Alcatel-Lucent OpenTouch server",
+  "description": "OpenTouch Meetings Manager is a Google Chrome packaged app for scheduling meetings for the Alcatel-Lucent Enterprise OpenTouch server",
   "icons": { "128": "lift_128.png", "48": "lift_48.png" },
   "permissions": ["http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
   "app": {

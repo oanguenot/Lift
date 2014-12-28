@@ -35,7 +35,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         render: function() {
             this.$el.html(template);
             this.$('.mainScreen').i18n();
-
+            this.enableCreateButton();
             this.displayConferences();
             return this;
         },
@@ -59,7 +59,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
                 delete this.conferencesView[vanity];
             }
 
-            this.$('#createBtn').prop("disabled", !models.user().isConnected());
+            this.enableCreateButton();
         },
 
         onAbout: function(e) {
@@ -98,6 +98,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         showEmptyArea: function() {
             this.$('#empty').removeClass('masked');
+        },
+
+        enableCreateButton: function() {
+             this.$('#createBtn').prop("disabled", !models.user().isConnected());
         },
 
         displayConferences: function() {

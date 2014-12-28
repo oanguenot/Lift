@@ -1,4 +1,4 @@
-# OpenTouch Lift: Schedule your Meetings
+# OpenTouch Meetings Manager (OTCMeetings): Schedule your Meetings
 
 ## Description
 
@@ -11,6 +11,10 @@ Use your OpenTouch credentials
  - FEATURE: ICS Export
 
 # HISTORY
+
+## Version 1.5 - In progress
+ - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application
+ - FEATURE: Add languages management (FR/US)
 
 ## Version 1.4.2
  - FIX: Remove double scrollbars in terms windows on Windows
