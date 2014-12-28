@@ -1,5 +1,5 @@
 
-define('views/aboutView', ['text!views/templates/about.html'], function(template) {
+define('views/aboutView', ['text!views/templates/about.html', 'models/models'], function(template, models) {
 
     return Backbone.View.extend({
 
@@ -23,8 +23,9 @@ define('views/aboutView', ['text!views/templates/about.html'], function(template
             var manifest = chrome.runtime.getManifest();
 
             this.$('.aboutInfo').html(i18n.t('about.version') + ' ' + manifest.version);
-            this.$('.acsInfo').html(i18n.t('about.version') + ' ' + this.model.getACSVersion() + ' (ACS)');
-
+            if(models.user().isConnected()) {
+            	this.$('.acsInfo').html(i18n.t('about.version') + ' ' + this.model.getACSVersion() + ' (ACS)');
+            }
             return this;
         },
 

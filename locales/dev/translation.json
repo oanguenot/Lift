@@ -12,7 +12,8 @@
 		"meeting": "New Meeting",
 		"settings": "Settings",
 		"no-meeting": "No Meeting",
-		"list": "List of scheduled meetings appears here"
+		"list": "List of scheduled meetings appears here",
+		"error": "Impossible to connect!, check your parameters"
 	},
 	"error": {
 		"title": "ERROR",

@@ -1,5 +1,6 @@
 html {
 	overflow: hidden;
+	height: 100%;
 }
 
 @font-face { 
@@ -39,6 +40,7 @@ body {
 	width: 100%;
 	overflow: hidden;
 	margin: 0;
+	height: 100%;
 }
 
 h2 {
@@ -425,8 +427,12 @@ border: 2px solid #666A6F;
 border-radius: 5px;
 }
 
-.aboutInfo, .acsInfo {
+.aboutInfo, .acsInfo, .licenseInfo {
 	text-align: center;
+}
+
+.licenseInfo {
+	font-size:11px;
 }
 
 .acsInfo {
@@ -917,6 +923,20 @@ color: #C0C0C0;
 margin: 0 auto;
 }
 
+.errorMessage {
+position: relative;
+width: 125px;
+text-align: center;
+font-size: 10px;
+top: 45%;
+font-weight: 100;
+color: #fff;
+margin: 0 auto;
+background-color: #4E5256;
+padding: 10px;
+border-radius: 4px;
+}
+
 .emptyLogo {
 	position: relative;
 	width: 80px;
@@ -998,6 +1018,11 @@ margin: 0 auto;
 
 .copyrightText {
 	text-align: justify;
+	font-size: 10px;
+}
+
+.termsLink {
+	font-size:11px;
 }
 
 

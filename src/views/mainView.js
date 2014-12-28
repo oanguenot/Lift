@@ -17,7 +17,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
-            this.listenTo(models.user(), 'change', this.onResetList);
+            this.listenTo(models.user(), 'change', this.onConnectivityChange);
         },
 
         events: {
@@ -52,7 +52,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             
         },
 
-        onResetList: function() {
+        onConnectivityChange: function() {
             for(var vanity in this.conferencesView) {
                 this.conferencesView[vanity].close();
                 this.conferencesView[vanity] = null;
@@ -60,6 +60,15 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             }
 
             this.enableCreateButton();
+
+            this.showEmptyArea();
+
+           	if(!models.user().isConnected()) {
+           		this.$('.errorMessage').removeClass('masked');
+           	}
+           	else {
+           		this.$('.errorMessage').addClass('masked');
+           	}
         },
 
         onAbout: function(e) {
