@@ -88,5 +88,10 @@
 		"digit": "Numérique seulement",
 		"schedule": "Créer",
 		"cancel": "Annuler"
+	},
+	"createok": {
+		"title": "Nouvelle réunion créée",
+		"subtitle": "La réunion a été créée avec succes!",
+		"subtitle-next": "Voici les informations pour y accéder"
 	}
 }

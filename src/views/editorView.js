@@ -1,4 +1,4 @@
-define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models'], function(template, log, models) {
+define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView'], function(template, log, models, CreateOkView) {
 
     return Backbone.View.extend({
 
@@ -7,6 +7,8 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
         className: 'displayed',
 
         isModified: false,
+
+        createOkView: null,
 
         initialize: function(){
         },
@@ -166,8 +168,9 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             this.$('.startTimeInput').val(date.toLocaleTimeString().substr(0, 5));
         },
 
-        onScheduleOk: function() {
-            log.info("EDITOR", "Schedule ok");
+        onScheduleOk: function(model) {
+            log.info("EDITOR", "Schedule ok", model);
+            createOkView = new CreateOkView()
         },
 
         onScheduleError: function() {

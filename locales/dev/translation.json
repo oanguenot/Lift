@@ -88,5 +88,10 @@
 		"digit": "Digit only",
 		"schedule": "Schedule",
 		"cancel": "Cancel"
+	},
+	"createok": {
+		"title": "NEW MEETING CREATED",
+		"subtitle": "Your meeting has been successfully created!",
+		"subtitle-next": "Here is the information for joining it."
 	}
 }
