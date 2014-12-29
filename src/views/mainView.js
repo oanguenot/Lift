@@ -145,12 +145,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
                 this.conferencesView[vanity] = null;
                 delete this.conferencesView[vanity];
 
-                if(this.conferencesView.length === 0) {
+                if(_.size(this.conferencesView) === 0) {
                     this.showEmptyArea();
                 }
             }
-
-
         },
 
         onFilterPast: function() {
