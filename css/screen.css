@@ -149,6 +149,7 @@ select option {
 .displayed {
 	display: block;
 	pointer-events: auto;
+	height: 100%;
 }
 
 .options {
@@ -930,15 +931,17 @@ margin: 0 auto;
 .errorMessage {
 position: relative;
 width: 125px;
+height: 40px;
 text-align: center;
 font-size: 10px;
-top: 45%;
+top: calc(50% - 100px);
 font-weight: 100;
 color: #fff;
 margin: 0 auto;
 background-color: #4E5256;
 padding: 10px;
 border-radius: 4px;
+line-height: 20px;
 }
 
 .emptyLogo {
@@ -1085,5 +1088,9 @@ border-left: 1px solid #999;
 .selected {
 	background-color:#72539E;
 	text-decoration: underline;
+}
+
+.main-elt, .mainScreen {
+	height: 100%;
 }
 

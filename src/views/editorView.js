@@ -135,7 +135,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             log.debug("EDITOR", "Schedule a meeting", meeting);
 
-            Backbone.Mediator.publish('editor-schedule', meeting);
+            models.conferences().schedule(meeting);
         },
 
         onAbout: function(e) {

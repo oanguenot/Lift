@@ -1,8 +1,3 @@
-function capitaliseFirstLetter(string)
-{
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 define('models/conferences', ['models/conference', 'modules/acsConnector', 'modules/log'], function(ConferenceModel, acs, log) {
 
     var parseVCSConference = function parseVCSConference(xml) {

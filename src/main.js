@@ -8,7 +8,6 @@ require.config({
     waitSeconds: 5
 });
 
-
 require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, models) {
 
 	var mainView = null;
@@ -16,6 +15,8 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     var user = models.user(),
         settings = models.settings(),
         conferences = models.conferences();
+
+    var spinner = null, nbSpinner = 0;
 
 	log.info('MAIN', "Application start");
 
@@ -116,12 +117,57 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         mainView.blur();
 
         $('#popup-elt').append(view.render().el);
+    }
 
+    function displaySpinner() {
+        if(!spinner) {
+            var opts = {
+                lines: 11, // The number of lines to draw
+                length: 16, // The length of each line
+                width:6, // The line thickness
+                radius: 24,// The radius of the inner circle
+                corners: 1.0, // Corner roundness (0..1)
+                rotate: 0, // The rotation offset
+                direction: 1, // 1: clockwise, -1: counterclockwise
+                color: '#fff', // #rgb or #rrggbb or array of colors
+                speed: 1, // Rounds per second
+                trail: 50, // Afterglow percentage
+                shadow: false, // Whether to render a shadow
+                hwaccel: false, // Whether to use hardware acceleration
+                className: 'spin', // The CSS class to assign to the spinner
+                zIndex: 2e9, // The z-index (defaults to 2000000000)
+                top: '50%', // Top position relative to parent
+                bottom: 80,
+                left: '50%' // Left position relative to parent
+            };
+
+            var target = document.getElementById('spin');
+            spinner = new Spinner(opts).spin(target);
+            $('.spinner').removeClass('masked');
+        }
+        nbSpinner++;
+    }
+
+    function hideSpinner() {
+        nbSpinner--;
+        if(spinner && nbSpinner === 0) {
+            spinner.stop();
+            spinner = null;
+            $('.spinner').addClass('masked'); 
+        }
     }
 
     //Language initialization
     i18n.init({ lng: lang}, function() {
         log.info('MAIN', 'I18n initialized');
+
+        Backbone.Mediator.subscribe('spinner-on', function() {
+            displaySpinner();
+        });
+
+        Backbone.Mediator.subscribe('spinner-off', function() {
+            hideSpinner();
+        });
 
         // Display main view
         Backbone.Mediator.subscribe('main-settings', function() {
@@ -134,10 +180,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         Backbone.Mediator.subscribe('editor-about', function() {
             displayAboutWindow();
-        });
-
-        Backbone.Mediator.subscribe('editor-schedule', function(meeting) {
-            conferences.schedule(meeting);
         });
 
         Backbone.Mediator.subscribe('main-meeting', function() {
