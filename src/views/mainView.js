@@ -14,6 +14,8 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         conferencesView: {},
 
+        filter: 'active',
+
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
@@ -55,18 +57,22 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         setUserModel: function(model) {
             this.userModel = model;
-            
         },
 
         onConnectivityChange: function() {
+            this.resetConferencesList();
+
+            this.enableCreateButton();
+
+            this.showEmptyArea();
+        },
+
+        resetConferencesList: function() {
             for(var vanity in this.conferencesView) {
                 this.conferencesView[vanity].close();
                 this.conferencesView[vanity] = null;
                 delete this.conferencesView[vanity];
             }
-
-            this.enableCreateButton();
-
             this.showEmptyArea();
         },
 
@@ -122,23 +128,29 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         displayConferences: function() {
-            this.collection.each(function(model) {
+            var filteredCollection = this.collection.applyFilter(this.filter);
+
+            _.each(filteredCollection, function(model) {
                 this.onAddConference(model);
             }, this);
         },
 
         onAddConference: function(model) {
-            this.hideEmptyArea();
-            var view = new ConferenceView({model: model});
-            this.$('.meetings').append(view.render().el);
-            this.conferencesView[model.get('vanity')] = view;
+            if(model.get('state') === this.filter || this.filter === 'all') {
+                this.hideEmptyArea();
+                var view = new ConferenceView({model: model});
+                this.$('.meetings').append(view.render().el);
+                this.conferencesView[model.get('vanity')] = view; 
+            }
         },
 
         onRemoveConference: function(model) {
             var vanity = model.get('vanity');
-            this.conferencesView[vanity].close();
-            this.conferencesView[vanity] = null;
-            delete this.conferencesView[vanity];
+            if(vanity in this.conferencesView) {
+                this.conferencesView[vanity].close();
+                this.conferencesView[vanity] = null;
+                delete this.conferencesView[vanity];
+            }
         },
 
         displaySpinner: function() {
@@ -184,20 +196,32 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         onFilterPast: function() {
             this.removeFilter();
             this.$('#pastBtn').addClass('selected');
+            this.resetConferencesList();
+            this.filter = "ended";
+            this.displayConferences();
         },
 
         onFilterSoon: function() {
             this.removeFilter();
             this.$('#soonBtn').addClass('selected');
+            this.resetConferencesList();
+            this.filter = "not_begun";
+            this.displayConferences();
         },
 
         onFilterLive: function() {
             this.removeFilter();
             this.$('#liveBtn').addClass('selected');
+            this.resetConferencesList();
+            this.filter = "active";
+            this.displayConferences();
         },
 
         onFilterAll: function() {
             this.removeFilter();
+            this.resetConferencesList();
+            this.filter = "all";
+            this.displayConferences();
             this.$('#allBtn').addClass('selected');
         },
 
@@ -206,7 +230,6 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.$('#liveBtn').removeClass('selected');
             this.$('#soonBtn').removeClass('selected');
             this.$('#pastBtn').removeClass('selected');
-
         }
     });
 });

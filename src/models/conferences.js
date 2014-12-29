@@ -7,8 +7,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
     var parseVCSConference = function parseVCSConference(xml) {
 
-        console.log("XML", xml);
-
         var json = {};
 
         //Conference Type
@@ -250,7 +248,22 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
     };
 
     return Backbone.Collection.extend({
+        
         model : ConferenceModel,
+
+        applyFilter: function(filter) {
+            var filteredArray = this.filter(function(model) {
+                if(filter != 'all') {
+                    return model.get("state") === filter;    
+                }
+                else {
+                    return true;
+                }
+                
+            });
+
+            return filteredArray;
+        },
 
         schedule: function(meeting) {
             Backbone.Mediator.publish('spinner-on');

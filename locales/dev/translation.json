@@ -15,7 +15,7 @@
 		"list": "List of scheduled meetings appears here",
 		"error": "Impossible to connect!, check your parameters",
 		"all": "All",
-		"live": "Live",
+		"live": "Active",
 		"soon": "Soon",
 		"past": "Past"
 	},
