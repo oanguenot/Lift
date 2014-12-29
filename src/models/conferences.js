@@ -7,10 +7,12 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
     var parseVCSConference = function parseVCSConference(xml) {
 
+        console.log("XML", xml);
+
         var json = {};
 
         //Conference Type
-        json.type = xml.getAttribute("type");
+        json.typeConf = xml.getAttribute("type");
         //Conference subject
         json.subject = i18n.t("conference.unnamed");
         if(xml.getElementsByTagName("subject")[0]) {
@@ -226,12 +228,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                 }
             }
         }
-
-        log.debug("CONFERENCES", "Conference access", {
-            role: json.role,
-            leader: json.callVanityLeader,
-            participant: json.callVanityParticipant
-        });
 
         json.path = "/call/";
         if(xml.getElementsByTagName("join_url_root") && xml.getElementsByTagName("join_url_root").length > 0) {
