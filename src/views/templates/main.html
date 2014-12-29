@@ -10,9 +10,16 @@
 		<img class='emptyLogo' width='80' height='80' src='./lift_128.png' />
 		<div class='emptyTitle' data-i18n="main.no-meeting"></div>
 		<div class='emptyMessage' data-i18n="main.list"></div>
-		<div class='errorMessage' data-i18n='main.error'></div>
+		<div class='errorMessage masked' data-i18n='main.error'></div>
 	</div>
 	<ul id='meetings' class='meetings scrollbars'></ul>
-	<div class='copyright'>&copy;Alcatel-Lucent Enterprise - 2014</div>
-	<div class='spinner' id='spinner'></div>
+	<div class='copyright'>
+		<button type="action" id='allBtn' class="actionButton allBtn" data-i18n="main.all"></button>
+		<button type="action" id='liveBtn' class="actionButton liveBtn selected" data-i18n="main.live"></button>
+		<button type="action" id='soonBtn' class="actionButton soonBtn" data-i18n="main.soon"></button>
+		<button type="action" id='pastBtn' class="actionButton pastBtn" data-i18n="main.past"></button>
+	</div>
+	<div class='spinner' id='spinner'>
+		<div class='spin' id='spin'></div>
+	</div>
 </div>

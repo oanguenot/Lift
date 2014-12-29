@@ -13,7 +13,11 @@
 		"settings": "Settings",
 		"no-meeting": "No Meeting",
 		"list": "List of scheduled meetings appears here",
-		"error": "Impossible to connect!, check your parameters"
+		"error": "Impossible to connect!, check your parameters",
+		"all": "All",
+		"live": "Live",
+		"soon": "Soon",
+		"past": "Past"
 	},
 	"error": {
 		"title": "ERROR",

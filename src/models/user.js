@@ -6,14 +6,22 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
             login: '',
             password: '',
             host: '',
-            isConnected: false
+            isConnected: false,
+            error: false
         },
 
         isConnected: function() {
             return (this.get('isConnected'));
         },
 
+        hasError: function() {
+            return (this.get('error'));
+        },
+
         signin: function() {
+
+            Backbone.Mediator.publish('spinner-on');
+
             credentials.load(function(user) {
             
                 log.debug("USER", "User found", user);
@@ -26,17 +34,22 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
 
                 if(user.host.length > 0 && user.login.length > 0 && user.password.length > 0) {
                     acs.loginToACS(user.host, user.login, user.password, function() {
-                        this.set({'isConnected': true});
+                        Backbone.Mediator.publish('spinner-off');
+                        this.set({'isConnected': true, 'error': false});
                     }, function() {
-                        this.set({'isConnected': false});
+                        this.set({'isConnected': false, 'error': true});
+                        Backbone.Mediator.publish('spinner-off');
                         Backbone.Mediator.publish('error-display'); 
                     }, this);
                 }
                 else {
-                    //displayErrorLoginPopup(); 
+                    this.set({'isConnected': false, 'error': true});
+                    Backbone.Mediator.publish('spinner-off');
                     Backbone.Mediator.publish('error-display');  
                 }
             }, function() {
+                this.set({'isConnected': false, 'error': true});
+                Backbone.Mediator.publish('spinner-off');
                 Backbone.Mediator.publish('error-display');
             }, this);
         },

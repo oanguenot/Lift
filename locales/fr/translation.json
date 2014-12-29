@@ -13,7 +13,7 @@
 		"settings": "Paramètres",
 		"no-meeting": "Aucune réunion",
 		"list": "La liste des réunions planifiées s'affiche ici",
-		"error": "Impossible de se connecter! Vérifiez vos paramètres!"
+		"error": "Impossible de se connecter! Vérifiez vos paramètres"
 	},
 	"error": {
 		"title": "ERREUR",

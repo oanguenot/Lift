@@ -17,13 +17,19 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
-            this.listenTo(models.user(), 'change', this.onConnectivityChange);
+            this.listenTo(models.user(), 'change:isConnected', this.onConnectivityChange);
+            this.listenTo(models.user(), 'change:error', this.onConnectionError);
         },
 
         events: {
             'click .aboutButton' : 'onAbout',
             'click #createBtn': 'onCreate',
             'click #settingBtn': 'onSettings',
+
+            'click #allBtn': 'onFilterAll',
+            'click #liveBtn': 'onFilterLive',
+            'click #soonBtn': 'onFilterSoon',
+            'click #pastBtn': 'onFilterPast',
         },
 
         subscriptions: {
@@ -62,8 +68,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.enableCreateButton();
 
             this.showEmptyArea();
+        },
 
-            if(!models.user().isConnected()) {
+        onConnectionError: function() {
+            if(models.user().hasError()) {
                 this.$('.errorMessage').removeClass('masked');
             }
             else {
@@ -137,11 +145,11 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             
             if(!this.spinner) {
                 var opts = {
-                    lines: 9, // The number of lines to draw
-                    length: 5, // The length of each line
-                    width:4, // The line thickness
-                    radius: 8,// The radius of the inner circle
-                    corners: 0.9, // Corner roundness (0..1)
+                    lines: 11, // The number of lines to draw
+                    length: 16, // The length of each line
+                    width:6, // The line thickness
+                    radius: 24,// The radius of the inner circle
+                    corners: 1.0, // Corner roundness (0..1)
                     rotate: 0, // The rotation offset
                     direction: 1, // 1: clockwise, -1: counterclockwise
                     color: '#fff', // #rgb or #rrggbb or array of colors
@@ -149,22 +157,17 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
                     trail: 50, // Afterglow percentage
                     shadow: false, // Whether to render a shadow
                     hwaccel: false, // Whether to use hardware acceleration
-                    className: 'spinner', // The CSS class to assign to the spinner
+                    className: 'spin', // The CSS class to assign to the spinner
                     zIndex: 2e9, // The z-index (defaults to 2000000000)
-                    top: '93%', // Top position relative to parent
+                    top: '50%', // Top position relative to parent
                     bottom: 80,
                     left: '50%' // Left position relative to parent
                 };
 
-                var target = document.getElementById('spinner');
+                var target = document.getElementById('spin');
                 this.spinner = new Spinner(opts).spin(target);
-                
-                this.$('.copyright').html('');
-
+                this.$('.spinner').removeClass('masked');
             }
-
-
-            
             this.nbSpinner++;
         },
 
@@ -173,9 +176,37 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.nbSpinner--;
             if(this.spinner && this.nbSpinner === 0) {
                 this.spinner.stop();
-                this.spinner = null; 
-                this.$('.copyright').html('&copy;Alcatel-Lucent Enterprise - 2014');
+                this.spinner = null;
+                this.$('.spinner').addClass('masked'); 
             }
+        },
+
+        onFilterPast: function() {
+            this.removeFilter();
+            this.$('#pastBtn').addClass('selected');
+        },
+
+        onFilterSoon: function() {
+            this.removeFilter();
+            this.$('#soonBtn').addClass('selected');
+        },
+
+        onFilterLive: function() {
+            this.removeFilter();
+            this.$('#liveBtn').addClass('selected');
+        },
+
+        onFilterAll: function() {
+            this.removeFilter();
+            this.$('#allBtn').addClass('selected');
+        },
+
+        removeFilter: function() {
+            this.$('#allBtn').removeClass('selected');
+            this.$('#liveBtn').removeClass('selected');
+            this.$('#soonBtn').removeClass('selected');
+            this.$('#pastBtn').removeClass('selected');
+
         }
     });
 });
