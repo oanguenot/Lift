@@ -16,8 +16,8 @@
 		"error": "Impossible to connect!, check your parameters",
 		"all": "All",
 		"live": "Active",
-		"soon": "Soon",
-		"past": "Past"
+		"soon": "Not begun",
+		"past": "Ended"
 	},
 	"error": {
 		"title": "ERROR",
@@ -46,7 +46,10 @@
 		"join": "Join this meeting",
 		"details": "Display meeting's details",
 		"edit": "Edit meeting's settings",
-		"remove": "Remove this meeting"
+		"remove": "Remove this meeting",
+		"active": "Active",
+		"not_begun": "Not begun",
+		"ended": "Ended"
 	},
 	"join": {
 		"title": "Join a Meeting...",

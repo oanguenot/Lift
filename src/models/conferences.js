@@ -175,9 +175,13 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
         // Conference state
         json.state = xml.getElementsByTagName("access")[1].getAttribute("state") || i18n.t('conference.unknown');
 
+        if(json.state === 'inactive') {
+            json.state = "not_begun";
+        }
+
         json.profileDisplayed = i18n.t('conference.' + json.profile);
 
-        json.stateDisplayed = capitaliseFirstLetter(json.profileDisplayed) + ' / ' + capitaliseFirstLetter(json.state);
+        json.stateDisplayed = i18n.t('conference.' + json.profile) + ' / ' + i18n.t('conference.' + json.state);
 
         var documents = xml.getElementsByTagName('document');
         if (documents && documents.length > 0) {
@@ -253,13 +257,12 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
         applyFilter: function(filter) {
             var filteredArray = this.filter(function(model) {
-                if(filter != 'all') {
-                    return model.get("state") === filter;    
-                }
-                else {
+
+                if(filter === 'all') {
                     return true;
                 }
-                
+
+                return model.get("state") === filter;
             });
 
             return filteredArray;

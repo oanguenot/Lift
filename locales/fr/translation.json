@@ -46,7 +46,10 @@
 		"join": "Joindre cette réunion",
 		"details": "Afficher les détails de cette réunion",
 		"edit": "Modifier cette réunion",
-		"remove": "Supprimer cette réunion"
+		"remove": "Supprimer cette réunion",
+		"active": "Active",
+		"not_begun": "A venir",
+		"ended": "Terminé"
 	},
 	"join": {
 		"title": "Joindre cette réunion...",
