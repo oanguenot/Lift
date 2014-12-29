@@ -31,7 +31,6 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         subscriptions: {
-            'conference-remove': 'onConferenceToRemove'
         },
 
         render: function() {
@@ -95,10 +94,6 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('main-settings', null);
-        },
-
-        onConferenceToRemove: function(model) {
-            this.collection.delete(model);
         },
 
         blur: function() {

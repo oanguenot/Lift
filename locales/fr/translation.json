@@ -102,5 +102,10 @@
 	"createok": {
 		"title": "Nouvelle réunion créée",
 		"subtitle": "Voici les informations pour accéder à la réunion"
+	},
+	"confirm": {
+		"title": "Supprimer une réunion",
+		"subtitle": "Etes-vous sur de vouloir supprimer cette réunion",
+		"remove": "Supprimer"
 	}
 }

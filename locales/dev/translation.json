@@ -102,5 +102,10 @@
 	"createok": {
 		"title": "NEW MEETING CREATED",
 		"subtitle": "Here are the information for joining the meeting"
+	},
+	"confirm": {
+		"title": "REMOVE A MEETING",
+		"subtitle": "Are you sure you want to remove this meeting",
+		"remove": "Remove"
 	}
 }

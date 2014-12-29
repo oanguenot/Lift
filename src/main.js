@@ -8,7 +8,7 @@ require.config({
     waitSeconds: 5
 });
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, models) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, models) {
 
 	var mainView = null;
 
@@ -98,6 +98,25 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         Backbone.Mediator.subscribeOnce('details-close', function() {
             view.close();
             mainView.unblur();
+        });
+
+        mainView.blur();
+
+        $('#popup-elt').append(view.render().el);
+    }
+
+    function displayConfirmationPopup(model) {
+        var view = new ConfirmView({model: model});
+
+        Backbone.Mediator.subscribeOnce('confirm-close', function() {
+            view.close();
+            mainView.unblur();
+        });
+
+        Backbone.Mediator.subscribeOnce('confirm-ok', function() {
+            view.close();
+            mainView.unblur();
+            models.conferences().delete(model);
         });
 
         mainView.blur();
@@ -196,6 +215,10 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         Backbone.Mediator.subscribe('conference-details', function(model) {
             displayDetailsPopup(model);
+        });
+
+        Backbone.Mediator.subscribe('conference-remove', function(model) {
+            displayConfirmationPopup(model);
         });
 
         Backbone.Mediator.subscribe('about-terms', function() {
