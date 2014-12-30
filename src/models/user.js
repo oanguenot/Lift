@@ -63,9 +63,11 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
                 if(this.get('isConnected')) {
                     acs.logoffFromACS(function() {
                         log.info("USER", "Signout ok, try to log...");
+                        this.set({'isConnected': false});
                         this.signin();
                     }, function() {
                         log.info("USER", "Signout error, try to log...");
+                        this.set({'isConnected': false});
                         this.signin();
                     }, this);   
                 }

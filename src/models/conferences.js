@@ -311,6 +311,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
             Backbone.Mediator.publish('spinner-on');
 
+            // Reset list of conferences
+            this.reset();
+
             acs.getMeetings(function(jsonResponse) {
 
                 var xmlResponse = jsonResponse.data;

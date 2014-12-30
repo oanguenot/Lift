@@ -37,7 +37,6 @@ define('modules/acsConnector', ['modules/log'], function(log) {
             http.open("POST", parts[0], true);
             http.setRequestHeader("Cache-Control", "no-cache");
             http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
             http.onreadystatechange = function () {
                 if (http.readyState === 4) {
                     if (http.status === 200) {  
@@ -73,17 +72,15 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         });
     };
 
-    var login = function login(hostname, username, password) {
+    var login = function login(username, password) {
 
-        if(!hostname && !username && !password) {
+        if(!host && !username && !password) {
             return;
         }
-
-        host = hostname;
-
+        
         return new Promise(function(resolve, reject) {
 
-            log.debug("ACSConnector", "Login with", {login: username, host: hostname});
+            log.debug("ACSConnector", "Login with", {login: username, host: host});
 
             //Login with user data
             var url = protocol + host + "/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
@@ -160,7 +157,6 @@ define('modules/acsConnector', ['modules/log'], function(log) {
                 log.error("ACSConnector", "Signout error", err);
                 reject();
             });
-            //resolve();
         });
     };
 
@@ -313,15 +309,17 @@ define('modules/acsConnector', ['modules/log'], function(log) {
          * Login to ACS
          */
 
-        loginToACS: function(host, username, password, callback, errCallback, context) {
+        loginToACS: function(hostname, username, password, callback, errCallback, context) {
 
             log.info("ACSConnector", "Try to log...");
+            
+            host = hostname;
 
-            login(host, username, password).then(function(){
+            login(username, password).then(function(){
                 callback.call(context);
             }, function() {
                 errCallback.call(context);
-            });
+            }); 
         },
 
         /**
