@@ -977,7 +977,7 @@ line-height: 20px;
 }
 
 .conference-item:hover > .meeting-not_begun {
-	background-color: #9d61db;
+	background-color: #B2B2B2;;
 }
 
 .meeting-ended {
@@ -985,7 +985,7 @@ line-height: 20px;
 }
 
 .conference-item:hover > .meeting-ended {
-	background-color: #9d61db;
+	background-color: #B2B2B2;;
 }
 
 .meeting-inactive {
@@ -993,7 +993,7 @@ line-height: 20px;
 }
 
 .conference-item:hover > .meeting-inactive {
-	background-color: #9d61db;
+	background-color: #B2B2B2;;
 }
 
 .meeting-active {
@@ -1001,7 +1001,7 @@ line-height: 20px;
 }
 
 .conference-item:hover > .meeting-active {
-	background-color: #9d61db;
+	background-color: #72539E;
 }
 
 .meeting-invite {
@@ -1086,7 +1086,7 @@ border-left: 1px solid #999;
 }
 
 .selected {
-	background-color:#72539E;
+	background-color:#9d61db;
 	text-decoration: underline;
 }
 

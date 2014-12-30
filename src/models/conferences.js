@@ -168,10 +168,34 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
         json.vanity = xml.getElementsByTagName("vanity")[0].childNodes[0].nodeValue;
 
         // Conference state
-        json.state = xml.getElementsByTagName("access")[1].getAttribute("state") || i18n.t('conference.unknown');
+        json.state = xml.getElementsByTagName("access")[1].getAttribute("state") || '';
 
         if(json.state === 'inactive') {
             json.state = "not_begun";
+        }
+        else if(json.state === '') {
+            if(json.typeConf === 'scheduled') {
+                if(now.isAfter(json.startDate) && now.isBefore(json.endDate)) {
+                    json.state = 'active';
+                }
+                else if(now.isBefore(json.startDate)) {
+                    json.state = 'not_begun';
+                }
+                else {
+                    json.state = 'ended';
+                }
+            }
+            else {
+                if(now.isAfter(json.startDate) && now.isBefore(json.endDate)) {
+                    json.state = 'active';
+                }
+                else if(now.isBefore(json.startDate)) {
+                    json.state = 'not_begun';
+                }
+                else {
+                    json.state = 'ended';
+                }
+            }
         }
 
         json.profileDisplayed = i18n.t('conference.' + json.profile);
@@ -360,7 +384,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                         var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
 
                         var conference = parseVCSConference(xml);
-                            
+
                         this.add(conference);
                     }
                 }
