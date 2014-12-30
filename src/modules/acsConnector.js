@@ -364,7 +364,7 @@ define('modules/acsConnector', ['modules/log'], function(log) {
                             
                             var params = command.substring(paren+1, command.length-2);
 
-                            log.debug("PIPE", "Event", e);
+                            //log.debug("PIPE", "Event", e);
 
                             var data = params.split(', ');
                             for(var i = 0; i < data.length; i++) {
@@ -373,7 +373,7 @@ define('modules/acsConnector', ['modules/log'], function(log) {
                                     data[i] = data[i].substring(1, data[i].length-1);
                                 }
                             }
-                            log.debug("PIPE", "Parameters", data);
+                            //log.debug("PIPE", "Parameters", data);
 
                             if(e === 'Initialize') {
                                 var ACSVersion = "Unknown";

@@ -108,7 +108,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
 
         json.startDate = moment(json.year + '-' + json.month + '-' + json.day, "YYYY-MM-DD");
-        json.meetingStartDate = json.startDate.format('YYYY-MM-DD');
         json.startDate.add(parseInt(json.hour, 10), 'h').add(parseInt(json.minute, 10), 'm');
 
         //json.startDateString = json.startDate.format("dddd, MMMM Do");
@@ -116,7 +115,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
         json.startDateStringNext = json.startDate.format('ll');
 
         json.endDate = moment(json.year_end + '-' + json.month_end + '-' + json.day_end, "YYYY-MM-DD");
-        json.meetingEndDate = json.endDate.format('YYYY-MM-DD');
         json.endDate.add(parseInt(json.hour_end, 10), 'h').add(parseInt(json.minute_end, 10), 'm');
 
         if(json.hasRecurrence) {
