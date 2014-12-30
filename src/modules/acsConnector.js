@@ -391,7 +391,7 @@ define('modules/acsConnector', ['modules/log'], function(log) {
                                 // If an updateConference event is received, restart the timer to be sure to receive others updateConference events if exists
                                 timeoutID = setTimeout(function(){
                                     resolve(rosters);
-                                }, 5000);
+                                }, 3000);
                             }
 
                             if(e === 'UpdateConference') {

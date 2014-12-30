@@ -59,12 +59,19 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
         // Conference recurrence
         json.hasRecurrence = false;
         json.recurrenceType = "";
+        json.intervalRecurrence = 1;
+        json.dayRecurrence = 0;
         if(xml.getElementsByTagName("recurrence").length > 0) {
             json.hasRecurrence = true;
             json.recurrenceType = xml.getElementsByTagName("recurrence")[0].getAttribute('type');
             json.pattern = xml.getElementsByTagName("recurrence")[0].getAttribute('pattern');
             if(json.pattern === 'D-WE') {
                 json.recurrenceType = 'daily';
+            }
+            else {
+                json.intervalRecurrence = xml.getElementsByTagName("interval")[0].childNodes[0].nodeValue;
+                var recurrenceTag = xml.getElementsByTagName("recurrence")[0];
+                json.dayRecurrence = recurrenceTag.getElementsByTagName("day")[0].childNodes[0].nodeValue;
             }
         }
 
@@ -99,26 +106,34 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
         }
         json.duration = parseInt(json.hour_end, 10) - parseInt(json.hour, 10);
 
+
         json.startDate = moment(json.year + '-' + json.month + '-' + json.day, "YYYY-MM-DD");
         json.meetingStartDate = json.startDate.format('YYYY-MM-DD');
         json.startDate.add(parseInt(json.hour, 10), 'h').add(parseInt(json.minute, 10), 'm');
 
-        json.startDateString = json.startDate.format("dddd, MMMM Do");
+        //json.startDateString = json.startDate.format("dddd, MMMM Do");
+        json.startDateString = i18n.t('conference.on') + ' ' + json.startDate.format("dddd");
+        json.startDateStringNext = json.startDate.format('ll');
 
         json.endDate = moment(json.year_end + '-' + json.month_end + '-' + json.day_end, "YYYY-MM-DD");
         json.meetingEndDate = json.endDate.format('YYYY-MM-DD');
         json.endDate.add(parseInt(json.hour_end, 10), 'h').add(parseInt(json.minute_end, 10), 'm');
 
-        json.startDateStringNext = "";
         if(json.hasRecurrence) {
             switch (json.recurrenceType) {
                 case "weekly":
-                    json.startDateString = i18n.t("conference.each") + " " + json.startDate.format("dddd");
-                    json.startDateStringNext = json.startDate.format("MMMM Do") + " - " + json.endDate.format("MMMM Do");
+                    if(json.intervalRecurrence === '1') {
+                        json.startDateString = i18n.t("conference.each") + " " + json.startDate.format("dddd");
+                        json.startDateStringNext = json.startDate.format("ll") + " - " + json.endDate.format("ll");
+                    }
+                    else if(json.intervalRecurrence === '2') {
+
+                    }
+                    
                     break;
                 case "daily":
                     json.startDateString = i18n.t("conference.eachweekday");
-                    json.startDateStringNext = json.startDate.format("MMMM Do") + " - " + json.endDate.format("MMMM Do");
+                    json.startDateStringNext = json.startDate.format("ll") + " - " + json.endDate.format("ll");
                     break;
             }
         }
@@ -353,8 +368,12 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                             var xml = conferences[i];
 
+                            console.log('OWNXML', xml);
+
                             var conference = parseVCSConference(xml);
                             
+                            console.log("OWNCONF", conference);
+
                             this.add(conference);
                         }   
                     }
@@ -383,7 +402,11 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                         var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
 
+                        console.log("xml", xml);
+
                         var conference = parseVCSConference(xml);
+
+                        console.log("conference", conference);
 
                         this.add(conference);
                     }

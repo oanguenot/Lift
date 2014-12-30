@@ -50,7 +50,8 @@
 		"remove": "Remove this meeting",
 		"active": "Active",
 		"not_begun": "Not begun",
-		"ended": "Ended"
+		"ended": "Ended",
+		"on": "On"
 	},
 	"join": {
 		"title": "Join a Meeting...",
