@@ -13,9 +13,10 @@ Use your OpenTouch credentials
 # HISTORY
 
 ## Version 1.5 - In progress
- - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application
- - FEATURE: Add languages management (FR/US)
+ - FEATURE: Allow to filter meetings (4 categories: Active, Not Begun, Ended and All)
+ - FEATURE: Add languages management. (FR/US)
  - FEATURE: Allow to select text when displaying meetings information
+ - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application
 
 ## Version 1.4.2
  - FIX: Remove double scrollbars in terms windows on Windows

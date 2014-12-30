@@ -11,7 +11,10 @@
 		<div class='emptyTitle' data-i18n="main.no-meeting"></div>
 		<div class='emptyMessage' data-i18n="main.list"></div>
 	</div>
-	<div class='errorMessage masked' data-i18n='main.error'></div>
+	<div class='errorMessage masked'>
+		<div data-i18n='main.error' class="errorMessage-firstLine"></div>
+		<div data-i18n='main.error-next'></div>
+	</div>
 	<ul id='meetings' class='meetings scrollbars'></ul>
 	<div class='copyright'>
 		<button type="action" id='allBtn' class="actionButton allBtn" data-i18n="main.all"></button>

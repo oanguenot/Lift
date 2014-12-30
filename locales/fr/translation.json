@@ -13,11 +13,12 @@
 		"settings": "Paramètres",
 		"no-meeting": "Aucune réunion",
 		"list": "La liste des réunions planifiées s'affiche ici",
-		"error": "Impossible de se connecter! Vérifiez vos paramètres",
-		"all": "Tous",
+		"error": "Connexion impossible vers le serveur...",
+		"error-next": "Vérifiez vos paramètres de connexion!",
+		"all": "Toutes",
 		"live": "En cours",
 		"soon": "A venir",
-		"past": "Terminés"
+		"past": "Terminées"
 	},
 	"error": {
 		"title": "ERREUR",
