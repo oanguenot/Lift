@@ -323,8 +323,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                     var len = conferences.length;
 
-                    log.debug("CONFERENCES", "Nb conferences", len);
-
                     if(len > 0) {
 
                         for(var i=0; i<len; i++) {
@@ -344,6 +342,32 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                 Backbone.Mediator.publish('spinner-off');
 
+            }, this);
+        },
+
+        getInvite: function() {
+            Backbone.Mediator.publish('spinner-on');
+
+            acs.getRostersInvite(function(rosters) {
+
+                if(rosters) {
+                    for(var i=0, len = rosters.length; i < len; i++) {
+
+                        var meeting = rosters[i];
+
+                        var data = meeting[1].replace(/"/g, '\'').replace(/\\/g, '');
+
+                        var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
+
+                        var conference = parseVCSConference(xml);
+                            
+                        this.add(conference);
+                    }
+                }
+
+                Backbone.Mediator.publish('spinner-off');
+            }, function() {
+                Backbone.Mediator.publish('spinner-off');
             }, this);
         }
     });

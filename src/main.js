@@ -232,6 +232,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             if(user.isConnected()) {
                 settings.getGlobals();
                 conferences.list();
+                conferences.getInvite();
             }
         });
 

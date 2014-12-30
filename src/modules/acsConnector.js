@@ -3,6 +3,8 @@ define('modules/acsConnector', ['modules/log'], function(log) {
     var protocol = 'https://',
         host = '';
 
+    var socket = null;
+
     var getDay = function getDay(day) {
         switch (day) {
             case 1:
@@ -77,7 +79,7 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         if(!host && !username && !password) {
             return;
         }
-        
+
         return new Promise(function(resolve, reject) {
 
             log.debug("ACSConnector", "Login with", {login: username, host: host});
@@ -303,6 +305,165 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         });
     };
 
+    var askForRosterInvites = function askForRosterInvites() {
+
+        log.info("AJAX", "Ask for rosters invites");
+
+        var url = protocol + host + "/ics?action=get_roster_invites";
+        
+        request(url).then(function(jsonResponse) {
+            log.debug("AJAX", "Received", jsonResponse);
+        }, function(err) {
+            log.error("AJAX", "askForRosterInvites", err);
+        });
+    };
+
+    var openEventPipe = function openEventPipe() {
+
+        var timeoutID = -1;
+
+        var rosters = [];
+
+        var contacts = {};
+
+        log.info("AJAX", "Try to open the Event Pipe...");
+
+        return new Promise(function(resolve, reject) {
+
+            var url = protocol + host + "/ics?action=open_server_interface&mode=simple&api_scope=s";
+
+            url += "&_nocachex=" + Math.floor(Math.random()*2147483647);
+
+            socket = new XMLHttpRequest();
+
+            log.debug("AJAX", "Send", url);
+            
+            var parts = url.split('?');
+            socket.open("POST", parts[0], true);
+
+            var response_index = 0;
+
+            socket.onreadystatechange = function () {
+
+                // status produces a javascript error in IE when readyState != 4.
+                var success = this.readyState !== 4 || Math.floor(this.status/100) === 2;
+
+                // Parse a new data chunk
+                if (success && (this.readyState === 3 || this.readyState === 4)) {
+                    var index = this.responseText.indexOf('\n', response_index);
+
+                    while (index > 0) {
+                        var command = this.responseText.substr(response_index, index - response_index);
+
+                        if (command.length > 5) {
+                            // Split the command apart, so we don't eval executable code,
+                            // causing a cross-site scripting error.
+                            var paren = command.indexOf('(');
+                            var dot = command.indexOf('.');
+                            var e = command.substring(dot+1, paren);
+                            
+                            var params = command.substring(paren+1, command.length-2);
+
+                            log.debug("PIPE", "Event", e);
+
+                            var data = params.split(', ');
+                            for(var i = 0; i < data.length; i++) {
+                                if(data[i].length > 2) {
+
+                                    data[i] = data[i].substring(1, data[i].length-1);
+                                }
+                            }
+                            log.debug("PIPE", "Parameters", data);
+
+                            if(e === 'Initialize') {
+                                var ACSVersion = "Unknown";
+
+                                if(data && data.length > 0) {
+                                    ACSVersion = data[0];
+                                }
+
+                                log.debug("PIPE", "Event pipe channel opened with ACS", ACSVersion);
+
+                                // Ask for roster invites
+                                askForRosterInvites();
+
+                                // Wait no more than 500ms before ending the event pipe.
+                                // If an updateConference event is received, restart the timer to be sure to receive others updateConference events if exists
+                                timeoutID = setTimeout(function(){
+                                    resolve(rosters);
+                                }, 5000);
+                            }
+
+                            if(e === 'UpdateConference') {
+                                log.debug("PIPE", "Rosters received", data);
+
+                                rosters.push(data);
+
+                                // Start timer to detect end of rosters received
+                                if(timeoutID > -1) {
+                                    clearTimeout(timeoutID);
+                                }
+                                timeoutID = setTimeout(function() {
+                                    resolve(rosters);
+                                }, 500);
+                            }
+
+                            if(e === 'UpdateBuddyData') {
+                                if(data.length >9) {
+                                    var email = data[0],
+                                        firstname = '',
+                                        lastname = '';
+
+                                    var field = data[3].split('=');
+                                    if(field && field.length === 2 && field[0] === 'firstName') {
+                                        firstname =  field[1];
+
+                                    }
+                                    field = data[9].split('=');
+                                    if(field && field.length === 2 && field[0] === 'name') {
+                                        lastname =  field[1];
+                                    }
+
+                                    if(!(email in contacts) && lastname.length > 0 && firstname.length > 0) {
+                                        contacts[email] = {id: email, firstname: firstname, lastname: lastname};
+                                        log.debug("PIPE", "Add new contact", contacts[email]);
+                                    }
+
+                                }
+                            }
+                        }
+                        response_index = index + 1;
+                        index = this.responseText.indexOf('\n', response_index);
+                    }
+                }
+
+                // The connection was lost.
+                if (this.readyState === 4) {
+                    log.warning("PIPE", "Connection lost to Event Pipe");
+                    //if (!backgroundMode)
+                    //  repair("socket_broken");
+                }
+            };
+
+            socket.onProgress = function(e) {
+                log.debug("PIPE", "Progress", e);
+            };
+
+            socket.onError = function(e) {
+                log.error("PIPE", "openEventPipe", e);    
+                reject();
+            };
+
+            socket.send(parts[1]);
+        });
+    };
+
+    var closeEventPipe = function closeEventPipe() {
+        log.info("AJAX", "Try to close the Event Pipe...");
+        socket.abort();
+        socket = null;
+    };
+
     return {
 
         /**
@@ -379,6 +540,18 @@ define('modules/acsConnector', ['modules/log'], function(log) {
         deleteMeeting: function(vanity, callback, errCallback, context) {
             deleteMeeting(vanity).then(function(params) {
                 callback.call(context, params);
+            }, function() {
+                errCallback.call(context);
+            });
+        },
+
+        /**
+         * Open the event Pipe to get the roster invitation
+         */
+        getRostersInvite: function(callback, errCallback, context) {
+            openEventPipe().then(function(rosters) {
+                closeEventPipe();
+                callback.call(context, rosters);
             }, function() {
                 errCallback.call(context);
             });
