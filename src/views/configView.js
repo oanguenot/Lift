@@ -1,6 +1,8 @@
 
 define('views/configView', ['text!views/templates/config.html'], function(template) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

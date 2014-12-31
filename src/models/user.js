@@ -1,5 +1,7 @@
 define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/log'], function(credentials, acs, log) {
 
+    "use strict";
+
     return Backbone.Model.extend({
 
         defaults: {

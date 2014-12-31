@@ -11,7 +11,9 @@ require.config({
 
 require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, models) {
 
-	var mainView = null;
+	"use strict";
+
+    var mainView = null;
 
     var user = models.user(),
         settings = models.settings(),

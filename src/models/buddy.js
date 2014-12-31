@@ -1,5 +1,7 @@
 define('models/buddy', [], function() {
 
+    "use strict";
+
     return Backbone.Model.extend({
 
         defaults: {

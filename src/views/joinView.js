@@ -1,5 +1,7 @@
 define('views/joinView', ['text!views/templates/join.html'], function(template) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

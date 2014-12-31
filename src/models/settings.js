@@ -1,5 +1,7 @@
 define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs, log) {
 
+    "use strict";
+
     return Backbone.Model.extend({
 
         defaults: {

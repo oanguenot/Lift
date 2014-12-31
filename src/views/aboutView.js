@@ -1,6 +1,8 @@
 
 define('views/aboutView', ['text!views/templates/about.html', 'models/models'], function(template, models) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

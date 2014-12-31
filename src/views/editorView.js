@@ -1,5 +1,7 @@
 define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView'], function(template, log, models, CreateOkView) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

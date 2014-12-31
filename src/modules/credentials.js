@@ -1,5 +1,7 @@
 define('modules/credentials', ['modules/log'], function(log) {
 
+    "use strict";
+
     var loadDataFromFile = function loadDataFromFile() {
 
         log.info("CONFIG", "Load user data...");

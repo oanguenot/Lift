@@ -1,5 +1,7 @@
 define('models/buddies', ['models/buddy'], function(BuddyModel) {
 
+	"use strict";
+
 	return Backbone.Collection.extend({
         
         model : BuddyModel,

@@ -1,5 +1,7 @@
 define('views/createOkView', ['text!views/templates/createOk.html', 'models/models'], function(template, models) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

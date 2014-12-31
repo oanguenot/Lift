@@ -1,5 +1,7 @@
 define('views/confirmView', ['text!views/templates/confirm.html'], function(template) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

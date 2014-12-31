@@ -1,5 +1,7 @@
 define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Buddy) {
 
+    "use strict";
+
     var protocol = 'https://',
         host = '';
 

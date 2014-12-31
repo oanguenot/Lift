@@ -1,5 +1,7 @@
 define('views/mainView', ['text!views/templates/main.html', 'views/conferenceView', 'models/models'], function(template, ConferenceView, models) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',

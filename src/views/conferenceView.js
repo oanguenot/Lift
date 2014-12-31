@@ -1,5 +1,7 @@
 define('views/conferenceView', ['text!views/templates/conference.html', 'models/models'], function(template, models) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'li',

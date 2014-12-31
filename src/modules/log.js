@@ -1,5 +1,7 @@
 define('modules/log', [], function() {
 
+    "use strict";
+
     var color = {
         "WARNING": "orange",
         "INFO": "darkgreen",

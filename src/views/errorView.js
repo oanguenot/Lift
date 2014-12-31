@@ -1,5 +1,7 @@
 define('views/errorView', ['text!views/templates/error.html'], function(template) {
 
+    "use strict";
+
     return Backbone.View.extend({
 
         tagName: 'div',
