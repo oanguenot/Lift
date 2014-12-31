@@ -1,6 +1,6 @@
 define('models/conferences', ['models/conference', 'modules/acsConnector', 'modules/log'], function(ConferenceModel, acs, log) {
 
-    var parseVCSConference = function parseVCSConference(xml) {
+    var parseVCSConference = function parseVCSConference(xml, isAnInvite) {
 
         var json = {};
 
@@ -275,11 +275,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
             }    
         }
 
-        // In case of invite, try to found the right identifier of the meeting's owner
-        /*if(isAnInvite && from in contacts) {
-            from = contacts[from].firstname + ' ' + contacts[from].lastname;
-        }*/
-
         return (new ConferenceModel(json));
     };
 
@@ -370,6 +365,8 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                             var conference = parseVCSConference(xml);
                             
+                            
+                            conference.set({isAnInvite: false});
                             console.log("OWNCONF", conference);
 
                             this.add(conference);
@@ -403,9 +400,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                         console.log("xml", xml);
 
                         var conference = parseVCSConference(xml);
-
+                        
+                        conference.set({isAnInvite: true});
                         console.log("conference", conference);
-
                         this.add(conference);
                     }
                 }

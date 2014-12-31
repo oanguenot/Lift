@@ -1,4 +1,4 @@
-define('modules/acsConnector', ['modules/log'], function(log) {
+define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Buddy) {
 
     var protocol = 'https://',
         host = '';
@@ -426,9 +426,9 @@ define('modules/acsConnector', ['modules/log'], function(log) {
 
                                     if(!(email in contacts) && lastname.length > 0 && firstname.length > 0) {
                                         contacts[email] = {id: email, firstname: firstname, lastname: lastname};
+                                        Backbone.Mediator.publish('buddy-new', new Buddy({id: email, firstname: firstname, lastname: lastname}));
                                         log.debug("PIPE", "Add new contact", contacts[email]);
                                     }
-
                                 }
                             }
                         }

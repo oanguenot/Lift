@@ -1,4 +1,4 @@
-define('views/conferenceView', ['text!views/templates/conference.html'], function(template) {
+define('views/conferenceView', ['text!views/templates/conference.html', 'models/models'], function(template, models) {
 
     return Backbone.View.extend({
 
@@ -25,7 +25,10 @@ define('views/conferenceView', ['text!views/templates/conference.html'], functio
             this.$('.meeting-state').addClass('meeting-' + this.model.get('state'));
             this.$('.meetingTitle').text(this.model.get('subject'));
             if(this.model.get('isAnInvite')) {
-                this.$('.meetingState').html('<small>' + i18n.t('conference.invite') + " " + '</small>' + this.model.get('owner'));
+            	var buddies = models.buddies();
+                var buddy = buddies.getABuddy(this.model.get('from'));
+
+                this.$('.meetingState').html(i18n.t('conference.invite') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
             }
             else {
                 this.$('.meetingState').text(this.model.get('stateDisplayed'));
@@ -56,16 +59,11 @@ define('views/conferenceView', ['text!views/templates/conference.html'], functio
 
             this.$('.meetingStartDate').text(this.model.get('startDateString'));
             this.$('.meetingStartDateNext').text(this.model.get('startDateStringNext'));
-   
-
-            this.$('.meeting-join-button').attr("id","join-" + this.model.get('vanity'));
-            this.$('.meeting-details-button').attr("id", "details-" + this.model.get('vanity'));
-            this.$('.meeting-edit-button').attr("id", "edit-" + this.model.get('vanity'));
-            this.$('.meeting-remove-button').attr("id", "remove-" + this.model.get('vanity'));
 
             if(this.model.get('isAnInvite')) {
-                this.$('.meeting-edit-button').addClass('.meeting-edit-button-disabled');
-                this.$('.meeting-remove-button').addClass('.meeting-remove-button-disabled');
+                this.$('.meeting-edit-button').addClass('meeting-edit-button-disabled');
+                this.$('.meeting-remove-button').addClass('meeting-remove-button-disabled');
+                
             }
 
             this.$('.meeting-join-button').attr('title', i18n.t('conference.join'));

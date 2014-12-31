@@ -3,7 +3,8 @@ require.config({
     baseUrl: "/src",
     paths : {
     	"text": '../vendor/text',
-        "json": '../vendor/json'
+        "json": '../vendor/json',
+        "models": "./models"
     },
     waitSeconds: 5
 });
@@ -14,7 +15,8 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     var user = models.user(),
         settings = models.settings(),
-        conferences = models.conferences();
+        conferences = models.conferences(),
+        buddies = models.buddies();
 
     var spinner = null, nbSpinner = 0;
 
@@ -224,8 +226,12 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         Backbone.Mediator.subscribe('about-terms', function() {
             var params = {'id': 'terms', 'outerBounds': { 'width': 500, 'height': 600, 'top': 100, 'left': 300}};
             chrome.app.window.create('terms.html', params);
-        }),
+        });
         
+        Backbone.Mediator.subscribe('buddy-new', function(model) {
+            buddies.add(model);
+        });
+
         displayMainView();
 
         user.on('change:isConnected', function(model) {
