@@ -601,6 +601,10 @@ background-color: #72539E;
   	outline: none;
 }
 
+.invisible {
+	visibility: hidden;
+}
+
 .popup {
 	width: 260px;
 	position: relative;

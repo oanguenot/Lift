@@ -320,7 +320,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
                     this.add(conference);
                 }
                 else {
-                    Backbone.Mediator.publish('editor-schedule-error');
+                    Backbone.Mediator.publish('editor-schedule-modify', meeting);
                 }
                 
             }, function() {

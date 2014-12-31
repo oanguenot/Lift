@@ -10,6 +10,8 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         isModified: false,
 
+        vanity: null,
+
         initialize: function(){
         },
 
@@ -21,7 +23,8 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         subscriptions: {
             'editor-schedule-ok': 'onScheduleOk',
-            'editor-schedule-error': 'onScheduleError'
+            'editor-schedule-error': 'onScheduleError',
+            'editor-schedule-modify': 'onScheduleModify'
         },
 
         render: function() {
@@ -36,6 +39,12 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             this.addListeners();
 
+            if(this.model) {
+                this.isModified = true;
+                this.vanity = this.model.get('vanity');
+                this.displayMeeting();
+            }
+
             return this;
         },
 
@@ -44,6 +53,47 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             this.undelegateEvents();
             this.unbind();
             this.off();
+        },
+
+        displayMeeting: function() {
+            var model = this.model;
+
+            this.$('.conferenceType').val(model.get('typeConf'));
+            this.$('.titleInput').val(model.get('subject'));
+            this.$('.timezoneType').val(model.get('timezone'));
+            this.$('.profileType').val(model.get('profile'));
+            this.$(".dateInput").val(model.get('startDate').format('YYYY-MM-DD'));
+            this.$(".endDateInput").val(model.get('endDate').format('YYYY-MM-DD'));
+
+            if(model.get('typeConf') === 'reservationless') {
+                this.$('.recurrenceType').prop('disabled', true);
+                this.$('.recurrenceType').val('none');
+                this.$(".endDateInput").prop('disabled', false);
+                this.$(".startTimeInput").val('00:00');
+                this.$(".startTimeInput").prop('disabled', true);
+                this.$(".durationInput").val(1);
+                this.$(".durationInput").prop('disabled', true);
+            }
+            else {
+                this.$('.recurrenceType').prop('disabled', false);
+                this.$('.recurrenceType').val(model.get('recurrenceType'));
+                this.$(".startTimeInput").val(model.get('hour') + ':' + this.model.get('minute'));
+                this.$(".durationInput").val(model.get('duration'));
+                if(model.get('recurrenceType') !== 'none') {
+                    this.$(".endDateInput").prop('disabled', false);
+                }
+                else {
+                    this.$(".endDateInput").prop('disabled', true);
+                }
+            }
+
+            if(model.get('password') && model.get('password').length > 0) {
+                this.$('.passwordCheck').prop('checked', true);
+                this.$('.passwordInput').val(model.get('password'));
+            }
+            else {
+                this.$('.passwordInput').prop('disabled', true);
+            }
         },
 
         addListeners: function() {
@@ -131,7 +181,8 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
                 duration: this.$(".durationInput").val(),
                 recurrence: this.$('.recurrenceType').val(),
                 password: this.$('.passwordCheck').prop('checked') ? this.$('.passwordInput').val() : null,
-                modify : this.isModified,
+                modify : this.vanity,
+                isModified: this.isModified,
                 profile: this.$('.profileType').val()
             };
 
@@ -182,6 +233,10 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         onScheduleError: function() {
             log.info("EDITOR", "Schedule error");
+        },
+
+        onScheduleModify: function(meeting) {
+            log.info("EDITOR", "Schedule Modification ok", meeting);
         }
     });
 

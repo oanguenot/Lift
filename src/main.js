@@ -78,8 +78,16 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         $('#popup-elt').append(view.render().el);
     }
 
-    function displayEditor() {
-        var view = new EditorView();
+    function displayEditor(model) {
+
+        var view;
+
+        if(model) {
+            view = new EditorView({model: model});
+        }
+        else {
+            view = new EditorView(); 
+        }
 
         Backbone.Mediator.subscribeOnce('editor-close', function() {
             view.close();
@@ -207,6 +215,10 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         Backbone.Mediator.subscribe('main-meeting', function() {
             displayEditor();
+        });
+
+        Backbone.Mediator.subscribe('conference-edit', function(model) {
+            displayEditor(model);
         });
 
         Backbone.Mediator.subscribe('error-display', function() {
