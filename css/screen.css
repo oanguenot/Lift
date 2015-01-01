@@ -140,6 +140,7 @@ select option {
 	position: absolute;
 	top: 9px;
 	left: 9px;
+	border-radius: 16px;
 }
 
 .masked {
