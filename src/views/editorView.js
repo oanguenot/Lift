@@ -59,8 +59,6 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
         displayMeeting: function() {
             var model = this.model;
 
-            console.log("MOdel", model);
-
             this.$('.conferenceType').val(model.get('typeConf'));
             this.$('.titleInput').val(model.get('subject'));
             this.$('.timezoneType').val(model.get('timezone'));

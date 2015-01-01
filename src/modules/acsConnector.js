@@ -2,7 +2,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
     "use strict";
 
-    var protocol = 'http://',
+    var protocol = 'https://',
         host = '';
 
     var socket = null;

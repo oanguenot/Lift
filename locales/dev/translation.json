@@ -24,6 +24,7 @@
 		"title": "ERROR",
 	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
 	    "subtitle-next": "Please check your parameters and try again !",
+		"subtitle-next-certificate": "If it still doesn't work, check that you have the right OpenTouch certificates correctly deployed on your computer",
 		"close": "Close"
 	},
 	"conference": {
