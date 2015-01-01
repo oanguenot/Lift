@@ -60,7 +60,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
 
         // Conference recurrence
         json.hasRecurrence = false;
-        json.recurrenceType = "";
+        json.recurrenceType = "none";
         json.intervalRecurrence = 1;
         json.dayRecurrence = 0;
         if(xml.getElementsByTagName("recurrence").length > 0) {
@@ -106,8 +106,16 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
         } else if(parseInt(json.minute_end, 10) < 10) {
             json.minute_end = "0" + json.minute_end;
         }
-        json.duration = parseInt(json.hour_end, 10) - parseInt(json.hour, 10);
+        
+       var h_end = parseInt(json.hour_end, 10),
+            h_start = parseInt(json.hour, 10);
 
+        if(h_end > h_start) {
+            json.duration = h_end - h_start;
+        }
+        else {
+            json.duration = 24 - h_start + h_end;
+        }
 
         json.startDate = moment(json.year + '-' + json.month + '-' + json.day, "YYYY-MM-DD");
         json.startDate.add(parseInt(json.hour, 10), 'h').add(parseInt(json.minute, 10), 'm');
