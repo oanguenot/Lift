@@ -1,23 +1,9 @@
 # Lift TODO list
 
-## Filter meetings
+## Embedding the Middleware into an iframe
 
-Add a tab selector in the bottom of the Meetings list to filter:
-- LIVE: Meetings that are active
-- SOON: Meetings that are not yet active
-- PAST: Meetings that are finished but not removed
-- ALL: All meetings
-
-Order: ALL - LIVE (default) - SOON - PAST
-
---> Question: How to manage when the conference state change ? (the only to obtain this new state is to request this conference list to the server)
-
-## Display error area
-
-When there is an error connecting the server, the default message is displayed: "No Meeting...". 
-
-Add a grey area, with a text: "Not connected, check your parameters!", 
-This message is not visible when connection is ok and there is no meeting yet
+- it's possible to load sandboxed content like Middleware into an IFrame and communicate with this iframe in order to use the Middleware
+--> Make a PoC to check if it's really possible to load the Middleware into an IFrame in a Chrome App (signin, search...)
 
 ## Google connection
 

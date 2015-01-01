@@ -68,7 +68,8 @@
 		"password": "Mot de passe de la réunion",
 		"call": "Information du pont de conférence audio",
 		"url": "Lien",
-		"subject": "Sujet"
+		"subject": "Sujet",
+		"audio": "Information téléphonique"
 	},
 	"about": {
 		"title": "A PROPOS",

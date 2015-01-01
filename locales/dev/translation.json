@@ -68,7 +68,8 @@
 		"password": "Meeting Password",
 		"call": "Conference Call Information",
 		"url": "Url",
-		"subject": "Subject"
+		"subject": "Subject",
+		"audio": "Meeting Call Information"
 	},
 	"about": {
 		"title": "ABOUT",

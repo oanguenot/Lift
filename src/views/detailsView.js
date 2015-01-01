@@ -32,6 +32,23 @@ define('views/detailsView', ['text!views/templates/details.html', 'models/models
             if(this.model.get('password')) {
                 this.$('.password').text(i18n.t('details.password') + ": " + this.model.get('password'));
             }
+
+            var conferenceCall = settings.getConferenceCallInformation();
+
+            if(conferenceCall) {
+
+                var strCall = "";
+
+
+
+                for (var name in conferenceCall) {
+                    var number = conferenceCall[name];
+                    strCall += '<p>' + name + '</p><p>' + number + '</p>';
+                }
+
+                this.$('.call').html(strCall);
+            }
+
             return this;
         },
 

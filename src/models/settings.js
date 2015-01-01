@@ -13,6 +13,10 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
             domain: ''
         },
 
+        getConferenceCallInformation: function() {
+            return this.get('conferenceCall');
+        },
+
         getACSVersion: function() {
             return this.get('acsVersion');
         },
