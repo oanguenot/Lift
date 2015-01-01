@@ -69,7 +69,8 @@
 		"call": "Information du pont de conférence audio",
 		"url": "Lien",
 		"subject": "Sujet",
-		"audio": "Information téléphonique"
+		"audio": "Information téléphonique",
+		"nocall": "Aucun numéro d'appel"
 	},
 	"about": {
 		"title": "A PROPOS",

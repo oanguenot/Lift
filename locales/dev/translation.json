@@ -69,7 +69,8 @@
 		"call": "Conference Call Information",
 		"url": "Url",
 		"subject": "Subject",
-		"audio": "Meeting Call Information"
+		"audio": "Meeting Call Information",
+		"nocall": "No call number provided"
 	},
 	"about": {
 		"title": "ABOUT",

@@ -35,11 +35,9 @@ define('views/detailsView', ['text!views/templates/details.html', 'models/models
 
             var conferenceCall = settings.getConferenceCallInformation();
 
-            if(conferenceCall) {
+            if(conferenceCall && Object.keys(conferenceCall).length > 0) {
 
                 var strCall = "";
-
-
 
                 for (var name in conferenceCall) {
                     var number = conferenceCall[name];
@@ -47,6 +45,9 @@ define('views/detailsView', ['text!views/templates/details.html', 'models/models
                 }
 
                 this.$('.call').html(strCall);
+            }
+            else {
+                this.$('.call').text(i18n.t('details.nocall'));
             }
 
             return this;
