@@ -83,6 +83,18 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
 
         },
 
+        reload: function() {
+            acs.logoffFromACS(function() {
+                log.info("USER", "Signout ok, try to log...");
+                this.set({'isConnected': false});
+                this.signin();
+            }, function() {
+                log.info("USER", "Signout error, try to log...");
+                this.set({'isConnected': false});
+                this.signin();
+            }, this);
+        },
+
         join: function(vanity) {
             window.open("https://" + this.get('host') + "/call/" + vanity, "_blank");
         }

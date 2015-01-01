@@ -363,13 +363,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                             var xml = conferences[i];
 
-                            console.log('OWNXML', xml);
-
                             var conference = parseVCSConference(xml);
                             
-                            
                             conference.set({isAnInvite: false});
-                            console.log("OWNCONF", conference);
 
                             this.add(conference);
                         }   
@@ -399,12 +395,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector', 'modu
 
                         var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
 
-                        console.log("xml", xml);
-
                         var conference = parseVCSConference(xml);
                         
                         conference.set({isAnInvite: true});
-                        console.log("conference", conference);
                         this.add(conference);
                     }
                 }

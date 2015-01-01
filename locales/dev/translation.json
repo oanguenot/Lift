@@ -54,7 +54,7 @@
 		"on": "On"
 	},
 	"join": {
-		"title": "Join a Meeting...",
+		"title": "JOIN A MEETING",
 		"details": "Are you sure you want to join this Meeting",
 		"join": "Join",
 		"cancel": "Cancel"
@@ -99,7 +99,8 @@
 		"password": "Protect the meeting with a password",
 		"digit": "Digit only",
 		"schedule": "Schedule",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"change": "Modify"
 	},
 	"createok": {
 		"title": "NEW MEETING CREATED",
@@ -109,5 +110,9 @@
 		"title": "REMOVE A MEETING",
 		"subtitle": "Are you sure you want to remove this meeting",
 		"remove": "Remove"
+	},
+	"modifyok": {
+		"title": "MEETING CHANGED",
+		"subtitle": "Your meeting has been successfully modified!"
 	}
 }

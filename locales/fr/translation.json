@@ -54,7 +54,7 @@
 		"on": "Le"
 	},
 	"join": {
-		"title": "Joindre cette réunion...",
+		"title": "JOINDRE UNE REUNION",
 		"details": "Etes-vous sur de vouloir joindre la réunion",
 		"join": "Joindre",
 		"cancel": "Annuler"
@@ -99,15 +99,20 @@
 		"password": "Protéger ma réunion avec un mot de passe",
 		"digit": "Numérique seulement",
 		"schedule": "Créer",
-		"cancel": "Annuler"
+		"cancel": "Annuler",
+		"change": "Modifier"
 	},
 	"createok": {
-		"title": "Nouvelle réunion créée",
+		"title": "NOUVELLE REUNION CREEE",
 		"subtitle": "Voici les informations pour accéder à la réunion"
 	},
 	"confirm": {
-		"title": "Supprimer une réunion",
+		"title": "SUPPRIMER UNE REUNION",
 		"subtitle": "Etes-vous sur de vouloir supprimer cette réunion",
 		"remove": "Supprimer"
+	},
+	"modifyok": {
+		"title": "REUNION MODIFIEE",
+		"subtitle": "La réunion a été modifiée!"
 	}
 }

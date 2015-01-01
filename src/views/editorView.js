@@ -1,4 +1,4 @@
-define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView'], function(template, log, models, CreateOkView) {
+define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView', 'views/modifyOkView'], function(template, log, models, CreateOkView, ModifyOkView) {
 
     "use strict";
 
@@ -41,6 +41,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             if(this.model) {
                 this.isModified = true;
+                this.$('#scheduleBtn').text(i18n.t('editor.change'));
                 this.vanity = this.model.get('vanity');
                 this.displayMeeting();
             }
@@ -237,6 +238,15 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         onScheduleModify: function(meeting) {
             log.info("EDITOR", "Schedule Modification ok", meeting);
+
+            var modifyok = new ModifyOkView({model: meeting});
+
+            Backbone.Mediator.subscribeOnce('modifyok-close', function() {
+                modifyok.close();
+                Backbone.Mediator.publish('editor-modify');
+            });
+
+            $('#popup-elt').append(modifyok.render().el);
         }
     });
 

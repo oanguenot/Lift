@@ -94,6 +94,12 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             displayMainView();
         });
 
+        Backbone.Mediator.subscribeOnce('editor-modify', function() {
+            view.close();
+            displayMainView();
+            user.reload();
+        });
+
         mainView.close();
 
         $('#editor-elt').append(view.render().el);
@@ -188,6 +194,11 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         }
     }
 
+    function updateMeetingsList() {
+        conferences.list();
+        conferences.getInvite();
+    }
+
     //Language initialization
     i18n.init({ lng: lang}, function() {
         log.info('MAIN', 'I18n initialized');
@@ -251,8 +262,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         user.on('change:isConnected', function(model) {
             if(user.isConnected()) {
                 settings.getGlobals();
-                conferences.list();
-                conferences.getInvite();
+                updateMeetingsList();
             }
         });
 

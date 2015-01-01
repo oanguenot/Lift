@@ -10,6 +10,10 @@ Use your OpenTouch credentials
  - FEATURE: Set password rules
  - FEATURE: ICS Export
 
+# TO CHECK
+ - Once aborded, the only way to reopen the Event Pipe is to resign (signout/signin) to the application
+ - Use Event Pipe quiet mode in order to not being visible by other user when using the application
+
 # HISTORY
 
 ## Version 1.5 - In progress

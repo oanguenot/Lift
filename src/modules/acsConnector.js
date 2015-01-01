@@ -87,7 +87,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             log.debug("ACSConnector", "Login with", {login: username, host: host});
 
             //Login with user data
-            var url = protocol + host + "/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=false&display=none";
+            var url = protocol + host + "/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=true&display=none";
 
             request(url).then(function(jsonResponse) {
                 if(jsonResponse && jsonResponse.data !== null) {
@@ -332,7 +332,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
         return new Promise(function(resolve, reject) {
 
-            var url = protocol + host + "/ics?action=open_server_interface&mode=simple&api_scope=s";
+            var url = protocol + host + "/ics?action=open_server_interface&mode=simple&api_scope=s&quiet=true";
 
             url += "&_nocachex=" + Math.floor(Math.random()*2147483647);
 
@@ -366,7 +366,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                             
                             var params = command.substring(paren+1, command.length-2);
 
-                            //log.debug("PIPE", "Event", e);
+                            log.debug("PIPE", "Event", e);
 
                             var data = params.split(', ');
                             for(var i = 0; i < data.length; i++) {
@@ -375,7 +375,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                                     data[i] = data[i].substring(1, data[i].length-1);
                                 }
                             }
-                            //log.debug("PIPE", "Parameters", data);
+                            log.debug("PIPE", "Parameters", data);
 
                             if(e === 'Initialize') {
                                 var ACSVersion = "Unknown";
@@ -385,8 +385,12 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                                 }
 
                                 log.debug("PIPE", "Event pipe channel opened with ACS", ACSVersion);
+                            }
 
-                                // Ask for roster invites
+                            if(e === "LoginSucceeded") {
+
+                                log.debug("PIPE", "User successfully logged in to Event Pipe", ACSVersion);
+                                 // Ask for roster invites
                                 askForRosterInvites();
 
                                 // Wait no more than 500ms before ending the event pipe.
@@ -411,6 +415,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                             }
 
                             if(e === 'UpdateBuddyData') {
+
                                 if(data.length >9) {
                                     var email = data[0],
                                         firstname = '',

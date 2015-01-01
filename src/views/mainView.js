@@ -17,6 +17,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
+            this.listenTo(this.collection, 'reset', this.resetConferencesList);
             this.listenTo(models.user(), 'change:isConnected', this.onConnectivityChange);
             this.listenTo(models.user(), 'change:error', this.onConnectionError);
         },
