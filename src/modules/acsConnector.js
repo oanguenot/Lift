@@ -389,7 +389,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
                             if(e === "LoginSucceeded") {
 
-                                log.debug("PIPE", "User successfully logged in to Event Pipe", ACSVersion);
+                                log.debug("PIPE", "User successfully logged in to Event Pipe");
                                  // Ask for roster invites
                                 askForRosterInvites();
 

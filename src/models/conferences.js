@@ -1,8 +1,8 @@
-define('models/conferences', ['models/conference', 'modules/acsConnector', 'modules/log'], function(ConferenceModel, acs, log) {
+define('models/conferences', ['models/conference', 'modules/acsConnector'], function(ConferenceModel, acs) {
 
     "use strict";
 
-    var parseVCSConference = function parseVCSConference(xml, isAnInvite) {
+    var parseVCSConference = function parseVCSConference(xml) {
 
         var json = {};
 

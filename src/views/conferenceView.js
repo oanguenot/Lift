@@ -27,7 +27,7 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             this.$('.meeting-state').addClass('meeting-' + this.model.get('state'));
             this.$('.meetingTitle').text(this.model.get('subject'));
             if(this.model.get('isAnInvite')) {
-            	var buddies = models.buddies();
+                var buddies = models.buddies();
                 var buddy = buddies.getABuddy(this.model.get('from'));
 
                 this.$('.meetingState').html(i18n.t('conference.invite') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));

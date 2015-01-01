@@ -1,14 +1,14 @@
 define('models/buddies', ['models/buddy'], function(BuddyModel) {
 
-	"use strict";
+    "use strict";
 
-	return Backbone.Collection.extend({
+    return Backbone.Collection.extend({
         
         model : BuddyModel,
 
         getABuddy: function(email) {
-	    	return(this.find(function(model) { return model.get('id') === email; }));
-	    }
+            return(this.find(function(model) { return model.get('id') === email; }));
+        }
 
     });
 
