@@ -5,6 +5,7 @@
 - it's possible to load sandboxed content like Middleware into an IFrame and communicate with this iframe in order to use the Middleware
 --> Make a PoC to check if it's really possible to load the Middleware into an IFrame in a Chrome App (signin, search...)
 
+
 ## Google connection
 
 Link Lift to the Google account of the user in order to:

@@ -2,7 +2,7 @@
 require.config({
     baseUrl: "/src",
     paths : {
-    	"text": '../vendor/text',
+        "text": '../vendor/text',
         "json": '../vendor/json',
         "models": "./models"
     },
@@ -11,7 +11,7 @@ require.config({
 
 require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, models) {
 
-	"use strict";
+    "use strict";
 
     var mainView = null;
 
@@ -22,9 +22,9 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     var spinner = null, nbSpinner = 0;
 
-	log.info('MAIN', "Application start");
+    log.info('MAIN', "Application start");
 
-	var lang = navigator.language || navigator.userLanguage || 'en-US';
+    var lang = navigator.language || navigator.userLanguage || 'en-US';
 
     log.debug('MAIN', 'Detected language', lang);
 
@@ -42,7 +42,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         mainView.blur();
 
-        $('#error-elt').append(view.render().el);
+        $('#popup-elt').append(view.render().el);
     }
 
     function displayConfig() {
@@ -55,7 +55,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         mainView.blur();
 
-        $('#config-elt').append(view.render().el);
+        $('#popup-elt').append(view.render().el);
     }
 
     function displayJoinPopup(model) {
@@ -259,7 +259,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
         displayMainView();
 
-        user.on('change:isConnected', function(model) {
+        user.on('change:isConnected', function() {
             if(user.isConnected()) {
                 settings.getGlobals();
                 updateMeetingsList();

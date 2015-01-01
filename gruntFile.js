@@ -14,10 +14,8 @@ module.exports = function(grunt) {
                     jshintrc: '.jshintrc'
                 },
                 src: [
-                    './src/models/*.js',
-                    './src/modules/*.js',
-                    './src/views/*.js',
-                    './GruntFile.js',
+                    './src/**/*.js',
+                    './gruntFile.js',
                     './main.js',
                     './package.json'
                 ]
@@ -114,17 +112,18 @@ module.exports = function(grunt) {
                 files: [
                     {src:['fonts/*.*']},                                // Fonts
                     {src:['css/*.css']},                                // CSS
-                    {src:['dist/lift-map.js', 'dist/lift-min.js']},     // Plugins source
+                    //{src:['dist/lift-map.js', 'dist/lift-min.js']},   // Plugins source
                     {src:['img/*.*']},                                  // Images
                     {src:['media/*.*']},                                // Terms and conditions
+                    {src:['src/**/*.*']},                               // Sources
                     {src:['vendor/*.*']},                               // FOSS
                     {src:['background.js']},                            // Background part of the plugins
                     {src:['LICENSE']},                                  // License
-                    {src:['lift.png', 'lift_128.png', 'lift_48.png']},  // Plugin icons
+                    {src:['opentouch.png', 'lift.png', 'lift_128.png', 'lift_48.png']},  // Plugin icons
                     {src:['manifest.json']},                            // Plugin manifest file
                     {src:['popup.html']},                               // Plugin HTML file
                     {src:['terms.html']},                               // Terms file
-                                                    
+                    {src:['locales/**/*.*']}                            // Locales    
                 ]
             }
         }

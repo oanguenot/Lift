@@ -151,7 +151,7 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
         json.scheduledEndTime = "";
 
         var now = moment();
-        var days = -1;
+        json.days = -1;
 
         if(json.typeConf === "scheduled") {
 
@@ -173,14 +173,14 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
 
             if(now.isAfter(json.startDate)) {
                 if(now.isAfter(json.endDate)) {
-                    days = -1;
+                    json.days = -1;
                 }
                 else {
-                    days = json.endDate.utc().diff(now.utc(), 'days');
+                    json.days = json.endDate.utc().diff(now.utc(), 'days');
                 }
             }
             else {
-                days = json.endDate.utc().diff(json.startDate.utc(), 'days');
+                json.days = json.endDate.utc().diff(json.startDate.utc(), 'days');
             }
         }
 

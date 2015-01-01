@@ -1,26 +1,33 @@
 # OpenTouch Meetings Manager (OTCMeetings): Schedule your Meetings
 
-## Description
+# Description
 
 Download this extension from the Chrome store
 Use your OpenTouch credentials
 
 
-# TODO
+## TODO
  - FEATURE: Set password rules
  - FEATURE: ICS Export
 
-# TO CHECK
+
+## TO CHECK
  - Once aborded, the only way to reopen the Event Pipe is to resign (signout/signin) to the application
  - Use Event Pipe quiet mode in order to not being visible by other user when using the application
+ - WebView: to open a windows embedded OTC/Web
+
 
 # HISTORY
 
-## Version 1.5 - In progress
+## Version 1.5.1
+ - FIX: Display Reservationless duration availability
+
+## Version 1.5
  - FEATURE: Allow to filter meetings (4 categories: Active, Not Begun, Ended and All)
  - FEATURE: Add languages management. (FR/US)
  - FEATURE: Allow to select text when displaying meetings information
  - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application
+ - FEATURE: Connect to ACS using quiet mode (no being visible by buddies)
 
 ## Version 1.4.2
  - FIX: Remove double scrollbars in terms windows on Windows

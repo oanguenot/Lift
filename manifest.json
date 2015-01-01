@@ -3,7 +3,7 @@
   "short_name": "OTCMeetings",
   "version": "1.5.0",
   "manifest_version": 2,
-  "description": "OpenTouch Meetings Manager is a Google Chrome packaged app for scheduling meetings for the Alcatel-Lucent Enterprise OpenTouch server",
+  "description": "OpenTouch Meetings Manager is a Google Chrome packaged app for scheduling meetings ",
   "icons": { "128": "lift_128.png", "48": "lift_48.png" },
   "permissions": ["http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
   "app": {

@@ -22,6 +22,8 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             this.$el.html(template);
             this.$('.conference-elt').i18n();
 
+            console.log("MODEL", this.model);
+
             this.$el.addClass('v-' + this.model.get('vanity'));
 
             this.$('.meeting-state').addClass('meeting-' + this.model.get('state'));
