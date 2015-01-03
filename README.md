@@ -26,8 +26,8 @@ Use your OpenTouch credentials
  - FEATURE: Allow to filter meetings (4 categories: Active, Not Begun, Ended and All)
  - FEATURE: Add languages management. (FR/US)
  - FEATURE: Allow to select text when displaying meetings information
- - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application
- - FEATURE: Connect to ACS using quiet mode (no being visible by buddies)
+ - REFACTORING: Use Backbone, Require, Jquery in order to have a MVC application (application fully rewritten)
+ - FIX: Connect to ACS using quiet mode (no being visible by buddies)
 
 ## Version 1.4.2
  - FIX: Remove double scrollbars in terms windows on Windows

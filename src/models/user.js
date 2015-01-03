@@ -20,6 +20,10 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
             return (this.get('error'));
         },
 
+        getHost: function() {
+        	return this.get('host');
+        },
+
         signin: function() {
 
             Backbone.Mediator.publish('spinner-on');

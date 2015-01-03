@@ -41,7 +41,8 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             http.open("POST", parts[0], true);
             http.setRequestHeader("Cache-Control", "no-cache");
             http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            http.onreadystatechange = function () {
+            http.onreadystatechange = function (data) {
+
                 if (http.readyState === 4) {
                     if (http.status === 200) {  
                         var res = null;
@@ -72,7 +73,6 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             };
 
             http.send(parts[1]);
-
         });
     };
 

@@ -257,7 +257,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             buddies.add(model);
         });
 
-        displayMainView();
+		displayMainView();
 
         user.on('change:isConnected', function() {
             if(user.isConnected()) {

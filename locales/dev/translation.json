@@ -6,7 +6,7 @@
 	    "password": "Password",
 	    "server": "Internal OpenTouch server",
 	    "cancel": "Cancel",
-	    "save": "Save"
+	    "save": "Signin"
 	},
 	"main": {
 		"meeting": "New Meeting",
@@ -25,7 +25,9 @@
 	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
 	    "subtitle-next": "Please check your parameters and try again !",
 		"subtitle-next-certificate": "If it still doesn't work, check that you have the right OpenTouch certificates correctly deployed on your computer",
-		"close": "Close"
+		"subtitle-accept-certificate": "By clicking on the test button, you can temporarily accept the OpenTouch certificates in case of not trusted certificates and signin again to OpenTouch Meetings Manager.",
+		"close": "Close",
+		"test": "Test"
 	},
 	"conference": {
 		"unnamed": "Unnamed",

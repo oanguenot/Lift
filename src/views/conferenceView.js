@@ -67,7 +67,7 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             if(this.model.get('isAnInvite')) {
                 this.$('.meeting-edit-button').addClass('meeting-edit-button-disabled');
                 this.$('.meeting-remove-button').addClass('meeting-remove-button-disabled');
-                
+                //this.$('.meeting-invite-button').addClass('meeting-invite-button-disabled');
             }
 
             this.$('.meeting-join-button').attr('title', i18n.t('conference.join'));
