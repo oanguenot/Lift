@@ -9,7 +9,8 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
             password: '',
             host: '',
             isConnected: false,
-            error: false
+            error: false,
+            errorType: ''
         },
 
         isConnected: function() {
@@ -20,8 +21,8 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
             return (this.get('error'));
         },
 
-        getHost: function() {
-        	return this.get('host');
+        hasErrorOfTypeLogin: function() {
+            return (this.get('errorType') === 'err_login');
         },
 
         signin: function() {
@@ -41,20 +42,20 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
                 if(user.host.length > 0 && user.login.length > 0 && user.password.length > 0) {
                     acs.loginToACS(user.host, user.login, user.password, function() {
                         Backbone.Mediator.publish('spinner-off');
-                        this.set({'isConnected': true, 'error': false});
-                    }, function() {
-                        this.set({'isConnected': false, 'error': true});
+                        this.set({'isConnected': true, 'error': false, 'errorType': ''});
+                    }, function(errorType) {
+                        this.set({'isConnected': false, 'error': true, 'errorType': errorType[0]});
                         Backbone.Mediator.publish('spinner-off');
                         Backbone.Mediator.publish('error-display'); 
                     }, this);
                 }
                 else {
-                    this.set({'isConnected': false, 'error': true});
+                    this.set({'isConnected': false, 'error': true, 'errorType': ''});
                     Backbone.Mediator.publish('spinner-off');
                     Backbone.Mediator.publish('error-display');  
                 }
             }, function() {
-                this.set({'isConnected': false, 'error': true});
+                this.set({'isConnected': false, 'error': true, 'errorType': ''});
                 Backbone.Mediator.publish('spinner-off');
                 Backbone.Mediator.publish('error-display');
             }, this);

@@ -14,13 +14,22 @@ define('views/errorView', ['text!views/templates/error.html', 'models/models'], 
         },
 
         events: {
-            'click #closeBtn': 'onClose',
-            'click #testBtn': 'onTest'
+            'click #closeBtn': 'onClose'
         },
 
         render: function() {
             this.$el.html(template);
             this.$('.popup').i18n();
+
+            var user = models.user();
+            if(user.hasErrorOfTypeLogin()) {
+                this.$('.error-next').text(i18n.t('error.subtitle-err-login'));
+            }
+            else {
+                this.$('.error-next').text(i18n.t('error.subtitle-err-certificate'));
+                this.$('.error-next-next').text(i18n.t('error.subtitle-err-certificate-next'));
+            }
+
             return this;
         },
 
@@ -35,19 +44,6 @@ define('views/errorView', ['text!views/templates/error.html', 'models/models'], 
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('error-close', null);
-        },
-
-        onTest: function(e) {
-        	e.preventDefault();
-            e.stopPropagation();
-
-            var user = models.user();
-
-            var url = "https://" + user.getHost();
-
-            console.log("URL", url);
-
-            window.open(url, "_blank");
         }
     });
 });

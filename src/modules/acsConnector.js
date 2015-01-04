@@ -41,7 +41,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             http.open("POST", parts[0], true);
             http.setRequestHeader("Cache-Control", "no-cache");
             http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            http.onreadystatechange = function (data) {
+            http.onreadystatechange = function () {
 
                 if (http.readyState === 4) {
                     if (http.status === 200) {  
@@ -65,7 +65,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                     }
                     else {
                         log.error("ACSConnector", "Receive", http);
-                        reject([null]);
+                        reject('err_server');
                     }
                 } else {
 
@@ -93,7 +93,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                 if(jsonResponse && jsonResponse.data !== null) {
                     
                     log.warning("ACSConnector", "Login not good");
-                    reject();
+                    reject(['err_login']);
                 }
                 else {
                     log.info("ACSConnector", "Login successfull");
@@ -102,7 +102,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                 
             }, function(err) {
                 log.error("ACSConnector", "Login", err);
-                reject();
+                reject(['err_server']);
             });
 
         });
@@ -485,8 +485,8 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
             login(username, password).then(function(){
                 callback.call(context);
-            }, function() {
-                errCallback.call(context);
+            }, function(errorType) {
+                errCallback.call(context, errorType);
             }); 
         },
 

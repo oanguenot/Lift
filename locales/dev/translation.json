@@ -23,11 +23,10 @@
 	"error": {
 		"title": "ERROR",
 	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
-	    "subtitle-next": "Please check your parameters and try again !",
-		"subtitle-next-certificate": "If it still doesn't work, check that you have the right OpenTouch certificates correctly deployed on your computer",
-		"subtitle-accept-certificate": "By clicking on the test button, you can temporarily accept the OpenTouch certificates in case of not trusted certificates and signin again to OpenTouch Meetings Manager.",
-		"close": "Close",
-		"test": "Test"
+	    "subtitle-err-login": "Your OpenTouch account or your password is not good. Please change your parameters in order to connect to the OpenTouch server!",
+		"subtitle-err-certificate": "Either the OpenTouch server can't be reached (bad address, down...) or you don't have the OpenTouch certificate correctly deployed on your computer",
+		"subtitle-err-certificate-next": "Note: You can temporarily accept the OpenTouch certificate by opening OTC/Web using Chrome",
+		"close": "Close"
 	},
 	"conference": {
 		"unnamed": "Unnamed",
