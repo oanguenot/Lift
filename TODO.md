@@ -5,6 +5,8 @@
 - it's possible to load sandboxed content like Middleware into an IFrame and communicate with this iframe in order to use the Middleware
 --> Make a PoC to check if it's really possible to load the Middleware into an IFrame in a Chrome App (signin, search...)
 
+--> POC RESULT: Not possible. In Google Application, LocalStorage can't be used
+
 
 ## Google connection
 

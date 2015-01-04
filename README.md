@@ -21,6 +21,7 @@ Use your OpenTouch credentials
 
 ## Version 1.5.1
  - FIX: Display Reservationless duration availability
+ - FEATURE: Differenciate bad credentials (login/password) from bad server/bad certificate cases by displaying specific message in each case
 
 ## Version 1.5
  - FEATURE: Allow to filter meetings (4 categories: Active, Not Begun, Ended and All)
