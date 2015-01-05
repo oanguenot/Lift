@@ -42,7 +42,7 @@
 		"daysleft": "days left",
 		"dayleft": "day left",
 		"expire": "Expires today",
-		"invite": "Invite from",
+		"inviteLabel": "From",
 		"unknown": "Unknown",
 		"file": "file",
 		"files": "files",
@@ -50,6 +50,7 @@
 		"details": "Display meeting's details",
 		"edit": "Edit meeting's settings",
 		"remove": "Remove this meeting",
+		"invite": "Invite contacts at this meeting",
 		"active": "Active",
 		"not_begun": "Not begun",
 		"ended": "Ended",
@@ -118,5 +119,12 @@
 	"modifyok": {
 		"title": "MEETING CHANGED",
 		"subtitle": "Your meeting has been successfully modified!"
+	},
+	"invite": {
+		"invite": "Invite",
+		"title": "Invited contacts",
+		"clearAll": "Clear All",
+		"guest": "Add a Guest",
+		"contact": "Add a Contact"
 	}
 }

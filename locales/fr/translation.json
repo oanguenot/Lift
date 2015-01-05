@@ -2,7 +2,7 @@
 	"settings": {
 	    "title": "PARAMETRES",
 	    "subtitle": "Veuillez entrer vos informations personnelles pour utiliser OpenTouch Meetings Manager",
-	    "login": "Accompte",
+	    "login": "Nom d'utilisateur",
 	    "password": "Mot de passe",
 	    "server": "Server Interne OpenTouch",
 	    "cancel": "Annuler",
@@ -42,7 +42,7 @@
 		"daysleft": "jours restant",
 		"dayleft": "jour restant",
 		"expire": "Expire aujourd'hui",
-		"invite": "Invitation de",
+		"inviteLabel": "De",
 		"unknown": "Inconnu",
 		"file": "fichier",
 		"files": "fichiers",
@@ -50,6 +50,7 @@
 		"details": "Afficher les détails de cette réunion",
 		"edit": "Modifier cette réunion",
 		"remove": "Supprimer cette réunion",
+		"invite": "Invite des personnes à cette réunion",
 		"active": "Active",
 		"not_begun": "A venir",
 		"ended": "Terminé",
@@ -118,5 +119,12 @@
 	"modifyok": {
 		"title": "REUNION MODIFIEE",
 		"subtitle": "La réunion a été modifiée!"
+	},
+	"invite": {
+		"invite": "Inviter",
+		"title": "Personnes invitées",
+		"clearAll": "Effacer tout",
+		"guest": "Ajouter un invité",
+		"contact": "Ajouter un contact"
 	}
 }

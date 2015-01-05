@@ -15,24 +15,34 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             'click .meeting-join-button': 'onJoin',
             'click .meeting-details-button': 'onDetails',
             'click .meeting-edit-button': 'onEdit',
-            'click .meeting-remove-button': 'onRemove'
+            'click .meeting-remove-button': 'onRemove',
+            'click .meeting-invite-button': 'onInvite'
         },
 
         render: function() {
+
             this.$el.html(template);
             this.$('.conference-elt').i18n();
-
-            console.log("MODEL", this.model);
 
             this.$el.addClass('v-' + this.model.get('vanity'));
 
             this.$('.meeting-state').addClass('meeting-' + this.model.get('state'));
+
             this.$('.meetingTitle').text(this.model.get('subject'));
+           
+
             if(this.model.get('isAnInvite')) {
                 var buddies = models.buddies();
+                console.log("buddies", buddies);
+
                 var buddy = buddies.getABuddy(this.model.get('from'));
 
-                this.$('.meetingState').html(i18n.t('conference.invite') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
+                if(buddy) {
+                	this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
+                }
+                else {
+                	this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + this.model.get('from') + ' - ' + this.model.get('stateDisplayed'));
+                }
             }
             else {
                 this.$('.meetingState').text(this.model.get('stateDisplayed'));
@@ -67,13 +77,15 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             if(this.model.get('isAnInvite')) {
                 this.$('.meeting-edit-button').addClass('meeting-edit-button-disabled');
                 this.$('.meeting-remove-button').addClass('meeting-remove-button-disabled');
-                //this.$('.meeting-invite-button').addClass('meeting-invite-button-disabled');
+                this.$('.meeting-invite-button').addClass('meeting-invite-button-disabled');
             }
 
             this.$('.meeting-join-button').attr('title', i18n.t('conference.join'));
             this.$('.meeting-edit-button').attr('title', i18n.t('conference.edit'));
             this.$('.meeting-remove-button').attr('title', i18n.t('conference.remove'));
             this.$('.meeting-details-button').attr('title', i18n.t('conference.details'));
+            this.$('.meeting-invite-button').attr('title', i18n.t('conference.invite'));
+
 
             return this;
         },
@@ -107,6 +119,12 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('conference-join', this.model);
+        },
+
+        onInvite: function(e) {
+        	e.preventDefault();
+            e.stopPropagation();
+            Backbone.Mediator.publish('conference-invite', this.model);
         }
     });
 });

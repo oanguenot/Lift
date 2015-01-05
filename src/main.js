@@ -9,7 +9,7 @@ require.config({
     waitSeconds: 5
 });
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, models) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'views/inviteView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, InviteView, models) {
 
     "use strict";
 
@@ -103,6 +103,26 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         mainView.close();
 
         $('#editor-elt').append(view.render().el);
+    }
+
+    function displayInvite(model) {
+        var view;
+
+        view = new InviteView({model: model});
+
+        Backbone.Mediator.subscribeOnce('invite-close', function() {
+            view.close();
+            displayMainView();
+        });
+
+        Backbone.Mediator.subscribeOnce('invite-change', function() {
+            view.close();
+            displayMainView();
+        });
+
+        mainView.close();
+
+        $('#invite-elt').append(view.render().el);
     }
 
     function displayMainView() {
@@ -228,10 +248,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             displayEditor();
         });
 
-        Backbone.Mediator.subscribe('conference-edit', function(model) {
-            displayEditor(model);
-        });
-
         Backbone.Mediator.subscribe('error-display', function() {
             displayErrorLoginPopup();
         });
@@ -248,6 +264,14 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             displayConfirmationPopup(model);
         });
 
+        Backbone.Mediator.subscribe('conference-invite', function(model) {
+            displayInvite(model);
+        });
+
+        Backbone.Mediator.subscribe('conference-edit', function(model) {
+            displayEditor(model);
+        });
+
         Backbone.Mediator.subscribe('about-terms', function() {
             var params = {'id': 'terms', 'outerBounds': { 'width': 500, 'height': 600, 'top': 100, 'left': 300}};
             chrome.app.window.create('terms.html', params);
@@ -257,7 +281,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             buddies.add(model);
         });
 
-		displayMainView();
+        displayMainView();
 
         user.on('change:isConnected', function() {
             if(user.isConnected()) {

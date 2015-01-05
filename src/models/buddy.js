@@ -8,12 +8,12 @@ define('models/buddy', [], function() {
         },
 
         getDisplayName: function() {
-            var firstname = this.get('firstname'),
-                lastname = this.get('lastname'),
+            var firstname = this.get('firstName'),
+                lastname = this.get('name'),
                 email = this.get('email');
 
             if(firstname && firstname.length > 0 && lastname && lastname.length > 0) {
-                return this.get('firstname') + ' ' + this.get('lastname');
+                return this.get('firstName') + ' ' + this.get('name');
             }
 
             if(email && email.length > 0) {

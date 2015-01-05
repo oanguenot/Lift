@@ -394,6 +394,8 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
 
             acs.getRostersInvite(function(rosters) {
 
+                console.log("ROSTERS", rosters);
+
                 if(rosters) {
                     for(var i=0, len = rosters.length; i < len; i++) {
 
@@ -406,6 +408,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                         var conference = parseVCSConference(xml);
                         
                         conference.set({isAnInvite: true});
+
+                        console.log("CONFERENCE", conference);
+
                         this.add(conference);
                     }
                 }

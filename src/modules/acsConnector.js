@@ -416,27 +416,27 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
                             if(e === 'UpdateBuddyData') {
 
-                                if(data.length >9) {
-                                    var email = data[0],
-                                        firstname = '',
-                                        lastname = '';
+                                var json = {};
 
-                                    var field = data[3].split('=');
-                                    if(field && field.length === 2 && field[0] === 'firstName') {
-                                        firstname =  field[1];
-
+                                for(var i=0; i < data.length; i++) {
+                                    var field = data[i].split('=');
+                                    if(field.length > 1) {
+                                        json[field[0]] = field[1];
                                     }
-                                    field = data[9].split('=');
-                                    if(field && field.length === 2 && field[0] === 'name') {
-                                        lastname =  field[1];
-                                    }
-
-                                    if(!(email in contacts) && lastname.length > 0 && firstname.length > 0) {
-                                        contacts[email] = {id: email, firstname: firstname, lastname: lastname};
-                                        Backbone.Mediator.publish('buddy-new', new Buddy({id: email, firstname: firstname, lastname: lastname}));
-                                        log.debug("PIPE", "Add new contact", contacts[email]);
+                                    else {
+                                        if(i === 0) {
+                                            json['id'] = field[0];
+                                        }
+                                        else {
+                                            json[field[0]] = field[0];
+                                        }
+                                        
                                     }
                                 }
+
+                                contacts[json.email] = json;
+                                Backbone.Mediator.publish('buddy-new', new Buddy(json));
+                                log.debug("PIPE", "Add new contact", contacts[json.email]);
                             }
                         }
                         response_index = index + 1;
