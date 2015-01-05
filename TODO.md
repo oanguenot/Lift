@@ -1,4 +1,4 @@
-# Lift TODO list
+# OpenTouch Meeting Manager TODO list
 
 ## Embedding the Middleware into an iframe
 

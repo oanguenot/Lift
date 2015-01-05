@@ -1,9 +1,8 @@
-# OpenTouch Meetings Manager (OTCMeetings): Schedule your Meetings
+# OpenTouch Meeting Manager (OTCMeeting): Schedule your Meetings
 
 # Description
 
-Download this extension from the Chrome store
-Use your OpenTouch credentials
+OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Meetings for the Alcatel-Lucent Enterprise OpenTouch server.
 
 
 ## TODO
