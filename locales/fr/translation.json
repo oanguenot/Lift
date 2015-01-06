@@ -126,5 +126,15 @@
 		"clearAll": "Effacer tout",
 		"guest": "Ajouter un invité",
 		"contact": "Ajouter un contact"
+	},
+	"meetingDetails": {
+		"title": "Details",
+		"data": "Joindre la réunion en ligne",
+		"audio": "Joindre par téléphone",
+		"code": "Codes d'accès",
+		"password": "Mot de passe",
+		"participant": "Participant",
+		"leader": "Animateur",
+		"invite": "Personnes invitées"
 	}
 }

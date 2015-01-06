@@ -126,5 +126,15 @@
 		"clearAll": "Clear All",
 		"guest": "Add a Guest",
 		"contact": "Add a Contact"
+	},
+	"meetingDetails": {
+		"title": "Details",
+		"data": "Join the meeting online using my browser",
+		"audio": "Join using my phone",
+		"code": "Access code",
+		"password": "Password",
+		"participant": "Participant",
+		"leader": "Leader",
+		"invite": "Rosters"
 	}
 }

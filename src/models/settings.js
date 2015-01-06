@@ -21,6 +21,14 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
             return this.get('acsVersion');
         },
 
+        getDomain: function() {
+            return this.get('domain');
+        },
+
+        getProtocol: function() {
+            return this.get('protocol');
+        },
+
         getGlobals: function() {
 
             Backbone.Mediator.publish('spinner-on');

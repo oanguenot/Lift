@@ -131,6 +131,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     }
 
     function displayDetailsPopup(model) {
+     
         var view = new DetailsView({model: model});
 
         Backbone.Mediator.subscribeOnce('details-close', function() {
@@ -141,6 +142,22 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         mainView.blur();
 
         $('#popup-elt').append(view.render().el);
+        
+
+        /*var params = {'id': 'details', 'outerBounds': { 'width': 460, 'height': 560, 'top': 100, 'left': 300}};
+        chrome.app.window.create('details.html', params, function (myWindow) {
+            myWindow.contentWindow.addEventListener('load', function(e) {
+                setTimeout(function() {
+
+                    var settings = models.settings();
+
+                    model.set({'call': settings.getConferenceCallInformation(), 'domain': settings.getDomain(), 'protocol': settings.getProtocol()})
+
+                    myWindow.contentWindow.displayDetails(model);
+                }, 500);
+                
+            });
+        });*/
     }
 
     function displayConfirmationPopup(model) {

@@ -1,0 +1,90 @@
+html {
+	overflow: hidden;
+	height: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+@font-face { 
+	font-family: 'Roboto-light';
+	src: url('../fonts/roboto-light-webfont.eot');
+	src: url('../fonts/roboto-light-webfont.eot?#iefix') format('embedded-opentype'),
+	     url('../fonts/roboto-light-webfont.woff') format('woff'),
+	     url('../fonts/roboto-light-webfont.ttf') format('truetype'),
+	     url('../fonts/roboto-light-webfont.svg#webfont') format('svg');
+}
+
+.details-topbar {
+	position: relative;
+	height: 50px;
+	background-color: #4E5256;
+	width: 100%;
+	color: #ffffff;
+	text-align: left;
+	padding-left: 49px;
+	border-bottom: 1px solid #999;
+}
+
+.details-subject {
+	font-family: "Roboto-light",sans-serif;
+	font-size: 20px;
+	margin-left: 10px;
+	line-height: 50px;
+	font-weight: 300;
+	margin-top: 0;
+}
+
+.details-title {
+	color: #9d61db;
+	font-family: "Roboto-light",sans-serif;
+	font-size: 18px;
+	margin-left: 10px;
+	top: 10px;
+	position: relative;
+}
+
+.details-subtitle {
+	margin-left: 10px;
+	color: #BBB;
+}
+
+.details-option {
+	position: relative;
+	margin-left: 10px;
+	top: 10px;
+	font-family: "Roboto-light",sans-serif;
+	color: #000;
+	font-weight: 300;
+	font-size: medium;
+}
+
+.details-logo {
+	position: absolute;
+	top: 9px;
+	left: 9px;
+	border-radius: 16px;
+}
+
+.details-url {
+	position: relative;
+	margin-left: 10px;
+}
+
+.details-data {
+	color: #9d61db;
+	font-family: "Roboto-light",sans-serif;
+	font-weight: 300;
+	font-size: 12px;
+}
+
+a:visited {
+	font-family: "Roboto-light",sans-serif;
+	color: #9d61db;
+};
+
+a {
+	font-family: "Roboto-light",sans-serif;
+	color: #9d61db;
+}
