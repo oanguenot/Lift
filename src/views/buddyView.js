@@ -1,4 +1,4 @@
-define('views/buddyView', ['text!views/templates/buddy.html', 'models/models'], function(template, models) {
+define('views/buddyView', ['text!views/templates/buddy.html'], function(template) {
 
     "use strict";
 
@@ -30,7 +30,7 @@ define('views/buddyView', ['text!views/templates/buddy.html', 'models/models'], 
         },
 
         onInvite: function(e) {
-        	e.preventDefault();
+            e.preventDefault();
             e.stopPropagation();
             //Backbone.Mediator.publish('conference-invite', this.model);
         }

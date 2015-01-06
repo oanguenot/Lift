@@ -418,19 +418,18 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
                                 var json = {};
 
-                                for(var i=0; i < data.length; i++) {
-                                    var field = data[i].split('=');
+                                for(var j=0; j < data.length; j++) {
+                                    var field = data[j].split('=');
                                     if(field.length > 1) {
                                         json[field[0]] = field[1];
                                     }
                                     else {
-                                        if(i === 0) {
-                                            json['id'] = field[0];
+                                        if(j === 0) {
+                                            json.id = field[0];
                                         }
                                         else {
                                             json[field[0]] = field[0];
                                         }
-                                        
                                     }
                                 }
 

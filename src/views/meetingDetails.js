@@ -1,4 +1,4 @@
-define('views/meetingDetails', ['text!views/templates/meetingDetails.html', 'models/models'], function(template, models) {
+define('views/meetingDetails', ['text!views/templates/meetingDetails.html'], function(template) {
 
     "use strict";
 

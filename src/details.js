@@ -9,7 +9,8 @@ require.config({
     waitSeconds: 5
 });
 
-function displayDetails(model) {
+
+window.displayDetails = function displayDetails(model) {
     console.log("Details to display", model);
 
     require(['modules/log', 'views/meetingDetails'], function(log, MeetingDetails) {
@@ -32,6 +33,4 @@ function displayDetails(model) {
             $('#details').append(view.render().el);
         });
     });
-
-}
-
+};

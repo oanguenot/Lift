@@ -38,10 +38,10 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
                 var buddy = buddies.getABuddy(this.model.get('from'));
 
                 if(buddy) {
-                	this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
+                    this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
                 }
                 else {
-                	this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + this.model.get('from') + ' - ' + this.model.get('stateDisplayed'));
+                    this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + this.model.get('from') + ' - ' + this.model.get('stateDisplayed'));
                 }
             }
             else {
@@ -122,7 +122,7 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
         },
 
         onInvite: function(e) {
-        	e.preventDefault();
+            e.preventDefault();
             e.stopPropagation();
             Backbone.Mediator.publish('conference-invite', this.model);
         }

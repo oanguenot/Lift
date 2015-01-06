@@ -36,7 +36,7 @@ define('views/inviteView', ['text!views/templates/invite.html', 'modules/log', '
 
             var that = this;
 
-            buddies.each(function(model, index) {
+            buddies.each(function(model) {
                 that.onAddBuddy(model);
             });
         },

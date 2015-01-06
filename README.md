@@ -18,6 +18,11 @@ OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Me
 
 # HISTORY
 
+## Version 1.5.2
+ - FIX: Display email address when not a buddy (invited meetings)
+ - REFACTORING: Change order in settings view (first URL, then login/password)
+ - REFACTORING: Change naming: OTCMeeting and OpenTouch Meeting Manager (without s)
+
 ## Version 1.5.1
  - FIX: Display Reservationless duration availability
  - FEATURE: Differenciate bad credentials (login/password) from bad server/bad certificate cases by displaying specific message in each case
