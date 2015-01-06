@@ -408,13 +408,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
 
                         var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
 
-                        console.log("XML", xml);
-
                         var conference = parseVCSConference(xml);
                         
                         conference.set({isAnInvite: true});
-
-                        console.log("CONFERENCE", conference);
 
                         this.add(conference);
                     }

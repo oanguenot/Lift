@@ -18,6 +18,12 @@ OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Me
 
 # HISTORY
 
+## Version 1.5.5
+ - REFACTORING: New icon (thanks Alex!!!)
+
+## Version 1.5.4
+ - FIX: Missing Details.html file from production zip
+
 ## Version 1.5.3
  - REFACTORING: Switch from a meeting popup details to a meeting new window details with the ability to open several meetings at the same time
  - FEATURE: Display the rosters list (if exist using email don't resolve with buddy name) and the owner (resolve if possible)

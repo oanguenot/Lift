@@ -32,8 +32,6 @@ define('views/inviteView', ['text!views/templates/invite.html', 'modules/log', '
 
         displayBuddies: function(buddies) {
 
-            console.log("BUddies", buddies);
-
             var that = this;
 
             buddies.each(function(model) {
@@ -43,8 +41,6 @@ define('views/inviteView', ['text!views/templates/invite.html', 'modules/log', '
 
         onAddBuddy: function(model) {
             this.hideEmptyArea();
-
-            console.log("model", model);
 
             var view = new BuddyView({model: model});
             this.$('.invites').append(view.render().el);
