@@ -3,7 +3,9 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
     "use strict";
 
     var protocol = 'https://',
-        host = '';
+        host = '',
+        user = '',
+        pwd = '';
 
     var socket = null;
 
@@ -76,18 +78,18 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         });
     };
 
-    var login = function login(username, password) {
+    var login = function login() {
 
-        if(!host && !username && !password) {
+        if(!host && !user && !pwd) {
             return;
         }
 
         return new Promise(function(resolve, reject) {
 
-            log.debug("ACSConnector", "Login with", {login: username, host: host});
+            log.debug("ACSConnector", "Login with", {login: user, host: host});
 
             //Login with user data
-            var url = protocol + host + "/ics?action=signin&userid=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password) + "&remember_password=true&display=none";
+            var url = protocol + host + "/ics?action=signin&userid=" + encodeURIComponent(user) + "&password=" + encodeURIComponent(pwd) + "&remember_password=true&display=none";
 
             request(url).then(function(jsonResponse) {
                 if(jsonResponse && jsonResponse.data !== null) {
@@ -107,6 +109,80 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
         });
     };
+
+    /*var loginREST = function loginREST() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Login REST...");
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "https://" + host + "/authenticationbasic/login?AlcApplicationUrl=/api/rest/authenticatenosso%3fversion=1.0", true);
+            xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
+            // xmlhttp.withCredentials = true;
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState===4)
+                {
+                    if(xmlhttp.status === 200) {
+                        log.info("ACSConnector", "Login REST OK");
+                        resolve();
+                    }
+                    else {
+                        log.info("ACSConnector", "Login REST KO");
+                        reject();                                                 
+                    }
+                }
+            };
+
+            xmlhttp.send(null);
+        });
+    };
+
+    var openSessionREST = function openSessionREST() {
+
+        if(!host && !user && !pwd) {
+            return;
+        }
+
+        return new Promise(function(resolve, reject) {
+            log.debug("ACSConnector", "OpenSession REST with", {login: user, host: host});
+
+            var xmlhttp= new XMLHttpRequest();
+
+            xmlhttp.open("GET", protocol + host + "/api/rest/authenticate?version=1.0", true);
+            xmlhttp.withCredentials = true;
+            xmlhttp.onreadystatechange=function()
+            {
+
+                if (xmlhttp.readyState===4)
+                {
+                        
+                    if(xmlhttp.status === 200) {
+                        
+                        log.info("ACSConnector", "Authentication REST 200/OK");
+                        resolve();
+                    }
+                    else if(xmlhttp.status === 302) {
+                        log.info("ACSConnector", "Authentication REST 302/OK");
+                        reject([xmlhttp.status]);
+                    }
+                    else if(xmlhttp.status === 401) {
+                        log.info("ACSConnector", "Authentication REST 401/NOK");
+                        var realm = xmlhttp.getResponseHeader('WWW-Authenticate');
+                        log.debug("ACSConnector", "Realm to use", realm);
+                        reject([xmlhttp.status]);                         
+                    }
+                    else {
+                        log.debug("ACSConnector", "Authentication REST OTHER", xmlhttp.status);
+                        reject([xmlhttp.status]);
+                    }
+                }
+            };
+
+            xmlhttp.send(null);
+        });
+    };*/
 
     var getGlobalSettings = function getGlobalSettings() {
 
@@ -481,8 +557,23 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             log.info("ACSConnector", "Try to log...");
             
             host = hostname;
+            user = username;
+            pwd = password;
 
-            login(username, password).then(function(){
+            /*openSessionREST().then(function() {
+              callback.call(context);  
+            }, function(errorType) {
+                var error = errorType[0];
+                if(error === 401) {
+                    loginREST().then(function() {
+                        callback.call(context);
+                    }, function() {
+                        errCallback.call(context, errorType);
+                    });
+                }
+            });*/
+
+            login().then(function(){
                 callback.call(context);
             }, function(errorType) {
                 errCallback.call(context, errorType);

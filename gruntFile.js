@@ -122,6 +122,7 @@ module.exports = function(grunt) {
                     {src:['manifest.json']},                            // Plugin manifest file
                     {src:['popup.html']},                               // Plugin HTML file
                     {src:['terms.html']},                               // Terms file
+                    {src:['details.html']},                               // Terms file
                     {src:['locales/**/*.*']}                            // Locales    
                 ]
             }
