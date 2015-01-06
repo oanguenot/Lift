@@ -22,5 +22,6 @@ define('models/buddy', [], function() {
 
             return 'Someone on earth...';
         }
+
     });
 });

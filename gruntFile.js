@@ -112,7 +112,6 @@ module.exports = function(grunt) {
                 files: [
                     {src:['fonts/*.*']},                                // Fonts
                     {src:['css/*.css']},                                // CSS
-                    //{src:['dist/lift-map.js', 'dist/lift-min.js']},   // Plugins source
                     {src:['img/*.*']},                                  // Images
                     {src:['media/*.*']},                                // Terms and conditions
                     {src:['src/**/*.*']},                               // Sources

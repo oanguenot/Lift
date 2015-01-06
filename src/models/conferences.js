@@ -285,6 +285,11 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
             }    
         }
 
+        if(xml.getElementsByTagName("roster") && xml.getElementsByTagName("roster").length > 0) {
+            json.roster = xml.getElementsByTagName("roster")[0].childNodes[0].nodeValue;
+        }
+
+
         return (new ConferenceModel(json));
     };
 
@@ -394,8 +399,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
 
             acs.getRostersInvite(function(rosters) {
 
-                console.log("ROSTERS", rosters);
-
                 if(rosters) {
                     for(var i=0, len = rosters.length; i < len; i++) {
 
@@ -404,6 +407,8 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                         var data = meeting[1].replace(/"/g, '\'').replace(/\\/g, '');
 
                         var xml = new window.DOMParser().parseFromString(data, "text/xml").documentElement;
+
+                        console.log("XML", xml);
 
                         var conference = parseVCSConference(xml);
                         

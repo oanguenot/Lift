@@ -9,7 +9,7 @@ require.config({
     waitSeconds: 5
 });
 
-require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/detailsView', 'views/confirmView', 'views/inviteView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, DetailsView, ConfirmView, InviteView, models) {
+require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView', 'views/joinView', 'views/editorView', 'views/aboutView', 'views/confirmView', 'views/inviteView', 'models/models'], function(log, MainView, ErrorView, ConfigView, JoinView, EditorView, AboutView, ConfirmView, InviteView, models) {
 
     "use strict";
 
@@ -132,32 +132,21 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     function displayDetailsPopup(model) {
      
-        var view = new DetailsView({model: model});
-
-        Backbone.Mediator.subscribeOnce('details-close', function() {
-            view.close();
-            mainView.unblur();
-        });
-
-        mainView.blur();
-
-        $('#popup-elt').append(view.render().el);
-        
-
-        /*var params = {'id': 'details', 'outerBounds': { 'width': 460, 'height': 560, 'top': 100, 'left': 300}};
+        var params = {'id': 'details-' + model.get('vanity'), 'outerBounds': { 'width': 440, 'height': 570, 'top': 100, 'left': 300}};
         chrome.app.window.create('details.html', params, function (myWindow) {
-            myWindow.contentWindow.addEventListener('load', function(e) {
+            myWindow.contentWindow.addEventListener('load', function() {
+                
                 setTimeout(function() {
 
                     var settings = models.settings();
 
-                    model.set({'call': settings.getConferenceCallInformation(), 'domain': settings.getDomain(), 'protocol': settings.getProtocol()})
+                    model.set({'call': settings.getConferenceCallInformation(), 'domain': settings.getDomain(), 'protocol': settings.getProtocol()});
 
                     myWindow.contentWindow.displayDetails(model);
                 }, 500);
                 
             });
-        });*/
+        });
     }
 
     function displayConfirmationPopup(model) {

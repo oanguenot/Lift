@@ -62,19 +62,6 @@
 		"join": "Joindre",
 		"cancel": "Annuler"
 	},
-	"details": {
-		"title": "ACCES A LA REUNION",
-		"subtitle": "Voici les informations pour accéder à la réunion",
-		"code": "Code d'acces",
-		"leader": "Code animateur",
-		"noinfo": "Aucune information",
-		"password": "Mot de passe de la réunion",
-		"call": "Information du pont de conférence audio",
-		"url": "Lien",
-		"subject": "Sujet",
-		"audio": "Information téléphonique",
-		"nocall": "Aucun numéro d'appel"
-	},
 	"about": {
 		"title": "A PROPOS",
 		"copyright-begin": "Copyright Alcatel-Lucent Enterprise. All rights reserved. Alcatel-Lucent Enterprise and the Alcatel-Lucent Enterprise logo are respectively registered trademarks and service marks of Alcatel-Lucent Enterprise.",
@@ -128,13 +115,20 @@
 		"contact": "Ajouter un contact"
 	},
 	"meetingDetails": {
-		"title": "Details",
+		"title": "Détails",
+		"subtitle": "Voici les informations pour accéder à la réunion",
 		"data": "Joindre la réunion en ligne",
 		"audio": "Joindre par téléphone",
 		"code": "Codes d'accès",
 		"password": "Mot de passe",
 		"participant": "Participant",
 		"leader": "Animateur",
-		"invite": "Personnes invitées"
+		"invite": "Personnes invitées",
+		"nocall": "Aucun numéro d'appel",
+		"email": "Envoyer par e-mail",
+		"noinvite": "Aucune invitation",
+		"more": "personne en plus",
+		"mores": "personnes en plus",
+		"from": "Invitation de la part de"
 	}
 }

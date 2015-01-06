@@ -33,14 +33,15 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
 
             if(this.model.get('isAnInvite')) {
                 var buddies = models.buddies();
-                console.log("buddies", buddies);
 
                 var buddy = buddies.getABuddy(this.model.get('from'));
 
                 if(buddy) {
+                    this.model.set({'inviteFrom': buddy.getDisplayName()});
                     this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + buddy.getDisplayName() + ' - ' + this.model.get('stateDisplayed'));
                 }
                 else {
+                    this.model.set({'inviteFrom': this.model.get('from')});
                     this.$('.meetingState').html(i18n.t('conference.inviteLabel') + " " + this.model.get('from') + ' - ' + this.model.get('stateDisplayed'));
                 }
             }
