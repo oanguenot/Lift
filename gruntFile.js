@@ -118,7 +118,7 @@ module.exports = function(grunt) {
                     {src:['vendor/*.*']},                               // FOSS
                     {src:['background.js']},                            // Background part of the plugins
                     {src:['LICENSE']},                                  // License
-                    {src:['opentouch.png', 'lift.png', 'lift_128.png', 'lift_48.png', 'otmeetingmanager_80.png']},  // Plugin icons
+                    {src:['otmeetingmanager_48.png', 'otmeetingmanager_80.png', 'otmeetingmanager_128.png']},  // Plugin icons
                     {src:['manifest.json']},                            // Plugin manifest file
                     {src:['popup.html']},                               // Plugin HTML file
                     {src:['terms.html']},                               // Terms file
