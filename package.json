@@ -7,11 +7,11 @@
     "openTouch"
   ],
   "author": {
-    "name": "Olivier Anguenot",
+    "name": "Alcatel Lucent Enterprise",
     "email": "olivier.anguenot@alcatel-lucent.com",
-    "url": "https://www.alcatel-lucent.com/"
+    "url": "https://www.alcatel-lucent-enterprise.com/"
   },
-  "version": "1.5.5",
+  "version": "1.5.6",
   "engines": {
     "node": ">= 0.8.0"
   },

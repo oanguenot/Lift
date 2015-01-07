@@ -1,10 +1,10 @@
 {
   "name": "OpenTouch Meeting Manager",
   "short_name": "OTCMeeting",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "manifest_version": 2,
   "description": "OpenTouch Meeting Manager is a Google Chrome packaged app for scheduling meetings",
-  "icons": { "128": "lift_128.png", "48": "lift_48.png" },
+  "icons": { "128": "otmeetingmanager_128.png", "48": "otmeetingmanager_48.png" },
   "permissions": ["http://*/*", "https://*/*", "<all_urls>", "unlimitedStorage"],
   "app": {
     "background": {
