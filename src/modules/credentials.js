@@ -38,12 +38,7 @@ define('modules/credentials', ['modules/log'], function(log) {
 
                 }, function(e) {
                     log.error("CONFIG", "Error: Can't get file", e);
-                    //reject(e);
-                    resolve({
-                        login: "burgart", 
-                        password: "@Jakin14", 
-                        host: "opentouch-beta.lungma.alcatel-lucent.com"
-                    });
+                    reject(e);
                 });
             }, function(e) {
                 log.error("CONFIG", "Error: Can't request file system", e);

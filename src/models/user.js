@@ -22,7 +22,11 @@ define('models/user', ['modules/credentials', 'modules/acsConnector', 'modules/l
         },
 
         hasErrorOfTypeLogin: function() {
-            return (this.get('errorType') === 'err_login');
+            return (this.get('errorType') === 403);
+        },
+
+        hasErrorOfTypeServerTooOld: function() {
+            return (this.get('errorType') === 404);
         },
 
         signin: function() {

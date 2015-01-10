@@ -26,8 +26,13 @@ define('views/errorView', ['text!views/templates/error.html', 'models/models'], 
                 this.$('.error-next').text(i18n.t('error.subtitle-err-login'));
             }
             else {
-                this.$('.error-next').text(i18n.t('error.subtitle-err-certificate'));
-                this.$('.error-next-next').text(i18n.t('error.subtitle-err-certificate-next'));
+                if(user.hasErrorOfTypeServerTooOld()) {
+                    this.$('.error-next').text(i18n.t('error.subtitle-err-old'));
+                }
+                else {
+                   this.$('.error-next').text(i18n.t('error.subtitle-err-certificate')); 
+                }
+                
             }
 
             return this;

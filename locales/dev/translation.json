@@ -24,8 +24,8 @@
 		"title": "ERROR",
 	    "subtitle": "OpenTouch Meeting Manager can't connect to the server",
 	    "subtitle-err-login": "Your OpenTouch account or your password is not good. Please change your parameters in order to connect to the OpenTouch server!",
-		"subtitle-err-certificate": "Either the OpenTouch server can't be reached (bad address, down...) or you don't have the OpenTouch certificate correctly deployed on your computer",
-		"subtitle-err-certificate-next": "Note: You can temporarily accept the OpenTouch certificate by opening OTC/Web using Chrome",
+		"subtitle-err-certificate": "Either the OpenTouch server can't be reached (bad address, down...) or you don't have the OpenTouch certificate correctly deployed on your computer.",
+		"subtitle-err-old": "The OpenTouch server you're trying to reach don't support OTCMeeting yet. Please use an OpenTouch server R2.1 or higher.",
 		"close": "Close"
 	},
 	"conference": {

@@ -23,9 +23,9 @@
 	"error": {
 		"title": "ERREUR",
 	    "subtitle": "OpenTouch Meeting Manager n'arrive pas à se connecter au serveur",
-	    "subtitle-err-login": "Votre accompte ou votre mot de passe n'est pas correct. Veuillez modifier vos paramètres pour vous connecter au serveur OpenTouch",
-		"subtitle-err-certificate": "Soit le server OpenTouch n'est pas joignable (ex: l'adresse du serveur n'est pas bonne, le serveur est en panne...), soit le certificat OpenTouch n'est pas correctement installé sur votre ordinateur",
-		"subtitle-err-certificate-next": "Note: Vous pouvez temporairement accepté le certificat OpenTouch en ouvrant l'application OTC/Web depuis votre navigateur Chrome",
+	    "subtitle-err-login": "Votre nom d'utilisateur ou votre mot de passe n'est pas correct. Veuillez modifier vos paramètres pour vous connecter au serveur OpenTouch",
+		"subtitle-err-certificate": "Soit le server OpenTouch n'est pas joignable (ex: l'adresse du serveur n'est pas bonne, le serveur est en panne...), soit le certificat OpenTouch n'est pas correctement installé sur votre ordinateur.",
+		"subtitle-err-old": "Le serveur OpenTouch sur lequel vous tentez de vous connecter ne supporte pas encore OTCMeeting. Veuillez utiliser un OpenTouch version R2.1 ou supérieur.",
 		"close": "Fermer"
 	},
 	"conference": {

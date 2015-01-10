@@ -98,7 +98,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                 if(jsonResponse && jsonResponse.data !== null) {
                     
                     log.warning("ACSConnector", "Login not good");
-                    reject(['err_login']);
+                    reject([403]);
                 }
                 else {
                     log.info("ACSConnector", "Login successfull");
@@ -185,6 +185,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             var xmlhttp= new XMLHttpRequest();
 
             xmlhttp.open("GET", protocol + host + "/api/rest/authenticatenosso?version=1.0", true);
+            xmlhttp.timeout = 3000;
             xmlhttp.onreadystatechange=function()
             {
 
@@ -196,21 +197,22 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                         log.info("ACSConnector", "Authentication REST 200/OK");
                         resolve();
                     }
-                    else if(xmlhttp.status === 302) {
-                        log.info("ACSConnector", "Authentication REST 302/OK");
-                        reject([xmlhttp.status]);
-                    }
-                    else if(xmlhttp.status === 401) {
-                        log.info("ACSConnector", "Authentication REST 401/NOK");
-                        var realm = xmlhttp.getResponseHeader('WWW-Authenticate');
-                        log.debug("ACSConnector", "Realm to use", realm);
-                        reject([xmlhttp.status]);                         
-                    }
                     else {
-                        log.debug("ACSConnector", "Authentication REST OTHER", xmlhttp.status);
-                        reject([xmlhttp.status]);
+                        log.debug("ACSConnector", "Authentication REST", xmlhttp.status);
+
+                        switch (xmlhttp.status) {
+                            case 401:
+                                var realm = xmlhttp.getResponseHeader('WWW-Authenticate');
+                                log.debug("ACSConnector", "Realm to use", realm);
+                                break;
+                        } 
+                       reject([xmlhttp.status]);
                     }
                 }
+            };
+
+            xmlhttp.ontimeout = function() {
+                log.debug("ACSConnector", "Connection timeout");
             };
 
             xmlhttp.send(null);
@@ -605,6 +607,9 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                     errCallback.call(context, errorType);
                 });   
             }, function(errorType) {
+
+                console.log("ERRORTYPE", errorType);
+
                 var error = errorType[0];
                 if(error === 401) {
                     loginREST().then(function() {
@@ -630,16 +635,10 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                             errCallback.call(context, errorType);
                         }
                     });
+                } else if(error === 404 || error === 0) {
+                    errCallback.call(context, errorType);
                 }
             });
-
-            /*
-            login().then(function(){
-                callback.call(context);
-            }, function(errorType) {
-                errCallback.call(context, errorType);
-            });
-            */ 
         },
 
         /**
