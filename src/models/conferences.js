@@ -333,7 +333,15 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                     this.add(conference);
                 }
                 else {
-                    Backbone.Mediator.publish('editor-schedule-modify', meeting);
+                    var code = xmlResponse.getElementsByTagName("message")[0].getAttribute("code");
+                    console.log("code", code);
+                    if(code === "2026") {
+                        Backbone.Mediator.publish('editor-schedule-right', null);
+                    }
+                    else {
+                       Backbone.Mediator.publish('editor-schedule-modify', meeting); 
+                    }
+                    
                 }
                 
             }, function() {

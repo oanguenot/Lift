@@ -107,6 +107,10 @@
 		"title": "REUNION MODIFIEE",
 		"subtitle": "La réunion a été modifiée!"
 	},
+	"noright": {
+		"title": "ERREUR",
+		"subtitle": "Vous n'avez pas le droit de créer un nouveau meeting. Veuillez contacter votre administrateur!"
+	},
 	"invite": {
 		"invite": "Inviter",
 		"title": "Personnes invitées",

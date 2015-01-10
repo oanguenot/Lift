@@ -107,6 +107,10 @@
 		"title": "MEETING CHANGED",
 		"subtitle": "Your meeting has been successfully modified!"
 	},
+	"noright": {
+		"title": "ERROR",
+		"subtitle": "You have not the right to schedule a meeting. Please see with your administrator!"
+	},
 	"invite": {
 		"invite": "Invite",
 		"title": "Invited contacts",

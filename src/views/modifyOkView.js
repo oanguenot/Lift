@@ -8,6 +8,8 @@ define('views/modifyOkView', ['text!views/templates/modifyok.html'], function(te
 
         className: 'modalDialog visible',
 
+        error: '',
+
         initialize: function(){
         },
 
@@ -15,9 +17,18 @@ define('views/modifyOkView', ['text!views/templates/modifyok.html'], function(te
             'click #closeBtn': 'onClose'
         },
 
+        setError: function(error) {
+            this.error = error;
+        },
+
         render: function() {
             this.$el.html(template);
             this.$('.modifyok').i18n();
+
+            if(this.error === 'noright') {
+                this.$('.titleModify').text(i18n.t('noright.title'));
+                this.$('.detailsModify').text(i18n.t('noright.subtitle'));
+            }
             return this;
         },
 

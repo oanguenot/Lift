@@ -24,7 +24,8 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
         subscriptions: {
             'editor-schedule-ok': 'onScheduleOk',
             'editor-schedule-error': 'onScheduleError',
-            'editor-schedule-modify': 'onScheduleModify'
+            'editor-schedule-modify': 'onScheduleModify',
+            'editor-schedule-right':'onScheduleErrorRight'
         },
 
         render: function() {
@@ -234,6 +235,20 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         onScheduleError: function() {
             log.info("EDITOR", "Schedule error");
+        },
+
+        onScheduleErrorRight: function() {
+            log.info("EDITOR", "No right to create the meeting");
+
+            var modifyok = new ModifyOkView();
+            modifyok.setError('noright');
+
+            Backbone.Mediator.subscribeOnce('modifyok-close', function() {
+                modifyok.close();
+                Backbone.Mediator.publish('editor-close');
+            });
+
+            $('#popup-elt').append(modifyok.render().el);
         },
 
         onScheduleModify: function(meeting) {
