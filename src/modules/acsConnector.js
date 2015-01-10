@@ -43,6 +43,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             http.open("POST", parts[0], true);
             http.setRequestHeader("Cache-Control", "no-cache");
             http.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            http.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
             http.onreadystatechange = function () {
 
                 if (http.readyState === 4) {
@@ -65,12 +66,14 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
                         resolve(msg);
                     }
-                    else {
-                        log.error("ACSConnector", "Receive", http);
-                        reject('err_server');
+                    else if(http.status === 401) {
+                        log.error("ACSConnector", "Not authentified for that ACS request", http.status);
+                        reject([http.status]);
                     }
-                } else {
-
+                    else {
+                        log.error("ACSConnector", "Receive", http.status);
+                        reject(['err_server']);
+                    }
                 }
             };
 
@@ -110,7 +113,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         });
     };
 
-    /*var loginREST = function loginREST() {
+    var loginREST = function loginREST() {
 
         return new Promise(function(resolve, reject) {
 
@@ -119,7 +122,38 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", "https://" + host + "/authenticationbasic/login?AlcApplicationUrl=/api/rest/authenticatenosso%3fversion=1.0", true);
             xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
-            // xmlhttp.withCredentials = true;
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState===4)
+                {
+                    if(xmlhttp.status === 200) {
+                        log.info("ACSConnector", "Login REST OK");
+                        resolve();
+                    }
+                    else if(xmlhttp.status === 401) {
+                        log.info("ACSConnector", "Login REST Still not authorized");
+                        reject([xmlhttp.status]);
+                    }
+                    else {
+                        log.info("ACSConnector", "Login REST KO");
+                        reject();                                                 
+                    }
+                }
+            };
+
+            xmlhttp.send(null);
+        });
+    };
+
+    var logoutREST = function loginREST() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Login REST...");
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "https://" + host + "/authenticationbasic/login?AlcApplicationUrl=/api/rest/authenticatenosso%3fversion=1.0", true);
+            xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
             xmlhttp.onreadystatechange=function()
             {
                 if (xmlhttp.readyState===4)
@@ -150,8 +184,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
             var xmlhttp= new XMLHttpRequest();
 
-            xmlhttp.open("GET", protocol + host + "/api/rest/authenticate?version=1.0", true);
-            xmlhttp.withCredentials = true;
+            xmlhttp.open("GET", protocol + host + "/api/rest/authenticatenosso?version=1.0", true);
             xmlhttp.onreadystatechange=function()
             {
 
@@ -182,7 +215,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
             xmlhttp.send(null);
         });
-    };*/
+    };
 
     var getGlobalSettings = function getGlobalSettings() {
 
@@ -216,7 +249,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                 resolve(jsonResponse);
             }, function(err) {
                 log.error("ACSConnector", "getListOfMeetings", err);
-                reject();
+                reject(err);
             });
         });
     };
@@ -418,112 +451,117 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             
             var parts = url.split('?');
             socket.open("POST", parts[0], true);
+            socket.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
 
             var response_index = 0;
 
             socket.onreadystatechange = function () {
 
-                // status produces a javascript error in IE when readyState != 4.
-                var success = this.readyState !== 4 || Math.floor(this.status/100) === 2;
-
                 // Parse a new data chunk
-                if (success && (this.readyState === 3 || this.readyState === 4)) {
-                    var index = this.responseText.indexOf('\n', response_index);
+                if (this.readyState >= 3) {
 
-                    while (index > 0) {
-                        var command = this.responseText.substr(response_index, index - response_index);
+                    if (this.readyState === 4) {
+                        if(this.status === 401) {
+                            log.warning("PIPE", "Not authorized to open the Event Pipe");
+                            reject([this.status]);
+                        }
+                        else {
+                            // The connection was lost.
+                            log.warning("PIPE", "Connection lost to Event Pipe");
+                        }
+                    }
+                    else {
 
-                        if (command.length > 5) {
-                            // Split the command apart, so we don't eval executable code,
-                            // causing a cross-site scripting error.
-                            var paren = command.indexOf('(');
-                            var dot = command.indexOf('.');
-                            var e = command.substring(dot+1, paren);
-                            
-                            var params = command.substring(paren+1, command.length-2);
+                        var index = this.responseText.indexOf('\n', response_index);
 
-                            log.debug("PIPE", "Event", e);
+                        while (index > 0) {
+                            var command = this.responseText.substr(response_index, index - response_index);
 
-                            var data = params.split(', ');
-                            for(var i = 0; i < data.length; i++) {
-                                if(data[i].length > 2) {
+                            if (command.length > 5) {
+                                // Split the command apart, so we don't eval executable code,
+                                // causing a cross-site scripting error.
+                                var paren = command.indexOf('(');
+                                var dot = command.indexOf('.');
+                                var e = command.substring(dot+1, paren);
+                                
+                                var params = command.substring(paren+1, command.length-2);
 
-                                    data[i] = data[i].substring(1, data[i].length-1);
-                                }
-                            }
-                            log.debug("PIPE", "Parameters", data);
+                                log.debug("PIPE", "Event", e);
 
-                            if(e === 'Initialize') {
-                                var ACSVersion = "Unknown";
+                                var data = params.split(', ');
+                                for(var i = 0; i < data.length; i++) {
+                                    if(data[i].length > 2) {
 
-                                if(data && data.length > 0) {
-                                    ACSVersion = data[0];
-                                }
-
-                                log.debug("PIPE", "Event pipe channel opened with ACS", ACSVersion);
-                            }
-
-                            if(e === "LoginSucceeded") {
-
-                                log.debug("PIPE", "User successfully logged in to Event Pipe");
-                                 // Ask for roster invites
-                                askForRosterInvites();
-
-                                // Wait no more than 500ms before ending the event pipe.
-                                // If an updateConference event is received, restart the timer to be sure to receive others updateConference events if exists
-                                timeoutID = setTimeout(function(){
-                                    resolve(rosters);
-                                }, 3000);
-                            }
-
-                            if(e === 'UpdateConference') {
-                                log.debug("PIPE", "Rosters received", data);
-
-                                rosters.push(data);
-
-                                // Start timer to detect end of rosters received
-                                if(timeoutID > -1) {
-                                    clearTimeout(timeoutID);
-                                }
-                                timeoutID = setTimeout(function() {
-                                    resolve(rosters);
-                                }, 500);
-                            }
-
-                            if(e === 'UpdateBuddyData') {
-
-                                var json = {};
-
-                                for(var j=0; j < data.length; j++) {
-                                    var field = data[j].split('=');
-                                    if(field.length > 1) {
-                                        json[field[0]] = field[1];
+                                        data[i] = data[i].substring(1, data[i].length-1);
                                     }
-                                    else {
-                                        if(j === 0) {
-                                            json.id = field[0];
+                                }
+                                log.debug("PIPE", "Parameters", data);
+
+                                if(e === 'Initialize') {
+                                    var ACSVersion = "Unknown";
+
+                                    if(data && data.length > 0) {
+                                        ACSVersion = data[0];
+                                    }
+
+                                    log.debug("PIPE", "Event pipe channel opened with ACS", ACSVersion);
+                                }
+
+                                if(e === "LoginSucceeded") {
+
+                                    log.debug("PIPE", "User successfully logged in to Event Pipe");
+                                     // Ask for roster invites
+                                    askForRosterInvites();
+
+                                    // Wait no more than 3s before ending the event pipe.
+                                    // If an updateConference event is received, restart the timer to be sure to receive others updateConference events if exists
+                                    timeoutID = setTimeout(function(){
+                                        resolve(rosters);
+                                    }, 3000);
+                                }
+
+                                if(e === 'UpdateConference') {
+                                    log.debug("PIPE", "Rosters received", data);
+
+                                    rosters.push(data);
+
+                                    // Stop current timer and restart a new one to detect if there is an other UpdateConference event
+                                    if(timeoutID > -1) {
+                                        clearTimeout(timeoutID);
+                                    }
+                                    timeoutID = setTimeout(function() {
+                                        resolve(rosters);
+                                    }, 500);
+                                }
+
+                                if(e === 'UpdateBuddyData') {
+
+                                    var json = {};
+
+                                    for(var j=0; j < data.length; j++) {
+                                        var field = data[j].split('=');
+                                        if(field.length > 1) {
+                                            json[field[0]] = field[1];
                                         }
                                         else {
-                                            json[field[0]] = field[0];
+                                            if(j === 0) {
+                                                json.id = field[0];
+                                            }
+                                            else {
+                                                json[field[0]] = field[0];
+                                            }
                                         }
                                     }
+
+                                    contacts[json.email] = json;
+                                    Backbone.Mediator.publish('buddy-new', new Buddy(json));
+                                    log.debug("PIPE", "Add new contact", contacts[json.email]);
                                 }
-
-                                contacts[json.email] = json;
-                                Backbone.Mediator.publish('buddy-new', new Buddy(json));
-                                log.debug("PIPE", "Add new contact", contacts[json.email]);
                             }
+                            response_index = index + 1;
+                            index = this.responseText.indexOf('\n', response_index);
                         }
-                        response_index = index + 1;
-                        index = this.responseText.indexOf('\n', response_index);
                     }
-                }
-
-                // The connection was lost.
-                if (this.readyState === 4) {
-                    log.warning("PIPE", "Connection lost to Event Pipe");
-                    //if (!backgroundMode)
-                    //  repair("socket_broken");
                 }
             };
 
@@ -532,7 +570,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             };
 
             socket.onError = function(e) {
-                log.error("PIPE", "openEventPipe", e);    
+                log.error("PIPE", "Errur openEventPipe", e);    
                 reject();
             };
 
@@ -560,24 +598,48 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             user = username;
             pwd = password;
 
-            /*openSessionREST().then(function() {
-              callback.call(context);  
+            openSessionREST().then(function() {
+               login().then(function(){
+                    callback.call(context);
+                }, function(errorType) {
+                    errCallback.call(context, errorType);
+                });   
             }, function(errorType) {
                 var error = errorType[0];
                 if(error === 401) {
                     loginREST().then(function() {
-                        callback.call(context);
-                    }, function() {
-                        errCallback.call(context, errorType);
+                        login().then(function(){
+                            callback.call(context);
+                        }, function(errorType) {
+                            errCallback.call(context, errorType);
+                        }); 
+                    }, function(errorTypeBis) {
+                        error = errorTypeBis[0];
+                        if(error === 401) {
+                            loginREST().then(function() {
+                                login().then(function(){
+                                    callback.call(context);
+                                }, function(errorType) {
+                                    errCallback.call(context, errorType);
+                                }); 
+                            }, function() {
+                                errCallback.call(context, errorType);
+                            });
+                        }
+                        else {
+                            errCallback.call(context, errorType);
+                        }
                     });
                 }
-            });*/
+            });
 
+            /*
             login().then(function(){
                 callback.call(context);
             }, function(errorType) {
                 errCallback.call(context, errorType);
-            }); 
+            });
+            */ 
         },
 
         /**
@@ -612,8 +674,18 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         getMeetings: function(callback, errCallback, context) {
             getListOfMeetings().then(function(params){
                 callback.call(context, params);
-            }, function() {
-                errCallback.call(context);
+            }, function(errorType) {
+                var error = errorType[0];
+                if( error === 401) {
+                    getListOfMeetings().then(function(params){
+                        callback.call(context, params);
+                    }, function() {
+                        errCallback.call(context);
+                    });
+                }
+                else {
+                    errCallback.call(context);
+                }
             });
         },
 
@@ -649,8 +721,19 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
             openEventPipe().then(function(rosters) {
                 closeEventPipe();
                 callback.call(context, rosters);
-            }, function() {
-                errCallback.call(context);
+            }, function(errorType) {
+                var error = errorType[0];
+                if(error === 401) {
+                    openEventPipe().then(function(rosters) {
+                        closeEventPipe();
+                        callback.call(context, rosters);
+                    }, function() {
+                        errCallback.call(context);
+                    });
+                }
+                else {
+                    errCallback.call(context);
+                }
             });
         }
     };

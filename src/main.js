@@ -132,7 +132,7 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
 
     function displayDetailsPopup(model) {
      
-        var params = {'id': 'details-' + model.get('vanity'), 'outerBounds': { 'width': 440, 'height': 570, 'top': 100, 'left': 300}};
+        var params = {'id': 'details-' + model.get('vanity'), 'outerBounds': { 'width': 440, 'height': 600, 'top': 100, 'left': 300}};
         chrome.app.window.create('details.html', params, function (myWindow) {
             myWindow.contentWindow.addEventListener('load', function() {
                 
