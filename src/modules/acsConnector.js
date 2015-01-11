@@ -343,7 +343,9 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
 
             if(params.password) {
                 url += "&web_password=" + params.password;
-                url += "&audio_password=" + params.password;
+            }
+            if(params.audiopassword) {
+                url += "&audio_password=" + params.audiopassword;
             }
 
             switch(params.profile) {

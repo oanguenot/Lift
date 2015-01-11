@@ -344,7 +344,6 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                     else {
                        Backbone.Mediator.publish('editor-schedule-modify', meeting); 
                     }
-                    
                 }
                 
             }, function() {

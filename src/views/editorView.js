@@ -186,6 +186,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
                 duration: this.$(".durationInput").val(),
                 recurrence: this.$('.recurrenceType').val(),
                 password: this.$('.passwordCheck').prop('checked') ? this.$('.passwordInput').val() : null,
+                audiopassword: this.$('.passwordCheck').prop('checked') ? this.$('.audioInput').val() : null,
                 modify : this.vanity,
                 isModified: this.isModified,
                 profile: this.$('.profileType').val()
@@ -248,7 +249,6 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             Backbone.Mediator.subscribeOnce('modifyok-close', function() {
                 view.close();
-                Backbone.Mediator.publish('editor-close');
             });
 
             $('#popup-elt').append(view.render().el);
@@ -262,7 +262,6 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             Backbone.Mediator.subscribeOnce('modifyok-close', function() {
                 view.close();
-                Backbone.Mediator.publish('editor-close');
             });
 
             $('#popup-elt').append(view.render().el);
