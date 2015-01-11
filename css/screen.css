@@ -350,25 +350,31 @@ background-color: #72539E;
 
 .passwordInput {
 	width: 40%;
-padding-left: 10px;
-margin-left: 10px;
-color: #fff;
-font-weight: 100;
-border: 2px solid #666A6F;
-border-radius: 5px;
+	padding-left: 10px;
+	margin-left: 10px;
+	color: #fff;
+	font-weight: 100;
+	border: 2px solid #666A6F;
+	border-radius: 5px;
+	margin-bottom: 5px;
 }
 
 .passwordInput:hover {
-background-color: #72539E;
+	background-color: #72539E;
 	border-color: #72539E;
 }
 
-.digit {
+.webpassword, .audiopassword {
 	font-family: "Roboto-light",sans-serif;
 	font-weight: 500;
 	color: #4E5256;;
 	font-size: 12px;
 	margin-left: 10px;
+}
+
+.webpassword:hover, .audiopassword:hover {
+	cursor: pointer;
+	text-decoration: underline;
 }
 
 .firstLine {

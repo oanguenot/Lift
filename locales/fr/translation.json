@@ -89,7 +89,9 @@
 		"hour": "Commence à (Heure locale)",
 		"duration": "Durée (en heures)",
 		"password": "Protéger ma réunion avec un mot de passe",
-		"digit": "Numérique seulement",
+		"audiopassword": "Audio",
+		"webpassword": "Web",
+		"help-password": "Aide",
 		"schedule": "Créer",
 		"cancel": "Annuler",
 		"change": "Modifier"
@@ -110,6 +112,23 @@
 	"noright": {
 		"title": "ERREUR",
 		"subtitle": "Vous n'avez pas le droit de créer un nouveau meeting. Veuillez contacter votre administrateur!"
+	},
+	"badpassword": {
+		"title": "ERROR",
+		"subtitle": "Le mot de passe renseigné n'est pas bon. Veuillez suivre la rêgle affichée!"
+	},
+	"password": {
+		"title": "REGLES DU MOT DE PASSE",
+		"subtitle": "Pour être pris en compte, le mot de passe doit suivre les rêgles suivantes",
+		"min":"Longueur minimale",
+		"nomin": "Pas de longueur minimale",
+		"digit":"Seulement des chiffres",
+		"alpha": "Chiffres et lettres uniquement (Sans caractères spéciaux)",
+		"letter": "Seulement des lettres (pas de chiffres)",
+		"special": "Tous les caractères sont autorisés",
+		"lowercase": "Uniquement avec des lettres minuscules",
+		"uppercase": "Uniquement avec des lettres majuscules",
+		"full": "Lettres majuscules et minuscules autorisées"
 	},
 	"invite": {
 		"invite": "Inviter",

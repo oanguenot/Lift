@@ -89,7 +89,9 @@
 		"hour": "At (local time)",
 		"duration": "Duration (hours)",
 		"password": "Protect the meeting with a password",
-		"digit": "Digit only",
+		"audiopassword": "Audio",
+		"webpassword": "Web",
+		"password-help": "Help",
 		"schedule": "Schedule",
 		"cancel": "Cancel",
 		"change": "Modify"
@@ -110,6 +112,23 @@
 	"noright": {
 		"title": "ERROR",
 		"subtitle": "You have not the right to schedule a meeting. Please see with your administrator!"
+	},
+	"badpassword": {
+		"title": "ERROR",
+		"subtitle": "The password provided is not good. Please follow the password rules!"
+	},
+	"password": {
+		"title": "PASSWORD RULES",
+		"subtitle": "To be taken into account, the password should follow the rules below",
+		"min":"Minimal length",
+		"nomin": "No minimal length",
+		"digit":"Only digit characters",
+		"alpha": "Alpha-numeric characters (no special characters)",
+		"letter": "Only letters (no digit)",
+		"special": "Alpha-numeric characters (with special characters)",
+		"lowercase": "Only lowercase characters",
+		"uppercase": "Only uppercase characters",
+		"full": "Uppercase and lowercase characters"
 	},
 	"invite": {
 		"invite": "Invite",

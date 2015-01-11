@@ -338,6 +338,9 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                     if(code === "2026") {
                         Backbone.Mediator.publish('editor-schedule-right', null);
                     }
+                    else if (code === "2025") {
+                        Backbone.Mediator.publish('editor-schedule-badpassword', null);
+                    }
                     else {
                        Backbone.Mediator.publish('editor-schedule-modify', meeting); 
                     }

@@ -1,4 +1,4 @@
-define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView', 'views/modifyOkView'], function(template, log, models, CreateOkView, ModifyOkView) {
+define('views/editorView', ['text!views/templates/editor.html', 'modules/log', 'models/models', 'views/createOkView', 'views/modifyView', 'views/passwordView'], function(template, log, models, CreateOkView, ModifyView, PasswordView) {
 
     "use strict";
 
@@ -18,14 +18,17 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
         events: {
             'click #cancelBtn': 'onCancel',
             'click #scheduleBtn': 'onSchedule',
-            'click .aboutButton': "onAbout"
+            'click .aboutButton': "onAbout",
+            'click .webpassword': 'onWebPassword',
+            'click .audiopassword': 'onAudioPassword'
         },
 
         subscriptions: {
             'editor-schedule-ok': 'onScheduleOk',
             'editor-schedule-error': 'onScheduleError',
             'editor-schedule-modify': 'onScheduleModify',
-            'editor-schedule-right':'onScheduleErrorRight'
+            'editor-schedule-right':'onScheduleErrorRight',
+            'editor-schedule-badpassword': 'onScheduleErrorPassword'
         },
 
         render: function() {
@@ -240,28 +243,64 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
         onScheduleErrorRight: function() {
             log.info("EDITOR", "No right to create the meeting");
 
-            var modifyok = new ModifyOkView();
-            modifyok.setError('noright');
+            var view = new ModifyView();
+            view.setError('noright');
 
             Backbone.Mediator.subscribeOnce('modifyok-close', function() {
-                modifyok.close();
+                view.close();
                 Backbone.Mediator.publish('editor-close');
             });
 
-            $('#popup-elt').append(modifyok.render().el);
+            $('#popup-elt').append(view.render().el);
+        },
+
+        onScheduleErrorPassword: function() {
+            log.info("EDITOR", "Bad password for the meeting");
+
+            var view = new ModifyView();
+            view.setError('badpassword');
+
+            Backbone.Mediator.subscribeOnce('modifyok-close', function() {
+                view.close();
+                Backbone.Mediator.publish('editor-close');
+            });
+
+            $('#popup-elt').append(view.render().el);
         },
 
         onScheduleModify: function(meeting) {
             log.info("EDITOR", "Schedule Modification ok", meeting);
 
-            var modifyok = new ModifyOkView({model: meeting});
+            var view = new ModifyView({model: meeting});
 
             Backbone.Mediator.subscribeOnce('modifyok-close', function() {
-                modifyok.close();
+                view.close();
                 Backbone.Mediator.publish('editor-modify');
             });
 
-            $('#popup-elt').append(modifyok.render().el);
+            $('#popup-elt').append(view.render().el);
+        },
+
+        onWebPassword: function() {
+            var view = new PasswordView();
+            view.setInfo('web');
+
+            Backbone.Mediator.subscribeOnce('password-close', function() {
+                view.close();
+            });
+
+            $('#popup-elt').append(view.render().el);
+        },
+
+        onAudioPassword: function () {
+            var view = new PasswordView();
+            view.setInfo('audio');
+
+            Backbone.Mediator.subscribeOnce('password-close', function() {
+                view.close();
+            });
+
+            $('#popup-elt').append(view.render().el);
         }
     });
 

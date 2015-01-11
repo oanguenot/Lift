@@ -1,4 +1,4 @@
-define('views/modifyOkView', ['text!views/templates/modifyok.html'], function(template) {
+define('views/modifyView', ['text!views/templates/modify.html'], function(template) {
 
     "use strict";
 
@@ -28,6 +28,10 @@ define('views/modifyOkView', ['text!views/templates/modifyok.html'], function(te
             if(this.error === 'noright') {
                 this.$('.titleModify').text(i18n.t('noright.title'));
                 this.$('.detailsModify').text(i18n.t('noright.subtitle'));
+            }
+            else if(this.error === 'badpassword') {
+                this.$('.titleModify').text(i18n.t('badpassword.title'));
+                this.$('.detailsModify').text(i18n.t('badpassword.subtitle'));
             }
             return this;
         },

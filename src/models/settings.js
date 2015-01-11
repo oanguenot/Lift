@@ -29,6 +29,14 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
             return this.get('protocol');
         },
 
+        getAudioPasswordRules: function() {
+            return this.get('audiopassword');
+        },
+
+        getWebPasswordRules: function() {
+            return this.get('webpassword');
+        },
+
         getGlobals: function() {
 
             Backbone.Mediator.publish('spinner-on');
@@ -115,6 +123,35 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                         log.warning("SETTINGS", "No Conference bridge information found");
                     }
 
+                    var webpassword = {}, audiopassword = {};
+
+                    var web_password_rules = settings.getElementsByTagName("conf_web_password_rules");
+                    if(web_password_rules && web_password_rules.length > 0) {
+                        
+                        if(web_password_rules[0].getElementsByTagName('min_length') && web_password_rules[0].getElementsByTagName('min_length').length > 0) {
+                            webpassword.min_length = web_password_rules[0].getElementsByTagName('min_length')[0].childNodes[0].nodeValue;
+                        }
+                        
+                        if(web_password_rules[0].getElementsByTagName('digit') && web_password_rules[0].getElementsByTagName('digit').length > 0) {
+                            webpassword.hasDigit = web_password_rules[0].getElementsByTagName('digit')[0].childNodes[0].nodeValue === "true" ? true : false;
+                        }
+                        if(web_password_rules[0].getElementsByTagName('lowercase') && web_password_rules[0].getElementsByTagName('lowercase').length > 0) {
+                            webpassword.hasLowercase = web_password_rules[0].getElementsByTagName('lowercase')[0].childNodes[0].nodeValue === "true" ? true : false;
+                        }
+                        if(web_password_rules[0].getElementsByTagName('uppercase') && web_password_rules[0].getElementsByTagName('uppercase').length > 0) {
+                            webpassword.hasUppercase = web_password_rules[0].getElementsByTagName('uppercase')[0].childNodes[0].nodeValue === "true" ? true : false;
+                        }
+                        if(web_password_rules[0].getElementsByTagName('special') && web_password_rules[0].getElementsByTagName('special').length > 0) {
+                            webpassword.hasSpecial = web_password_rules[0].getElementsByTagName('special')[0].childNodes[0].nodeValue === "true" ? true : false;
+                        }
+                    }
+
+                    var audio_password_rules = settings.getElementsByTagName("conf_audio_password_rules");
+                    if(audio_password_rules && audio_password_rules.length > 0) {
+                         if(audio_password_rules[0].getElementsByTagName('min_length') && audio_password_rules[0].getElementsByTagName('min_length').length > 0) {
+                            audiopassword.min_length = audio_password_rules[0].getElementsByTagName('min_length')[0].childNodes[0].nodeValue;
+                        }
+                    }
 
                     this.set({
                         timezones: timezones,
@@ -122,7 +159,9 @@ define('models/settings', ['modules/acsConnector', 'modules/log'], function(acs,
                         conferenceCall: conferenceCall,
                         acsVersion: acsVersion,
                         protocol: protocol,
-                        domain: domain
+                        domain: domain,
+                        webpassword: webpassword,
+                        audiopassword: audiopassword
                     });
 
                     log.debug("SETTINGS", "Settings stored", this);

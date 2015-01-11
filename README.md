@@ -18,6 +18,11 @@ OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Me
 
 # HISTORY
 
+## Version 1.5.8
+ - REFACTORING: Connection on LAN using REST API
+ - FIX: Display specific popup when OT version is too old (< R2.1)
+ - FIX: Display specific popup when the user has no right to create a new meeting
+
 ## Version 1.5.7
  - FIX: Production issue (missing icon 48x48)
 
