@@ -348,7 +348,7 @@ background-color: #72539E;
 	border-color: #72539E;
 }
 
-.passwordInput {
+.passwordInput, .audioInput {
 	width: 40%;
 	padding-left: 10px;
 	margin-left: 10px;
@@ -359,7 +359,7 @@ background-color: #72539E;
 	margin-bottom: 5px;
 }
 
-.passwordInput:hover {
+.passwordInput:hover, .audioInput:hover {
 	background-color: #72539E;
 	border-color: #72539E;
 }
@@ -370,6 +370,7 @@ background-color: #72539E;
 	color: #4E5256;;
 	font-size: 12px;
 	margin-left: 10px;
+	text-decoration: underline;
 }
 
 .webpassword:hover, .audiopassword:hover {

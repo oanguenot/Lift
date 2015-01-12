@@ -279,10 +279,12 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
         }
 
         json.password = '';
-        if(xml.getElementsByTagName("documents") && xml.getElementsByTagName("documents").length > 0) {
-            if(xml.getElementsByTagName("documents")[0].getElementsByTagName('password') && xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0]) {
-                json.password = xml.getElementsByTagName("documents")[0].getElementsByTagName('password')[0].textContent;
-            }    
+        if(xml.getElementsByTagName("web_password") && xml.getElementsByTagName("web_password").length > 0) {
+            json.password = xml.getElementsByTagName("web_password")[0].childNodes[0].nodeValue;
+        }
+        json.audiopassword = '';
+        if(xml.getElementsByTagName("audio_password") && xml.getElementsByTagName("audio_password").length > 0) {
+            json.audiopassword = xml.getElementsByTagName("audio_password")[0].childNodes[0].nodeValue;
         }
 
         if(xml.getElementsByTagName("roster") && xml.getElementsByTagName("roster").length > 0) {

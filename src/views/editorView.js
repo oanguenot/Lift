@@ -92,11 +92,20 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
                 }
             }
 
+            var hasPassword = false;
             if(model.get('password') && model.get('password').length > 0) {
                 this.$('.passwordCheck').prop('checked', true);
                 this.$('.passwordInput').val(model.get('password'));
+                hasPassword = true;
             }
-            else {
+
+            if(model.get('audiopassword') && model.get('audiopassword').length > 0) {
+                this.$('.passwordCheck').prop('checked', true);
+                this.$('.audioInput').val(model.get('audiopassword'));
+                hasPassword = true;
+            }
+
+            if(!hasPassword) {
                 this.$('.passwordInput').prop('disabled', true);
             }
         },
@@ -133,8 +142,10 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             this.$('.passwordCheck').on('change', function(event) {
                 that.$('.passwordInput').prop('disabled', !event.target.checked);
+                that.$('.audioInput').prop('disabled', !event.target.checked);
                 if(!event.target.checked) {
                     that.$('.passwordInput').val('');
+                    that.$('.audioInput').val('');
                 }
             });
         },

@@ -121,14 +121,14 @@
 		"title": "REGLES DU MOT DE PASSE",
 		"subtitle": "Pour être pris en compte, le mot de passe doit suivre les rêgles suivantes",
 		"min":"Longueur minimale",
-		"nomin": "Pas de longueur minimale",
-		"digit":"Seulement des chiffres",
-		"alpha": "Chiffres et lettres uniquement (Sans caractères spéciaux)",
-		"letter": "Seulement des lettres (pas de chiffres)",
-		"special": "Tous les caractères sont autorisés",
-		"lowercase": "Uniquement avec des lettres minuscules",
-		"uppercase": "Uniquement avec des lettres majuscules",
-		"full": "Lettres majuscules et minuscules autorisées"
+		"nomin": "Pas de longueur minimale.",
+		"digit":"Seuls les chiffres sont autorisés.",
+		"alpha": "Le mot de passe doit contenir au moins une lettre et au moins un chiffre. Les caractères spéciaux ne sont pas autorisés.",
+		"letter": "Seules les lettres sont autorisées.",
+		"special": "Le mot de passe doit contenir au moins une lettre, un chiffre et un caractère spécial.",
+		"lowercase": "Le mot de passe doit contenir au moins une lettre minuscule.",
+		"uppercase": "Le mot de passe doit contenir au moins une lettre majuscule.",
+		"full": "Le mot de passe doit contenir au moins une lettre majuscule et une lettre minuscule."
 	},
 	"invite": {
 		"invite": "Inviter",

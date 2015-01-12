@@ -122,13 +122,13 @@
 		"subtitle": "To be taken into account, the password should follow the rules below",
 		"min":"Minimal length",
 		"nomin": "No minimal length",
-		"digit":"Only digit characters",
-		"alpha": "Alpha-numeric characters (no special characters)",
-		"letter": "Only letters (no digit)",
-		"special": "Alpha-numeric characters (with special characters)",
-		"lowercase": "Only lowercase characters",
-		"uppercase": "Only uppercase characters",
-		"full": "Uppercase and lowercase characters"
+		"digit":"Only digit characters are authorized",
+		"alpha": "The password should contain at least one letter and one digit. Special characters are not authorized",
+		"letter": "Only letters characters are authorized",
+		"special": "The password should contain at least one letter, one digit and a special character",
+		"lowercase": "The password should contain at least one lowercase character.",
+		"uppercase": "The password should contain at least one uppercase character.",
+		"full": "The password should contain at least one uppercase character and one lowercase character."
 	},
 	"invite": {
 		"invite": "Invite",
