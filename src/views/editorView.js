@@ -158,7 +158,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             if(confType === "scheduled") {
                 this.$('.durationInput').prop("disabled", false);
                 this.$('.startTimeInput').prop("disabled", false);
-                this.$(".startTimeInput").val(new Date().toLocaleTimeString().substr(0, 5));
+                this.$(".startTimeInput").val(moment().format("HH:mm"));
 
                 if(recurrenceValue === 'none') {
                     this.$('.endDateInput').prop("disabled", true);
@@ -171,7 +171,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             else {
                 this.$('.durationInput').prop("disabled", true);
                 this.$('.startTimeInput').prop("disabled", true);
-                this.$(".startTimeInput").val('00:00');
+                this.$(".startTimeInput").val(moment().format("HH:mm"));
 
                 this.$('.endDateInput').prop("disabled", false);
                 this.$('.recurrenceType').prop("disabled", true);
