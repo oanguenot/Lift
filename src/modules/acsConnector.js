@@ -113,7 +113,26 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         });
     };
 
-    var loginREST = function loginREST() {
+    var logout = function signout() {
+
+        return new Promise(function(resolve, reject) {
+
+            log.info("ACSConnector", "Signout");
+
+            // Logout previous user - if any
+            var url = protocol + host + "/ics?action=signout";
+
+            request(url).then(function(jsonResponse) {
+                log.debug("ACSConnector", "Signout successfull", jsonResponse);
+                resolve();
+            }, function(err) {
+                log.error("ACSConnector", "Signout error", err);
+                reject();
+            });
+        });
+    };
+
+    var signinREST = function loginREST() {
 
         return new Promise(function(resolve, reject) {
 
@@ -145,31 +164,10 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         });
     };
 
-    var logoutREST = function loginREST() {
+    var signoutREST = function loginREST() {
 
-        return new Promise(function(resolve, reject) {
-
-            log.info("ACSConnector", "Login REST...");
-
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "https://" + host + "/authenticationbasic/login?AlcApplicationUrl=/api/rest/authenticatenosso%3fversion=1.0", true);
-            xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pwd));
-            xmlhttp.onreadystatechange=function()
-            {
-                if (xmlhttp.readyState===4)
-                {
-                    if(xmlhttp.status === 200) {
-                        log.info("ACSConnector", "Login REST OK");
-                        resolve();
-                    }
-                    else {
-                        log.info("ACSConnector", "Login REST KO");
-                        reject();                                                 
-                    }
-                }
-            };
-
-            xmlhttp.send(null);
+        return new Promise(function(resolve) {
+            resolve();
         });
     };
 
@@ -256,24 +254,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         });
     };
 
-    var signout = function signout() {
-
-        return new Promise(function(resolve, reject) {
-
-            log.info("ACSConnector", "Signout");
-
-            // Logout previous user - if any
-            var url = protocol + host + "/ics?action=signout";
-
-            request(url).then(function(jsonResponse) {
-                log.debug("ACSConnector", "Signout successfull", jsonResponse);
-                resolve();
-            }, function(err) {
-                log.error("ACSConnector", "Signout error", err);
-                reject();
-            });
-        });
-    };
+    
 
     var schedule = function schedule(params) {
 
@@ -591,12 +572,12 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
     return {
 
         /**
-         * Login to ACS
+         * Sign in using REST API
          */
 
-        loginToACS: function(hostname, username, password, callback, errCallback, context) {
+        signin: function(hostname, username, password, callback, errCallback, context) {
 
-            log.info("ACSConnector", "Try to log...");
+            log.info("ACSConnector", "Try to sign in...");
             
             host = hostname;
             user = username;
@@ -610,11 +591,9 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                 });   
             }, function(errorType) {
 
-                console.log("ERRORTYPE", errorType);
-
                 var error = errorType[0];
                 if(error === 401) {
-                    loginREST().then(function() {
+                    signinREST().then(function() {
                         login().then(function(){
                             callback.call(context);
                         }, function(errorType) {
@@ -623,7 +602,7 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
                     }, function(errorTypeBis) {
                         error = errorTypeBis[0];
                         if(error === 401) {
-                            loginREST().then(function() {
+                            signinREST().then(function() {
                                 login().then(function(){
                                     callback.call(context);
                                 }, function(errorType) {
@@ -644,12 +623,36 @@ define('modules/acsConnector', ['modules/log', 'models/buddy'], function(log, Bu
         },
 
         /**
+         * Sign out using REST API
+         */
+        signout: function(callback, errCallback, context) {
+            log.info("ACSConnector", "Try to sign out...");
+
+            signoutREST().then(function(){
+                callback.call(context);
+            }, function(errorType) {
+                errCallback.call(context, errorType);
+            }); 
+        },
+
+        loginToACS: function(callback, errCallback, context) {
+            log.info("ACSConnector", "Try to log in ACS...");
+
+            login().then(function(){
+                callback.call(context);
+            }, function(errorType) {
+                errCallback.call(context, errorType);
+            }); 
+
+        },
+
+        /**
          * Log off the logged in user from ACS
          */
         logoffFromACS: function(callback, errCallback, context) {
-            log.info("ACSConnector", "Try to signout...");
+            log.info("ACSConnector", "Try to log off ACS...");
 
-            signout().then(function(){
+            logout().then(function(){
                 callback.call(context);
             }, function() {
                 errCallback.call(context);
