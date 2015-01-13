@@ -406,7 +406,7 @@ background-color: #72539E;
 }
 
 .startTimeInput {
-width: 20%;
+width: 32%;
 padding-left: 10px;
 display: block;
 color: #fff;
@@ -423,7 +423,7 @@ background-color: #72539E;
 }
 
 .durationInput {
-	width: 20%;
+	width: 32%;
 position: absolute;
 left: 54%;
 height: 27px;

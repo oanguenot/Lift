@@ -231,9 +231,10 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
         fillOthersFields: function() {
             var date = new Date();
+
             this.$('.dateInput').val(date.toJSON().substring(0,10));
             this.$('.endDateInput').val(date.toJSON().substring(0,10));
-            this.$('.startTimeInput').val(date.toLocaleTimeString().substr(0, 5));
+            this.$('.startTimeInput').val(moment().format("HH:mm"));
         },
 
         onScheduleOk: function(model) {

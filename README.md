@@ -25,6 +25,7 @@ OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Me
  - FIX: Display specific popup when OT version is too old (< R2.1)
  - FIX: Display specific popup when the user has no right to create a new meeting
  - FIX: Display specific popup when the user has entered a bad password
+ - FIX: English issues (labels, bad conference time when scheduling)
 
 ## Version 1.5.7
  - FIX: Production issue (missing icon 48x48)

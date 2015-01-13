@@ -1,7 +1,7 @@
 var win_left = 350,
     win_top = 100,
-    win_width = 350,
-    win_height = 650;
+    win_width = 325,
+    win_height = 615;
 
 chrome.app.runtime.onLaunched.addListener(function() {
 
