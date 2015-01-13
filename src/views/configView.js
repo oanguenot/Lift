@@ -31,6 +31,10 @@ define('views/configView', ['text!views/templates/config.html'], function(templa
             this.$('#login').val(this.model.get('login') || "");
             this.$('#password').val(this.model.get('password') || "");
             this.$('#ot').val(this.model.get('host') || "");
+
+            this.$('#loginExternal').val(this.model.get('loginExternal') || "");
+            this.$('#passwordExternal').val(this.model.get('passwordExternal') || "");
+            this.$('#otExternal').val(this.model.get('hostExternal') || "");
         },
 
         close: function() {

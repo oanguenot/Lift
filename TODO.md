@@ -25,6 +25,9 @@ BUGS:
 - Probleme des confs ou on est invités et ou on n'a pas d'état retourné par l'ACS (à vérifier quand invité leader et invité participant)
 - Voir si on reçoit le flag Outlook, affiché un texte violet/blanc dans la conférence (from Outlook) et griser les champs qu'on ne peut pas modifier
 - Vérifier qu'on affiche bien la bonne URL (public si existe/cluster...)
+- AM/PM à checker
+- Sign-in
+- All / Récurrente / Active
 
 
 v1.6

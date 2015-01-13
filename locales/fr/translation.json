@@ -4,7 +4,8 @@
 	    "subtitle": "Veuillez entrer vos informations personnelles pour utiliser OpenTouch Meeting Manager",
 	    "login": "Nom d'utilisateur",
 	    "password": "Mot de passe",
-	    "server": "Serveur Interne OpenTouch",
+	    "server": "Adresse du serveur (Accès interne)",
+	    "externalserver": "Adresse du serveur (Accès à distance)",
 	    "cancel": "Annuler",
 	    "save": "Se connecter"
 	},
@@ -143,6 +144,7 @@
 		"data": "Joindre la réunion en ligne",
 		"audio": "Joindre par téléphone",
 		"code": "Codes d'accès",
+		"leaderCode": "Code animateur",
 		"password": "Mot de passe",
 		"participant": "Participant",
 		"leader": "Animateur",
@@ -152,6 +154,8 @@
 		"noinvite": "Aucune invitation",
 		"more": "personne en plus",
 		"mores": "personnes en plus",
-		"from": "Invitation de la part de"
+		"from": "Invitation de la part de",
+		"subject": "Sujet",
+		"url": "Lien"
 	}
 }

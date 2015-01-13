@@ -609,6 +609,17 @@ background-color: #72539E;
   	outline: none;
 }
 
+.registerMiddleInput {
+	width: 38%;
+  	height: 25px;
+  	margin-bottom: 10px;
+  	padding-left: 15px;
+  	background: #fff;
+  	border: none;
+  	color: #4E5256;
+  	outline: none;
+}
+
 .invisible {
 	visibility: hidden;
 }
@@ -637,6 +648,33 @@ background-color: #72539E;
 	font-weight: 100;
 	margin-top: 6px;
 	font-family: "Roboto-light",sans-serif;
+}
+
+.legend-first {
+	margin-top: 20px;
+}
+
+.input-password {
+	position: absolute;
+	top: 197px;
+	left: 50%;
+}
+
+.input-passwordexternal {
+	position: absolute;
+	top: 349px;
+	left: 50%;
+}
+
+.legend-password {
+	position: absolute;
+	top: 175px;
+	left: 50%;
+}
+.legend-passwordexternal {
+	position: absolute;
+	top: 317px;
+	left: 50%;	
 }
 
 .checkResult {
