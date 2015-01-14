@@ -40,12 +40,12 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.$el.html(template);
             this.$('.mainScreen').i18n();
             this.enableCreateButton();
+            this.showEmptyArea();
             this.displayConferences();
             return this;
         },
 
         close: function() {
-            console.log("CLOSE MAIN VIEW");
             this.resetConferencesList();
             this.remove();
             this.undelegateEvents();

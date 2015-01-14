@@ -662,7 +662,7 @@ background-color: #72539E;
 
 .input-passwordexternal {
 	position: absolute;
-	top: 349px;
+	top: 339px;
 	left: 50%;
 }
 
@@ -1005,11 +1005,11 @@ margin: 0 auto;
 
 .errorMessage {
 position: relative;
-width: 130px;
-height: 100px;
+width: 140px;
+height: 120px;
 text-align: center;
 font-size: 12px;
-top: calc(50% - 130px);
+top: calc(50% - 160px);
 font-weight: 100;
 color: #fff;
 margin: 0 auto;
@@ -1170,6 +1170,7 @@ border-left: 1px solid #999;
 }
 
 .errorMessage-firstLine {
+	margin-top: 10px;
 	margin-bottom: 20px;
 }
 
