@@ -336,14 +336,13 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
                 }
                 else {
                     var code = xmlResponse.getElementsByTagName("message")[0].getAttribute("code");
-                    console.log("code", code);
                     if(code === "2026") {
                         Backbone.Mediator.publish('editor-schedule-right', null);
                     }
                     else if (code === "2025") {
                         Backbone.Mediator.publish('editor-schedule-badpassword', null);
                     }
-                    else {
+                    else if(code === "20005") {
                        Backbone.Mediator.publish('editor-schedule-modify', meeting); 
                     }
                 }

@@ -92,6 +92,7 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
         },
 
         close: function() {
+            console.log("CLOSE CONFERENCE VIEW", this.model.get('vanity'));
             this.remove();
             this.undelegateEvents();
             this.unbind();

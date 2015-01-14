@@ -35,13 +35,13 @@ define('views/joinView', ['text!views/templates/join.html'], function(template) 
         onCancel: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('join-close', null);
+            Backbone.Mediator.publish('join-close', false);
         },
 
         onOK: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('join-ok', null);
+            Backbone.Mediator.publish('join-close', true);
         }
     });
 });

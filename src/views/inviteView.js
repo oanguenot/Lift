@@ -61,14 +61,14 @@ define('views/inviteView', ['text!views/templates/invite.html', 'modules/log', '
         onCancel: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('invite-close', null);
+            Backbone.Mediator.publish('invite-close', false);
         },
 
         onInvite: function(e) {
             e.preventDefault();
             e.stopPropagation();
 
-            Backbone.Mediator.publish('invite-close', null);
+            Backbone.Mediator.publish('invite-close', true);
         }
 
     });

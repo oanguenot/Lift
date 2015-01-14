@@ -158,7 +158,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             if(confType === "scheduled") {
                 this.$('.durationInput').prop("disabled", false);
                 this.$('.startTimeInput').prop("disabled", false);
-                this.$(".startTimeInput").val(moment().format("HH:mm"));
+                
 
                 if(recurrenceValue === 'none') {
                     this.$('.endDateInput').prop("disabled", true);
@@ -171,7 +171,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
             else {
                 this.$('.durationInput').prop("disabled", true);
                 this.$('.startTimeInput').prop("disabled", true);
-                this.$(".startTimeInput").val(moment().format("HH:mm"));
+                
 
                 this.$('.endDateInput').prop("disabled", false);
                 this.$('.recurrenceType').prop("disabled", true);
@@ -243,7 +243,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             Backbone.Mediator.subscribeOnce('createok-close', function() {
                 createOkView.close();
-                Backbone.Mediator.publish('editor-close');
+                Backbone.Mediator.publish('editor-close', false);
             });
 
             $('#popup-elt').append(createOkView.render().el);
@@ -286,7 +286,7 @@ define('views/editorView', ['text!views/templates/editor.html', 'modules/log', '
 
             Backbone.Mediator.subscribeOnce('modifyok-close', function() {
                 view.close();
-                Backbone.Mediator.publish('editor-modify');
+                Backbone.Mediator.publish('editor-close', true);
             });
 
             $('#popup-elt').append(view.render().el);

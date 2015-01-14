@@ -45,6 +45,8 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         close: function() {
+            console.log("CLOSE MAIN VIEW");
+            this.resetConferencesList();
             this.remove();
             this.undelegateEvents();
             this.unbind();

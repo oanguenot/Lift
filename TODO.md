@@ -20,7 +20,6 @@ Each conferences list should be ordered.
 
 
 BUGS:
-- Quelques soucis vus quand on modifie la conf créé (schédulée, change l'heure, la date), certains tabs (à venir ne sont plus rafraichis correctement)
 - Probleme des confs ou on est invités et ou on n'a pas d'état retourné par l'ACS (à vérifier quand invité leader et invité participant)
 - Voir si on reçoit le flag Outlook, affiché un texte violet/blanc dans la conférence (from Outlook) et griser les champs qu'on ne peut pas modifier
 - Vérifier qu'on affiche bien la bonne URL (public si existe/cluster...)

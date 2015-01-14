@@ -61,16 +61,12 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     function displayJoinPopup(model) {
         var view = new JoinView({model: model});
 
-        Backbone.Mediator.subscribeOnce('join-close', function() {
+        Backbone.Mediator.subscribeOnce('join-close', function(shouldJoin) {
             view.close();
             mainView.unblur();
-        });
-
-        Backbone.Mediator.subscribeOnce('join-ok', function() {
-            view.close();
-            mainView.unblur();
-
-            user.join(model.get('vanity'));
+            if(shouldJoin) {
+                user.join(model.get('vanity'));    
+            }
         });
 
         mainView.blur();
@@ -89,15 +85,12 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
             view = new EditorView(); 
         }
 
-        Backbone.Mediator.subscribeOnce('editor-close', function() {
+        Backbone.Mediator.subscribeOnce('editor-close', function(isMeetingModified) {
             view.close();
             displayMainView();
-        });
-
-        Backbone.Mediator.subscribeOnce('editor-modify', function() {
-            view.close();
-            displayMainView();
-            user.reload();
+            if(isMeetingModified) {
+                user.reload();    
+            } 
         });
 
         mainView.close();
@@ -111,11 +104,6 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
         view = new InviteView({model: model});
 
         Backbone.Mediator.subscribeOnce('invite-close', function() {
-            view.close();
-            displayMainView();
-        });
-
-        Backbone.Mediator.subscribeOnce('invite-change', function() {
             view.close();
             displayMainView();
         });
@@ -152,15 +140,12 @@ require(['modules/log', 'views/mainView', 'views/errorView', 'views/configView',
     function displayConfirmationPopup(model) {
         var view = new ConfirmView({model: model});
 
-        Backbone.Mediator.subscribeOnce('confirm-close', function() {
+        Backbone.Mediator.subscribeOnce('confirm-close', function(shouldBeDeleted) {
             view.close();
             mainView.unblur();
-        });
-
-        Backbone.Mediator.subscribeOnce('confirm-ok', function() {
-            view.close();
-            mainView.unblur();
-            models.conferences().delete(model);
+            if(shouldBeDeleted) {
+                models.conferences().delete(model);
+            }
         });
 
         mainView.blur();

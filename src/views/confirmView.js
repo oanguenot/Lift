@@ -33,13 +33,13 @@ define('views/confirmView', ['text!views/templates/confirm.html'], function(temp
         onCancel: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('confirm-close', null);
+            Backbone.Mediator.publish('confirm-close', false);
         },
 
         onOk: function(e) {
             e.preventDefault();
             e.stopPropagation();
-            Backbone.Mediator.publish('confirm-ok', this.model);
+            Backbone.Mediator.publish('confirm-close', true);
         },
 
 
