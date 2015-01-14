@@ -11,7 +11,6 @@ require.config({
 
 
 window.displayDetails = function displayDetails(model) {
-    console.log("Details to display", model);
 
     require(['modules/log', 'views/meetingDetails'], function(log, MeetingDetails) {
 
@@ -19,14 +18,11 @@ window.displayDetails = function displayDetails(model) {
 
         var lang = navigator.language || navigator.userLanguage || 'en-US';
 
-        console.log('DETAILS', 'Detected language', lang);
-
         //Moment settings
         moment.locale(lang, {week: {dow: 1, doy: 4}});
 
         //Language initialization
         i18n.init({ lng: lang}, function() {
-            console.log('DETAILS', 'I18n initialized');
 
             var view = new MeetingDetails({model: model});
 

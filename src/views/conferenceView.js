@@ -87,12 +87,10 @@ define('views/conferenceView', ['text!views/templates/conference.html', 'models/
             this.$('.meeting-details-button').attr('title', i18n.t('conference.details'));
             this.$('.meeting-invite-button').attr('title', i18n.t('conference.invite'));
 
-
             return this;
         },
 
         close: function() {
-            console.log("CLOSE CONFERENCE VIEW", this.model.get('vanity'));
             this.remove();
             this.undelegateEvents();
             this.unbind();
