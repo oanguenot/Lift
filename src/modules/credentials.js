@@ -25,7 +25,10 @@ define('modules/credentials', ['modules/log'], function(log) {
                             resolve({
                                 login: data[0], 
                                 password: data[1], 
-                                host: data[2]
+                                host: data[2],
+                                loginExternal: data[3],
+                                passwordExternal: data[4],
+                                hostExternal: data[5]
                             });
                         }; 
 
@@ -47,14 +50,14 @@ define('modules/credentials', ['modules/log'], function(log) {
         });
     };
 
-    var saveDataToFile = function saveDataToFile(l, p, h) {
+    var saveDataToFile = function saveDataToFile(l, p, h, le, pe, he) {
 
         log.debug("CONFIG", "Save user configuration", {login: l, password: '****', host: h});
 
         // Return a new promise.
         return new Promise(function(resolve, reject) {
 
-            var blob = new Blob([l + '&|&' + p + '&|&' + h], {type: 'text/plain'});
+            var blob = new Blob([l + '&|&' + p + '&|&' + h + '&|&' + le + '&|&' + pe + '&|&' + he], {type: 'text/plain'});
 
             window.webkitRequestFileSystem(window.PERSISTENT, 100*1024, function(fs){
 
@@ -137,8 +140,8 @@ define('modules/credentials', ['modules/log'], function(log) {
             });
         },
 
-        save: function(login, password, host, callback, errCallback, context) {
-            saveDataToFile(login, password, host).then(function() {
+        save: function(login, password, host, loginExternal, passwordExternal, hostExternal, callback, errCallback, context) {
+            saveDataToFile(login, password, host, loginExternal, passwordExternal, hostExternal).then(function() {
                 callback.call(context);
             }, function() {
                 errCallback.call(context);

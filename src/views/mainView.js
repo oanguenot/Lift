@@ -12,8 +12,6 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         conferencesView: {},
 
-        filter: 'active',
-
         initialize: function(){
             this.listenTo(this.collection, 'add', this.onAddConference);
             this.listenTo(this.collection, 'remove', this.onRemoveConference);
@@ -28,9 +26,9 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             'click #settingBtn': 'onSettings',
 
             'click #allBtn': 'onFilterAll',
-            'click #liveBtn': 'onFilterLive',
-            'click #soonBtn': 'onFilterSoon',
-            'click #pastBtn': 'onFilterPast',
+            'click #activeBtn': 'onFilterLive',
+            'click #not_begunBtn': 'onFilterSoon',
+            'click #endedBtn': 'onFilterPast',
         },
 
         subscriptions: {
@@ -41,6 +39,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
             this.$('.mainScreen').i18n();
             this.enableCreateButton();
             this.showEmptyArea();
+            this.selectPreviousFilterTab();
             this.displayConferences();
             return this;
         },
@@ -122,7 +121,7 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         displayConferences: function() {
-            var filteredCollection = this.collection.applyFilter(this.filter);
+            var filteredCollection = this.collection.applyFilter();
 
             _.each(filteredCollection, function(model) {
                 this.onAddConference(model);
@@ -130,7 +129,10 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
         },
 
         onAddConference: function(model) {
-            if(model.get('state') === this.filter || this.filter === 'all') {
+
+            var filter = this.collection.getFilter();
+
+            if(model.get('state') === filter || filter === 'all') {
                 this.hideEmptyArea();
                 var view = new ConferenceView({model: model});
                 this.$('.meetings').append(view.render().el);
@@ -153,41 +155,46 @@ define('views/mainView', ['text!views/templates/main.html', 'views/conferenceVie
 
         onFilterPast: function() {
             this.removeFilter();
-            this.$('#pastBtn').addClass('selected');
-            this.resetConferencesList();
-            this.filter = "ended";
-            this.displayConferences();
+            this.$('#endedBtn').addClass('selected');
+            this.collection.setFilter("ended");
+            this.updateConferences();
         },
 
         onFilterSoon: function() {
             this.removeFilter();
-            this.$('#soonBtn').addClass('selected');
-            this.resetConferencesList();
-            this.filter = "not_begun";
-            this.displayConferences();
+            this.$('#not_begunBtn').addClass('selected');
+            this.collection.setFilter("not_begun");
+            this.updateConferences();
         },
 
         onFilterLive: function() {
             this.removeFilter();
-            this.$('#liveBtn').addClass('selected');
-            this.resetConferencesList();
-            this.filter = "active";
-            this.displayConferences();
+            this.$('#activeBtn').addClass('selected');
+            this.collection.setFilter("active");
+            this.updateConferences();
         },
 
         onFilterAll: function() {
             this.removeFilter();
-            this.resetConferencesList();
-            this.filter = "all";
-            this.displayConferences();
             this.$('#allBtn').addClass('selected');
+            this.collection.setFilter("all");
+            this.updateConferences();
+        },
+
+        updateConferences: function() {
+            this.resetConferencesList();
+            this.displayConferences();
         },
 
         removeFilter: function() {
             this.$('#allBtn').removeClass('selected');
-            this.$('#liveBtn').removeClass('selected');
-            this.$('#soonBtn').removeClass('selected');
-            this.$('#pastBtn').removeClass('selected');
+            this.$('#activeBtn').removeClass('selected');
+            this.$('#not_begunBtn').removeClass('selected');
+            this.$('#endedBtn').removeClass('selected');
+        },
+
+        selectPreviousFilterTab: function() {
+            this.$('#' + this.collection.getFilter() + 'Btn').addClass('selected');
         }
     });
 });

@@ -57,7 +57,10 @@ define('views/configView', ['text!views/templates/config.html'], function(templa
             this.model.update({
                 login:  this.$('#login').val(),
                 password: this.$('#password').val(),
-                host: this.$('#ot').val()
+                host: this.$('#ot').val(),
+                loginExternal: this.$('#loginExternal').val(),
+                passwordExternal: this.$('#passwordExternal').val(),
+                hostExternal: this.$('#otExternal').val()
             });
 
             Backbone.Mediator.publish('settings-close', null);

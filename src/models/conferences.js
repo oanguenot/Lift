@@ -299,17 +299,31 @@ define('models/conferences', ['models/conference', 'modules/acsConnector'], func
         
         model : ConferenceModel,
 
-        applyFilter: function(filter) {
+        activefilter: 'active',
+
+        applyFilter: function() {
+
+            var that = this;
+
             var filteredArray = this.filter(function(model) {
 
-                if(filter === 'all') {
+                if(that.activefilter === 'all') {
                     return true;
                 }
 
-                return model.get("state") === filter;
+                return model.get("state") === that.activefilter;
+
             });
 
             return filteredArray;
+        },
+
+        setFilter: function(filter) {
+            this.activefilter = filter;
+        },
+
+        getFilter: function() {
+            return this.activefilter;
         },
 
         schedule: function(meeting) {
