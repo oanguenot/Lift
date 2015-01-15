@@ -23,23 +23,16 @@ BUGS:
 - Probleme des confs ou on est invités et ou on n'a pas d'état retourné par l'ACS (à vérifier quand invité leader et invité participant)
 - Voir si on reçoit le flag Outlook, affiché un texte violet/blanc dans la conférence (from Outlook) et griser les champs qu'on ne peut pas modifier
 - Vérifier qu'on affiche bien la bonne URL (public si existe/cluster...)
-- All / Récurrente / Active
 
+
+v1.5.9
+Classement des meetings dans la liste
 
 v1.6
 Proposer un bouton "Invite" qui affiche la liste des buddies et qui permet d'ajouter un buddy (leader) ou de saisir une adresse email pour ajouter un guest (participant)
 - Modificatin de la conference pour ajouter le roster
 - Modification du display de la conference pour ajouter le bouton "invite" et afficher quelque chose représentant les participants invités (3 personnes invitées)
 - Dans les infos de la conférence, afficher les personnes invitées
-
-v1.7
-Double URL
-
-v1.8
-Utilisation de l'API REST de login
-
-v1.9
-Classement des meetings dans la liste
 
 v2.0
 Inviter un contact Google

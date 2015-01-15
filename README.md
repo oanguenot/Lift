@@ -20,12 +20,13 @@ OpenTouch Meeting Manager (OTCMeeting) is a Chrome Application for scheduling Me
 ## Version 1.5.8
  - FEATURE: Allow to configure an Audio password that is different than a Web password
  - FEATURE: Display Audio and Web passwords rules
- - FEATURE: Connection on WAN using external URL (try internal access and if not ok, external access) - To finalize
+ - FEATURE: Connection on WAN using external URL (try internal access and if not ok, external access)
  - REFACTORING: Connection on LAN using REST API
  - FIX: Display specific popup when OT version is too old (< R2.1)
  - FIX: Display specific popup when the user has no right to create a new meeting
  - FIX: Display specific popup when the user has entered a bad password
  - FIX: English issues (labels, bad conference time when scheduling)
+ - FIX: Bad display after updating a meeting
 
 ## Version 1.5.7
  - FIX: Production issue (missing icon 48x48)
